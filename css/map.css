@@ -1,0 +1,9 @@
+#map {
+    width: 800px;
+    height: 1200px;
+    margin-right: 0px;
+    padding: 0;
+}
+.marker{
+    position: absolute;
+}
