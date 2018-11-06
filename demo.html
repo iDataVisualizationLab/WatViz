@@ -4,16 +4,20 @@
     <meta charset="UTF-8">
     <title>WatViz</title>
     <script src="lib/plotly-latest.min.js"></script>
-
-
     <style>
         @import "css/map.css";
         @import "css/main.css";
         @import "css/tooltip.css";
+        @import "js/playslider/playslider.css";
     </style>
 </head>
 <body>
 <div id="map"></div>
+<div id="playButtonDiv">
+    <button id="play-button">Play</button>
+</div>
+
+
 <script src="lib/d3.v4.min.js"></script>
 <script src="https://d3js.org/d3-hsv.v0.1.min.js"></script>
 <script src="https://d3js.org/d3-contour.v1.min.js"></script>
@@ -25,12 +29,7 @@
 <script src="js/processdata.js"></script>
 <script src="js/colormanager.js"></script>
 <script src="js/map.js"></script>
-<script>
-    d3.csv("data/well_data_full.optimized.csv", function(err, data){
-        let dp = new dataProcessor(data);
-        plotMaps(dp);
-    });
-</script>
-
+<script src="js/playslider/playslider.js"></script>
+<script src="js/main.js"></script>
 </body>
 </html>

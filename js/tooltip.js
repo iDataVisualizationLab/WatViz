@@ -1,7 +1,8 @@
 var tooltip = d3.select("body").append("div")
     .attr("class", "tooltip")
     .style("opacity", 0);
-function showTip(htmlstr){
+function showTip(d, formatData){
+    let htmlstr = formatData(d);
     tooltip.transition()
         .duration(200)
         .style("opacity", .9);
@@ -13,4 +14,21 @@ function hidetip(){
     tooltip.transition()
         .duration(500)
         .style("opacity", 0);
+}
+function formatData(d) {
+    let wellId = d.key;
+    let position = `Long: ${d[COL_LONG]}<br/>Lat: ${d[COL_LAT]}`;
+    let htmlStr = `<b>Well id: ${wellId}</b><br/>${position}`;
+    let table = "<table>";
+    let values = d.values;
+    values.forEach(value=>{
+        table += "<tr>";
+        let date = utils.dateFormat(value[COL_MEASUREMENT_DATE]);
+        let st = value[COL_SATURATED_THICKNESS];
+        table += `<td>${date}</td><td style="text-align: right; padding-left: 10px;">${Math.round(st)}</td>`;
+        table += "</tr>";
+    });
+    table += "</table>";
+    htmlStr += table;
+    return htmlStr;
 }

@@ -4,6 +4,10 @@
     margin-right: 0px;
     padding: 0;
 }
+#playButtonDiv {
+    width: 800px;
+    height: 200px;
+}
 .marker{
     position: absolute;
 }

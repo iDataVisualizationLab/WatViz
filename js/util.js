@@ -16,5 +16,15 @@ let utils = {
     dateFormat(date){
         let formatter = d3.timeFormat("%Y-%m-%d");
         return formatter(date);
+    },
+    formatDateIntoYear(date){
+        return d3.timeFormat("%Y")(date);
+    },
+    formatDate(date){
+        return d3.timeFormat("%b %Y")(date);
+    },
+    parseDate(date){
+        return d3.timeParse("%m/%d/%y")(date);
     }
+
 };

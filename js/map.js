@@ -1,21 +1,3 @@
-function displayData(d) {
-    let wellId = d.key;
-    let position = `Long: ${d[COL_LONG]}<br/>Lat: ${d[COL_LAT]}`;
-    let htmlStr = `<b>Well id: ${wellId}</b><br/>${position}`;
-    let table = "<table>";
-    let values = d.values;
-    values.forEach(value=>{
-        table += "<tr>";
-        let date = utils.dateFormat(value[COL_MEASUREMENT_DATE]);
-        let st = value[COL_SATURATED_THICKNESS];
-        table += `<td>${date}</td><td style="text-align: right; padding-left: 10px;">${Math.round(st)}</td>`;
-        table += "</tr>";
-    });
-    table += "</table>";
-    htmlStr += table;
-    return htmlStr;
-}
-
 function plotMaps(dp) {
     let longAccessor = (d) => {
         return d[COL_LONG];
@@ -23,21 +5,16 @@ function plotMaps(dp) {
     let latAccessor = (d) => {
         return d[COL_LAT];
     }
-    let wells = dp.wells;
-    // let wells = dp.getWellByMonthIndex(0);
-
     gm = new GoogleMap("map");
     gm.fitBounds(wells, longAccessor, latAccessor);
     gm.dispatch.on("draw", draw);
 
     function draw(event) {
-        // plotVoronoi(event);
         plotContours(event);
         plotWells(event);
     }
 
     function plotWells(event) {
-        // let wells = dp.wells;
         let layer = event.layer;
         let transform = event.transform(longAccessor, latAccessor);
         let marker = layer.select("#wellsGroup").selectAll("g").data(wells);
@@ -59,8 +36,7 @@ function plotMaps(dp) {
             .attr("fill-opacity", .5)
             .attr("stroke-width", 0.6)
             .on("mouseover", d=>{
-                let htmlStr = displayData(d);
-                showTip(htmlStr);
+                showTip(d, formatData);
             })
             .on("mouseout", ()=>{
                 hidetip();

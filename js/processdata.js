@@ -7,7 +7,6 @@ let COL_WELL_ID = 'Well_ID',
     COL_WATER_ELEVATION = 'WaterElevation',
     COL_AVERAGE_OVERTIME = 'averageOverTime';
 
-
 dataProcessor = function (data) {
     //convert data type.
     data = data.map(d => {
@@ -27,6 +26,10 @@ dataProcessor = function (data) {
     });
 
     let wells = getAllWells(data);
+    let dateExtent = d3.extent(unpack(data, COL_MEASUREMENT_DATE));
+    let minDate = dateExtent[0];
+    let maxDate = dateExtent[1];
+
     //Add the month index to the data
     addMonthIndex();
     let maxMonthIndex = d3.max(unpack(data, COL_MONTH_INDEX));
@@ -58,7 +61,6 @@ dataProcessor = function (data) {
     }
 
     function addMonthIndex() {
-        let minDate = d3.min(unpack(data, COL_MEASUREMENT_DATE));
         data = data.map(d => {
             d[COL_MONTH_INDEX] = utils.monthdiff(minDate, d[COL_MEASUREMENT_DATE]);
             return d;
@@ -77,5 +79,7 @@ dataProcessor = function (data) {
     //Exposing methods and data.
     this.wells = wells;
     this.getWellByMonthIndex = getWellByMonthIndex;
+    this.minDate = minDate;
+    this.maxDate = maxDate;
 
 }
