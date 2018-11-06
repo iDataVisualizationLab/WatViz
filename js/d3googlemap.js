@@ -81,7 +81,7 @@ class GoogleMap {
         //Bind our overlay to the map...
         self.overlay.setMap(this.map);
     }
-    updateMarker() {
+    updateMap() {
         this.overlay.draw();
     }
 }

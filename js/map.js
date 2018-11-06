@@ -55,14 +55,19 @@ function plotMaps(dp) {
     }
 
     function plotContours(event) {
+        let svg = event.layer;
+        let g = svg.select("#contoursGroup");
+        g.selectAll("*").remove();
+        if(wells.length <= 0){
+            return;//Don't do any further drawing if wells is empty
+        }
+
         let fromLatLngToDivPixel = event.fromLatLngToDivPixel;
         wells = addDivPixelFromLatLng(wells, fromLatLngToDivPixel);
         let gridSize = 30;
         let recbin = new RecBinner(wells, gridSize);
         let grid = recbin.grid;
-        let svg = event.layer;
-        let g = svg.select("#contoursGroup");
-        g.selectAll("*").remove();
+
         g.attr("class", "contour");
         g.attr("transform", `translate(${grid.x}, ${grid.y})`);
         g.selectAll("path")

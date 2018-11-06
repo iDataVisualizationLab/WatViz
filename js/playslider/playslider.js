@@ -9,6 +9,11 @@
  */
 var timer;
 function createPlaySlider(startDate, endDate, divId, divWidth, divHeight, margin, updatePlot, interval) {
+    //Set start date, end date to be the same middle of the month/or to the same date => so that each time we add a scale step => it increase exactly 1 month
+    startDate = new Date(startDate.getFullYear(), startDate.getMonth(), 15);
+    endDate = new Date(endDate.getFullYear(), endDate.getMonth(), 15);
+
+
     let formatDateIntoYear = d3.timeFormat("%Y"),
         formatDate = d3.timeFormat("%b %Y"),
         div = d3.select("#" + divId),
@@ -27,7 +32,7 @@ function createPlaySlider(startDate, endDate, divId, divWidth, divHeight, margin
     let moving = false;
     let currentValue = 0;
     let targetValue = width;
-
+    let months = utils.monthdiff(startDate, endDate);
     let playButton = d3.select("#play-button");
 
     let x = d3.scaleTime()
@@ -99,13 +104,10 @@ function createPlaySlider(startDate, endDate, divId, divWidth, divHeight, margin
                 button.text("Pause");
             }
         });
-
     function step() {
-        if(x.invert(currentValue) < endDate){
-            update(x.invert(currentValue));
-        }
-        currentValue = currentValue + (targetValue / 151);
-        if (currentValue > targetValue || x.invert(currentValue) > endDate) {
+        update(x.invert(currentValue));
+        currentValue = currentValue + (targetValue / months);
+        if (currentValue>=targetValue) {
             moving = false;
             currentValue = 0;
             clearInterval(timer);
@@ -118,6 +120,7 @@ function createPlaySlider(startDate, endDate, divId, divWidth, divHeight, margin
         handle.attr("cx", x(h));
         label.attr("x", x(h))
             .text(formatDate(h));
+        console.log(h);
         updatePlot(h);
     }
 }

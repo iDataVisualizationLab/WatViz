@@ -15,10 +15,13 @@ class RecBinner {
         let maxY = yExtent[1];
         let xStep =  width / this.gridSize;
         let yStep = xStep;
-        let ySize = Math.ceil(height/yStep);
+        let ySize = this.gridSize;//Default is equal to xGridSize
+        if(yStep !=0){//if the step !=0 means, there is a step defined by x range => then we can use that step (this is to make sure that we will have the same scale later on for the geoPath
+            ySize = Math.ceil(height/yStep);
+        }
+
         let xyGridSize = [this.gridSize, ySize];
         this.xyGridSize = xyGridSize;
-
         let grid = new Array(this.xyGridSize[0] * this.xyGridSize[1]);
         //Initialize the grid
         for (let xi = 0; xi < this.xyGridSize[0]; xi++) {

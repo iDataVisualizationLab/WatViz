@@ -25,6 +25,14 @@ let utils = {
     },
     parseDate(date){
         return d3.timeParse("%m/%d/%y")(date);
+    },
+    fromMonthIndexToDate(monthIndex, minDate){
+        let day = minDate.getDate();
+        let month = minDate.getMonth();
+        let year = minDate.getFullYear();
+        let addedYears = Math.floor(minDate/12);
+        let addedMonths = monthIndex - 12*addedYears;
+        let newDate = new Date(year+addedYears, month+addedMonths, day);
+        return newDate;
     }
-
 };
