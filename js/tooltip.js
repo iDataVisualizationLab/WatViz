@@ -17,6 +17,10 @@ function hidetip(){
 }
 function formatData(d) {
     let wellId = d.key;
+    //If the wellId contains $ and _, it means it was the combination of wellID + month, we split and take only well ID
+    if(wellId.indexOf('$')>=0){
+        wellId = wellId.replace('$', '').split('_')[0];
+    }
     let position = `Long: ${d[COL_LONG]}<br/>Lat: ${d[COL_LAT]}`;
     let htmlStr = `<b>Well id: ${wellId}</b><br/>${position}`;
     let table = "<table>";
