@@ -14,4 +14,5 @@ d3.csv("data/well_data_full.optimized.csv", function(err, data){
     //Plot the discrete heatmap
     let heatmapPlotter = discreteHeatMapPlotter(dp, "heatmap", {});
     heatmapPlotter.plot();
+    spinner.stop();
 });

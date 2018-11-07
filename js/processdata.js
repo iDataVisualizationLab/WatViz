@@ -26,6 +26,9 @@ dataProcessor = function (data) {
     });
 
     let wells = getAllWells(data);
+    debugger;
+    //Sort the wells by number of samples.
+    wells = wells.sort((a, b)=>b.values.length - a.values.length);
     let allWellIds = unpack(wells, "key");
     let dateExtent = d3.extent(unpack(data, COL_MEASUREMENT_DATE));
     let minDate = dateExtent[0];

@@ -6,9 +6,16 @@ function discreteHeatMapPlotter(dp, theDivId, plotOptions) {
     let months = dp.months;
     let allWellIds = dp.allWellIds;
     let nestedByWellMonthObject = {};
-    dp.getNestedByWellMonthData().forEach(r => {
+    let nested = dp.getNestedByWellMonthData();
+    //Calculate the border scale by the number of samples
+    let borderScale = d3.scaleLinear().domain(d3.extent(nested.map(n=>n.values.length))).range([minCellBorder, maxCellBorder]);
+    //Store this by key for quicker access
+    nested.forEach(r => {
         nestedByWellMonthObject[r.key] = r;
     });
+
+
+
     let width = months*cellWidth;
     function plot() {
         generateTimeLabels();
@@ -21,14 +28,19 @@ function discreteHeatMapPlotter(dp, theDivId, plotOptions) {
                 let key = "$" + wellId + "_" + month;
                 let d = nestedByWellMonthObject[key];
                 if (d) {
+                    let strokeWidth = borderScale(d.values.length);
                     rowGroup.append("g")
                         .attr("transform", `translate(${month * cellWidth}, 0)`)
                         .selectAll("rect")
                         .data([d]).enter()
                         .append("rect")
-                        .attr("width", cellWidth)
-                        .attr("height", cellHeight)
-                        .attr("fill", d=>color.waterLevel(d[COL_AVERAGE_OVERTIME]));
+                        .attr("stroke-width", strokeWidth)
+                        .attr("stroke", "black")
+                        .attr("width", (cellWidth - strokeWidth/2))
+                        .attr("height", (cellHeight -strokeWidth/2))
+                        .attr("fill", d=>color.waterLevel(d[COL_AVERAGE_OVERTIME]))
+                        .on("mouseover", d=>{showTip(d, formatData)})
+                        .on("mouseout", ()=>{hidetip();});
                 }
 
             }
