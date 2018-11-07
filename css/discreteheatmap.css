@@ -1,0 +1,12 @@
+#heatmapheader{
+    position: sticky;
+    top: 0px;
+    left: calc(var(--map-width) + 2*var(--margin-left));
+    background: white;
+    z-index: 9999;
+}
+#heatmap{
+    height: 1200px;
+    width: 1578px;
+    overflow: scroll;
+}

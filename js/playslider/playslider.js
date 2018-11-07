@@ -108,6 +108,8 @@ function createPlaySlider(startDate, endDate, divId, divWidth, divHeight, margin
         update(x.invert(currentValue));
         currentValue = currentValue + (targetValue / months);
         if (currentValue>=targetValue) {
+            //Due to the division precision of JS (for the step) + convertion back to date => sometimes the last year is not called => so in that case we just update to the last one for sure.
+            update(endDate);
             moving = false;
             currentValue = 0;
             clearInterval(timer);
@@ -120,7 +122,6 @@ function createPlaySlider(startDate, endDate, divId, divWidth, divHeight, margin
         handle.attr("cx", x(h));
         label.attr("x", x(h))
             .text(formatDate(h));
-        console.log(h);
         updatePlot(h);
     }
 }

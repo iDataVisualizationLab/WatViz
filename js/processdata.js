@@ -17,15 +17,16 @@ dataProcessor = function (data) {
         return d;
     });
     //Filter data with negative saturated thickness
-    data = data.filter(d=>{
-        if(d[COL_SATURATED_THICKNESS] <= 0 || d[COL_SATURATED_THICKNESS] == d[COL_WATER_ELEVATION]){
+    data = data.filter(d => {
+        if (d[COL_SATURATED_THICKNESS] <= 0 || d[COL_SATURATED_THICKNESS] == d[COL_WATER_ELEVATION]) {
             return false;
-        }else{
+        } else {
             return true;
         }
     });
 
     let wells = getAllWells(data);
+    let allWellIds = unpack(wells, "key");
     let dateExtent = d3.extent(unpack(data, COL_MEASUREMENT_DATE));
     let minDate = dateExtent[0];
     let maxDate = dateExtent[1];
@@ -38,19 +39,12 @@ dataProcessor = function (data) {
         return rows.map(r => r[key]);
     }
 
-    function unpacklong(rows) {
-        return unpack(rows, COL_LONG);
-    }
-
-    function unpacklat(rows) {
-        return unpack(rows, COL_LAT);
-    }
-
     function getAllWells(rows) {
         let nested = d3.nest().key(d => d[COL_WELL_ID]).entries(rows);
         processWellValue(nested);
         return nested;
     }
+
     function processWellValue(wells) {
         wells.forEach(well => {
             let measures = well.values;
@@ -60,26 +54,51 @@ dataProcessor = function (data) {
         });
     }
 
+    function getNestedByWellMonthData() {
+        let nested = d3.nest().key(w => "$" + w[COL_WELL_ID] + "_" + w[COL_MONTH_INDEX]).entries(data);
+        processWellValue(nested);
+        return nested;
+    }
+
     function addMonthIndex() {
         data = data.map(d => {
             d[COL_MONTH_INDEX] = utils.monthdiff(minDate, d[COL_MEASUREMENT_DATE]);
             return d;
         });
     }
-    let wellMonthData = new Array(maxMonthIndex+1);
-    function getWellByMonthIndex(monthIndex) {
-        if(!wellMonthData[monthIndex]){
-            let wellm = data.filter(d=>d[COL_MONTH_INDEX] === monthIndex);
-            let nested = d3.nest().key(w=>w[COL_WELL_ID]).entries(wellm);
-            processWellValue(nested);
-            wellMonthData[monthIndex] = nested;
+
+    function getWellMonthData() {
+        let wellMonthData = new Array(maxMonthIndex + 1);
+        for (let monthIndex = 0; monthIndex <= maxMonthIndex; monthIndex++) {
+            if (!wellMonthData[monthIndex]) {
+                let wellm = data.filter(d => d[COL_MONTH_INDEX] === monthIndex);
+                let nested = d3.nest().key(w => w[COL_WELL_ID]).entries(wellm);
+                processWellValue(nested);
+                wellMonthData[monthIndex] = nested;
+            }
         }
+        return wellMonthData;
+    }
+
+    let wellMonthData = getWellMonthData();
+
+    function getWellByMonthIndex(monthIndex) {
         return wellMonthData[monthIndex];
     }
+
+    function monthIndexToYear(month) {
+        let date = utils.fromMonthIndexToDate(month, minDate);
+        return date.getFullYear();
+    }
+
     //Exposing methods and data.
     this.wells = wells;
     this.getWellByMonthIndex = getWellByMonthIndex;
     this.minDate = minDate;
     this.maxDate = maxDate;
-
+    this.months = maxMonthIndex + 1;
+    this.wellMonthData = wellMonthData;
+    this.getNestedByWellMonthData = getNestedByWellMonthData;
+    this.allWellIds = allWellIds;
+    this.monthIndexToYear = monthIndexToYear;
 }

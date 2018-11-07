@@ -5,31 +5,47 @@
     <title>WatViz</title>
     <script src="lib/plotly-latest.min.js"></script>
     <style>
+        @import "css/globalvariables.css";
         @import "css/map.css";
         @import "css/main.css";
         @import "css/tooltip.css";
         @import "js/playslider/playslider.css";
+        @import "css/discreteheatmap.css";
     </style>
 </head>
 <body>
-<div id="map"></div>
-<div id="playButtonDiv">
-    <button id="play-button">Play</button>
+
+<div class="left">
+    <div id="map"></div>
+    <div id="playButtonDiv">
+        <button id="play-button">Play</button>
+    </div>
+</div>
+<div class="right">
+    <div id="heatmapheader">
+        <svg id="mapHeaderSVG"></svg>
+    </div>
+    <div id="heatmap"></div>
 </div>
 
 
+<!--Libraries-->
 <script src="lib/d3.v4.min.js"></script>
 <script src="https://d3js.org/d3-hsv.v0.1.min.js"></script>
 <script src="https://d3js.org/d3-contour.v1.min.js"></script>
+<script src="//maps.google.com/maps/api/js?key=AIzaSyAA-YOLIVTWEZLS7316nJfEX3C9FedRkLg"></script>
+
+<!--custom code-->
+<script src="js/globalvariables.js"></script>
 <script src="js/tooltip.js"></script>
 <script src="js/util.js"></script>
-<script src="//maps.google.com/maps/api/js?key=AIzaSyAA-YOLIVTWEZLS7316nJfEX3C9FedRkLg"></script>
 <script src="js/recbin.js"></script>
 <script src="js/d3googlemap.js"></script>
 <script src="js/processdata.js"></script>
 <script src="js/colormanager.js"></script>
 <script src="js/map.js"></script>
 <script src="js/playslider/playslider.js"></script>
+<script src="js/discreteheatmap.js"></script>
 <script src="js/main.js"></script>
 </body>
 </html>

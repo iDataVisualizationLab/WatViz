@@ -71,8 +71,8 @@ function plotMaps(dp) {
         g.attr("class", "contour");
         g.attr("transform", `translate(${grid.x}, ${grid.y})`);
         g.selectAll("path")
-            .data(d3.contours()
-                .size(grid.size).smooth(true)
+            .data(d3.contours().smooth(true)
+                .size(grid.size)
                 .thresholds(color.waterLevel.domain())
                 (grid.map(g => g.value)))
             .enter().append("path")
@@ -85,6 +85,25 @@ function plotMaps(dp) {
             .attr("class", "marker")
             .attr("opacity", 1)
             .attr("stroke-linejoin", "round");
+    }
+
+    function smoothCardinal(ring, values, value) {
+        ring.forEach(function(point) {
+            var x = point[0],
+                y = point[1],
+                xt = x | 0,
+                yt = y | 0,
+                v0,
+                v1 = values[yt * dx + xt];
+            if (x > 0 && x < dx && xt === x) {
+                v0 = values[yt * dx + xt - 1];
+                point[0] = x + (value - v0) / (v1 - v0) - 0.5;
+            }
+            if (y > 0 && y < dy && yt === y) {
+                v0 = values[(yt - 1) * dx + xt];
+                point[1] = y + (value - v0) / (v1 - v0) - 0.5;
+            }
+        });
     }
 
     function plotPlotlyContours(event) {

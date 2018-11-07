@@ -1,8 +1,8 @@
 /*Adapted from: https://bl.ocks.org/officeofjane/47d2b0bfeecfcb41d2212d06d095c763*/
 #play-button {
     position: relative;
-    top: 110px;
-    left: 50px;
+    top: 100px;
+    left: 30px;
     background: #f08080;
     padding-right: 26px;
     border-radius: 3px;

@@ -30,7 +30,7 @@ let utils = {
         let day = minDate.getDate();
         let month = minDate.getMonth();
         let year = minDate.getFullYear();
-        let addedYears = Math.floor(minDate/12);
+        let addedYears = Math.floor(monthIndex/12);
         let addedMonths = monthIndex - 12*addedYears;
         let newDate = new Date(year+addedYears, month+addedMonths, day);
         return newDate;
