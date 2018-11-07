@@ -21,6 +21,7 @@ function discreteHeatMapPlotter(dp, theDivId, plotOptions) {
         generateTimeLabels();
         let svg = d3.select("#" + theDivId).append("svg").attr("width", width).attr("height", allWellIds.length*cellHeight).attr("overflow", "scroll");
         let mainGroup = svg.append("g").attr("transform", `translate(0, 0)`);
+        let locationMarker;
         for (let row = 0; row < allWellIds.length; row++) {
             let wellId = allWellIds[row];
             let rowGroup = mainGroup.append("g").attr("transform", `translate(${0}, ${row * cellHeight})`);
@@ -39,8 +40,20 @@ function discreteHeatMapPlotter(dp, theDivId, plotOptions) {
                         .attr("width", (cellWidth - strokeWidth/2))
                         .attr("height", (cellHeight -strokeWidth/2))
                         .attr("fill", d=>color.waterLevel(d[COL_AVERAGE_OVERTIME]))
-                        .on("mouseover", d=>{showTip(d, formatData)})
-                        .on("mouseout", ()=>{hidetip();});
+                        .on("mouseover", d=>{
+                            showTip(d, formatData);
+                            let myLatLng = {lat: d[COL_LAT], lng: d[COL_LONG]};
+                            locationMarker = new google.maps.Marker({
+                                position: myLatLng,
+                                map: gm.map,
+                                title: d.key,
+                                zIndex: 1000
+                            });
+                        })
+                        .on("mouseout", ()=>{
+                            hidetip();
+                            locationMarker.setMap(null);
+                        });
                 }
 
             }

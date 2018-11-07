@@ -1,3 +1,4 @@
+let gm;
 function plotMaps(dp) {
     let longAccessor = (d) => {
         return d[COL_LONG];
