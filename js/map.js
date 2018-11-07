@@ -16,7 +16,7 @@ function plotMaps(dp) {
     }
 
     function plotWells(event) {
-        let layer = event.layer;
+        let layer = event.overlayMouseTarget;
         let transform = event.transform(longAccessor, latAccessor);
         let marker = layer.select("#wellsGroup").selectAll("g").data(wells);
 
@@ -56,7 +56,7 @@ function plotMaps(dp) {
     }
 
     function plotContours(event) {
-        let svg = event.layer;
+        let svg = event.overlayLayer;
         let g = svg.select("#contoursGroup");
         g.selectAll("*").remove();
         if(wells.length <= 0){
