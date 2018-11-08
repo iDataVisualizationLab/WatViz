@@ -1,12 +1,3 @@
-let COL_WELL_ID = 'Well_ID',
-    COL_LAT = 'y_lat',
-    COL_LONG = 'x_long',
-    COL_MEASUREMENT_DATE = 'MeasurementDate',
-    COL_MONTH_INDEX = 'monthIndex',
-    COL_SATURATED_THICKNESS = 'SaturatedThickness',
-    COL_WATER_ELEVATION = 'WaterElevation',
-    COL_AVERAGE_OVERTIME = 'averageOverTime';
-
 dataProcessor = function (data) {
     //convert data type.
     data = data.map(d => {
@@ -28,15 +19,17 @@ dataProcessor = function (data) {
     let wells = getAllWells(data);
     debugger;
     //Sort the wells by number of samples.
-    wells = wells.sort((a, b)=>b.values.length - a.values.length);
+    wells = wells.sort((a, b) => b.values.length - a.values.length);
     let allWellIds = unpack(wells, "key");
     let dateExtent = d3.extent(unpack(data, COL_MEASUREMENT_DATE));
     let minDate = dateExtent[0];
     let maxDate = dateExtent[1];
-
     //Add the month index to the data
     addMonthIndex();
+    addYearIndex();
+
     let maxMonthIndex = d3.max(unpack(data, COL_MONTH_INDEX));
+    let maxYearIndex = d3.max(unpack(data, COL_YEAR_INDEX));
 
     function unpack(rows, key) {
         return rows.map(r => r[key]);
@@ -58,7 +51,15 @@ dataProcessor = function (data) {
     }
 
     function getNestedByWellMonthData() {
-        let nested = d3.nest().key(w => "$" + w[COL_WELL_ID] + "_" + w[COL_MONTH_INDEX]).entries(data);
+        return getNestedByWellTimeStepData(COL_MONTH_INDEX);
+    }
+
+    function getNestedByWellYearData() {
+        return getNestedByWellTimeStepData(COL_YEAR_INDEX);
+    }
+
+    function getNestedByWellTimeStepData(timeStepColumn) {
+        let nested = d3.nest().key(w => "$" + w[COL_WELL_ID] + "_" + w[timeStepColumn]).entries(data);
         processWellValue(nested);
         return nested;
     }
@@ -70,23 +71,52 @@ dataProcessor = function (data) {
         });
     }
 
-    function getWellMonthData() {
-        let wellMonthData = new Array(maxMonthIndex + 1);
-        for (let monthIndex = 0; monthIndex <= maxMonthIndex; monthIndex++) {
-            if (!wellMonthData[monthIndex]) {
-                let wellm = data.filter(d => d[COL_MONTH_INDEX] === monthIndex);
-                let nested = d3.nest().key(w => w[COL_WELL_ID]).entries(wellm);
-                processWellValue(nested);
-                wellMonthData[monthIndex] = nested;
-            }
-        }
-        return wellMonthData;
+    function addYearIndex() {
+        data = data.map(d => {
+            d[COL_YEAR_INDEX] = d[COL_MEASUREMENT_DATE].getFullYear() - minDate.getFullYear();
+            return d;
+        });
     }
 
-    let wellMonthData = getWellMonthData();
+    function getWellMonthData() {
+        return getWellTimeStepData(COL_MONTH_INDEX);
+    }
+
+    function getWellYearData() {
+        return getWellTimeStepData(COL_YEAR_INDEX);
+    }
+
+    function getWellTimeStepData(timeStepColumn) {
+        let maxIndex;
+        if (timeStepColumn === COL_MONTH_INDEX) {
+            maxIndex = maxMonthIndex;
+        }
+        if (timeStepColumn === COL_YEAR_INDEX) {
+            maxIndex = maxYearIndex;
+        }
+        let wellTimeStepData = new Array(maxIndex + 1);
+        for (let timeIndex = 0; timeIndex <= maxIndex; timeIndex++) {
+            if (!wellTimeStepData[timeIndex]) {
+                let wellt = data.filter(d => d[timeStepColumn] === timeIndex);
+                let nested = d3.nest().key(w => w[COL_WELL_ID]).entries(wellt);
+                processWellValue(nested);
+                wellTimeStepData[timeIndex] = nested;
+            }
+        }
+        return wellTimeStepData;
+    }
+
+    let wellMonthData = getWellMonthData(COL_MONTH_INDEX);
+    let wellYearData = getWellYearData(COL_YEAR_INDEX);
+    let nestedByWellMonthData = getNestedByWellMonthData();
+    let nestedByWellYearData = getNestedByWellYearData();
 
     function getWellByMonthIndex(monthIndex) {
         return wellMonthData[monthIndex];
+    }
+
+    function getWellByYearIndex(yearIndex) {
+        return wellYearData[yearIndex];
     }
 
     function monthIndexToYear(month) {
@@ -96,12 +126,13 @@ dataProcessor = function (data) {
 
     //Exposing methods and data.
     this.wells = wells;
-    this.getWellByMonthIndex = getWellByMonthIndex;
+    this.getWellByTimeSteps = [getWellByMonthIndex, getWellByYearIndex];
     this.minDate = minDate;
     this.maxDate = maxDate;
-    this.months = maxMonthIndex + 1;
+    this.steps = [maxMonthIndex + 1, maxYearIndex+1];
     this.wellMonthData = wellMonthData;
-    this.getNestedByWellMonthData = getNestedByWellMonthData;
+    this.wellYearData = wellYearData;
+    this.nestedByWellTimeStepData = [nestedByWellMonthData, nestedByWellYearData];
     this.allWellIds = allWellIds;
     this.monthIndexToYear = monthIndexToYear;
 }

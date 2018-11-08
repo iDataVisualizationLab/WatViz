@@ -9,6 +9,9 @@ let utils = {
         months += d2.getMonth();
         return months;
     },
+    yeardiff: function(d1, d2){
+        return d2.getFullYear() - d1.getFullYear();
+    },
     monthFormat(date) {
         let formatter = d3.timeFormat('%Y-%m');
         return formatter(date);

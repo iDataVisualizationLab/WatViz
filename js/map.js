@@ -12,7 +12,7 @@ function plotMaps(dp) {
 
     function draw(event) {
         plotContours(event);
-        plotWells(event);
+        // plotWells(event);
     }
 
     function plotWells(event) {
@@ -86,91 +86,5 @@ function plotMaps(dp) {
             .attr("class", "marker")
             .attr("opacity", 1)
             .attr("stroke-linejoin", "round");
-    }
-
-    function smoothCardinal(ring, values, value) {
-        ring.forEach(function(point) {
-            var x = point[0],
-                y = point[1],
-                xt = x | 0,
-                yt = y | 0,
-                v0,
-                v1 = values[yt * dx + xt];
-            if (x > 0 && x < dx && xt === x) {
-                v0 = values[yt * dx + xt - 1];
-                point[0] = x + (value - v0) / (v1 - v0) - 0.5;
-            }
-            if (y > 0 && y < dy && yt === y) {
-                v0 = values[(yt - 1) * dx + xt];
-                point[1] = y + (value - v0) / (v1 - v0) - 0.5;
-            }
-        });
-    }
-
-    function plotPlotlyContours(event) {
-        let fromLatLngToDivPixel = event.fromLatLngToDivPixel;
-        wells = addDivPixelFromLatLng(wells, fromLatLngToDivPixel);
-        let recbin = new RecBinner(wells, [100, 200]);
-        let grid = recbin.grid;
-        let x = [];
-        let y = [];
-        let z = [];
-        grid.forEach(g => {
-            x.push(g.x);
-            y.push(g.y);
-            z.push(g.value);
-        });
-        var data = [{
-            z: z,
-            x: x,
-            y: y,
-            type: 'contour'
-        }
-        ];
-        Plotly.newPlot('mycontour', data);
-
-        debugger
-
-    }
-
-    function plotVoronoi(event) {
-        let wells = dp.getWellByMonthIndex(0);
-        //let wells = dp.getWellByMonthIndex(1);
-        let layer = event.layer;
-        let fromLatLngToDivPixel = event.fromLatLngToDivPixel;
-        wells = addDivPixelFromLatLng(wells, fromLatLngToDivPixel);
-
-        let xs = d3.extent(wells.map(well => well.x));
-        let ys = d3.extent(wells.map(well => well.y));
-
-        var cell = layer.append("g")
-            .attr("class", "cells")
-            .selectAll("g").data(d3.voronoi()
-                .extent([[xs[0], ys[0]], [xs[1], ys[1]]])
-                .x(function (d) {
-                    return d.x;
-                })
-                .y(function (d) {
-                    return d.y;
-                })
-                .polygons(wells)).enter().append("g")
-            .style("position", "absolute");
-
-        cell.append("circle")
-            .attr("r", 1.43)
-            .attr("cx", function (d) {
-                return d.data.x;
-            })
-            .attr("cy", function (d) {
-                return d.data.y;
-            });
-
-        cell.append("path")
-            .attr("d", function (d) {
-                return "M" + d.join("L") + "Z";
-            })
-            .attr("fill", "none")
-            .attr("stroke", "black")
-            .attr("stroke-width", 1);
     }
 }

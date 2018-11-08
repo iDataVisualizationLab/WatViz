@@ -1,7 +1,19 @@
 let mapWidth = 800,
     mapHeight = 1200,
-    playButtonDivHeight = 200,
-    timeLabelHeight = 20,
+    timeLabelHeight = 50,
     minCellBorder = 0.4,
-    maxCellBorder = 2
-;
+    maxCellBorder = 2,
+    COL_WELL_ID = 'Well_ID',
+    COL_LAT = 'y_lat',
+    COL_LONG = 'x_long',
+    COL_MEASUREMENT_DATE = 'MeasurementDate',
+    COL_MONTH_INDEX = 'monthIndex',
+    COL_YEAR_INDEX = 'yearIndex',
+    COL_SATURATED_THICKNESS = 'SaturatedThickness',
+    COL_WATER_ELEVATION = 'WaterElevation',
+    COL_AVERAGE_OVERTIME = 'averageOverTime',
+    timeStepTypes = [COL_MONTH_INDEX, COL_YEAR_INDEX],
+    timeStepTypeIndex = 1,
+    groupByGroups = ["none", "county"],
+    groupByIndex = 1;
+
