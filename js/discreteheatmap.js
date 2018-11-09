@@ -1,11 +1,47 @@
 let cellWidths = [6, 12],
     cellHeights = [6, 6];
-// rowsPerPage = Math.floor(mapHeight / cellHeight);
 let nestedByWellTimeStepObjects = new Array(timeStepTypes.length);
 
 function discreteHeatMapPlotter(dp, theDivId, plotOptions) {
+    let labelsGroup;
+    //Process the group position.
     let cellWidth = cellWidths[timeStepTypeIndex];
     let cellHeight = cellHeights[timeStepTypeIndex];
+
+    //process row positions
+    let rowPositions= {};
+    let groups;
+    function processRowPositions(){
+        groups = d3.nest().key(d=>d[groupByGroups[groupByIndex]]).key(d=>d[COL_WELL_ID]).entries(dp.data);
+        //Sort the group.
+        groups = groups.sort(groupSortFunctions[groupByIndex][groupSortIndex]);
+        //Sort the subgroup
+        groups.forEach(g=>{
+            g.values = g.values.sort(wellSortFunctions[wellSortIndex]);
+        });
+        //Process group position
+        for (let i = 0; i < groups.length; i++) {
+            if(i==0){
+                groups[i].y = 0;
+            }else{
+                groups[i].y = groups[i-1].y + cellHeight * groups[i-1].values.length;
+            }
+        }
+        //Process the well position.
+        groups.forEach(g=>{
+            g.values.forEach((well, i)=>{
+                well.y = g.y + i*cellHeight;
+            });
+        });
+
+        groups.forEach(g =>{
+            g.values.forEach(well=>{
+                rowPositions[well.key] = well.y;
+            })
+        });
+    }
+
+    processRowPositions();
 
     let steps = dp.steps[timeStepTypeIndex];
     let allWellIds = dp.allWellIds;
@@ -24,84 +60,109 @@ function discreteHeatMapPlotter(dp, theDivId, plotOptions) {
     }
     let nestedByWellTimeStepObject = nestedByWellTimeStepObjects[timeStepTypeIndex];
 
-
     let width = steps * cellWidth;
-
+    let rows = {};
+    let svg = d3.select("#" + theDivId).append("svg").attr("width", width + groupLabelWidth).attr("height", allWellIds.length * cellHeight).attr("overflow", "scroll");
     function plot() {
         generateTimeLabels(timeStepTypeIndex);
-        let svg = d3.select("#" + theDivId).append("svg").attr("width", width).attr("height", allWellIds.length * cellHeight).attr("overflow", "scroll");
+        generateGroupLabels();
+        generateRows();
+        setRowPositions();
+
+    }
+    function generateRows(){
         let mainGroup = svg.append("g").attr("transform", `translate(0, 0)`);
-        let locationMarker;
         for (let row = 0; row < allWellIds.length; row++) {
             let wellId = allWellIds[row];
-            let rowGroup = mainGroup.append("g").attr("transform", `translate(${0}, ${row * cellHeight})`);
-            for (let step = 0; step < steps; step++) {
-                let key = "$" + wellId + "_" + step;
-                let d = nestedByWellTimeStepObject[key];
-                if (d) {
-                    let strokeWidth = borderScale(d.values.length);
-                    rowGroup.append("g")
-                        .attr("transform", `translate(${step * cellWidth}, 0)`)
-                        .selectAll("rect")
-                        .data([d]).enter()
-                        .append("rect")
-                        .attr("stroke-width", strokeWidth)
-                        .attr("stroke", "black")
-                        .attr("width", (cellWidth - strokeWidth / 2))
-                        .attr("height", (cellHeight - strokeWidth / 2))
-                        .attr("fill", d => color.waterLevel(d[COL_AVERAGE_OVERTIME]))
-                        .on("mouseover", d => {
-                            showTip(d, formatData);
-                            let myLatLng = {lat: d[COL_LAT], lng: d[COL_LONG]};
-                            locationMarker = new google.maps.Marker({
-                                position: myLatLng,
-                                map: gm.map,
-                                title: d.key,
-                                zIndex: 1000
+            if(!rows[wellId]){
+                let rowGroup = mainGroup.append("g").attr("transform", `translate(${0}, ${row * cellHeight})`);
+                for (let step = 0; step < steps; step++) {
+                    let key = "$" + wellId + "_" + step;
+                    let d = nestedByWellTimeStepObject[key];
+                    if (d) {
+                        let strokeWidth = borderScale(d.values.length);
+                        let locationMarker;
+                        rowGroup.append("g").attr("transform", `translate(${step*cellWidth}, 0)`)
+                            .selectAll("rect")
+                            .data([d]).enter()
+                            .append("rect")
+                            .attr("stroke-width", strokeWidth)
+                            .attr("stroke", "black")
+                            .attr("width", (cellWidth - strokeWidth / 2))
+                            .attr("height", (cellHeight - strokeWidth / 2))
+                            .attr("fill", d => color.waterLevel(d[COL_AVERAGE_OVERTIME]))
+                            .on("mouseover", d => {
+                                showTip(d, formatData);
+                                let myLatLng = {lat: d[COL_LAT], lng: d[COL_LONG]};
+                                locationMarker = new google.maps.Marker({
+                                    position: myLatLng,
+                                    map: gm.map,
+                                    title: d.key,
+                                    zIndex: 1000
+                                });
+                            })
+                            .on("mouseout", () => {
+                                hidetip();
+                                locationMarker.setMap(null);
                             });
-                        })
-                        .on("mouseout", () => {
-                            hidetip();
-                            locationMarker.setMap(null);
-                        });
+                    }
                 }
-
+                rows[wellId] = rowGroup;
             }
         }
-
-        function generateTimeLabels(timeStepTypeIndex) {
-            let timeSvg = d3.select("#mapHeaderSVG").attr("overflow", "visible");
-            timeSvg.attr("width", width);
-            timeSvg.attr("height", timeLabelHeight);
-            let labels = [];
-            if (timeStepTypeIndex === 0) {//Month
-                let firstYear = dp.monthIndexToYear(0);
-                for (let month = 0; month < steps; month++) {
-                    let year = dp.monthIndexToYear(month);
+    }
+    function setRowPositions(){
+        d3.keys(rows).forEach(wellId =>{
+            rows[wellId].attr("transform", `translate(0, ${rowPositions[wellId]})`)
+        });
+    }
+    function generateTimeLabels(timeStepTypeIndex) {
+        let timeSvg = d3.select("#mapHeaderSVG").attr("overflow", "visible");
+        timeSvg.attr("width", width);
+        timeSvg.attr("height", timeLabelHeight);
+        let labels = [];
+        if (timeStepTypeIndex === 0) {//Month
+            let firstYear = dp.monthIndexToYear(0);
+            for (let month = 0; month < steps; month++) {
+                let year = dp.monthIndexToYear(month);
+                labels.push({
+                    text: year,
+                    x: ((year - firstYear) * 12 * cellWidth),
+                });
+            }
+        }
+        if (timeStepTypeIndex === 1) {//Year
+            let firstYear = dp.minDate.getFullYear();
+            for (let year = firstYear; year < firstYear+steps; year++) {
+                if ((year - firstYear) % 5 === 0) {
                     labels.push({
                         text: year,
-                        x: ((year - firstYear) * 12 * cellWidth),
+                        x: ((year - firstYear) * cellWidth),
                     });
                 }
             }
-            if (timeStepTypeIndex === 1) {//Year
-                let firstYear = dp.minDate.getFullYear();
-                for (let year = firstYear; year < firstYear+steps; year++) {
-                    if ((year - firstYear) % 5 === 0) {
-                        labels.push({
-                            text: year,
-                            x: ((year - firstYear) * cellWidth),
-                        });
-                    }
-                }
-            }
-            timeSvg.selectAll(".label").data(labels).enter().append("text").text(d=>d.text).attr("transform", d=> "translate(" + (d.x) + ", " + (40) + ")")
-                .attr("text-anchor", "start").attr("alignment-baseline", "middle").attr("style", "font: 10px sans-serif");
-            //Add the separator line
-            timeSvg.append("g").attr("transform", `translate(0, ${timeLabelHeight})`).append("line").attr("x1", 0).attr("x2", width).attr("y1", 0).attr("y2", 0).attr("stroke", "black").attr("stroke-width", 1);
         }
+        timeSvg.selectAll(".label").data(labels).enter().append("text").text(d=>d.text).attr("transform", d=> "translate(" + (d.x) + ", " + (40) + ")")
+            .attr("text-anchor", "start").attr("alignment-baseline", "middle").attr("style", "font-size: 10px;");
+        //Add the separator line
+        timeSvg.append("g").attr("transform", `translate(0, ${timeLabelHeight})`).append("line").attr("x1", 0).attr("x2", width+groupLabelWidth).attr("y1", 0).attr("y2", 0).attr("stroke", "black").attr("stroke-width", 1);
     }
 
+    function generateGroupLabels(){
+        let cellContentWidth = steps*cellWidth;
+        // let cellContentHeight = allWellIds.length*cellHeight;
+        if(!labelsGroup){
+            labelsGroup = svg.append("g").attr("class", "labelsGroup").attr("transform", `translate(${(cellContentWidth)}, 0)`);
+            // labelsGroup.append("rect").attr("x1", 0).attr("y1", 0).attr("width", groupLabelWidth).attr("height", cellContentHeight).attr("fill", "#dcdcdc").attr("stroke", "none");
+        }
+        let lgs = labelsGroup.selectAll(".groupLabel").data(groups);
+        let enter = lgs.enter();
+        let g = enter.append("g").attr("transform", d=>`translate(0, ${d.y})`);
+        g.append("text").text(d=>d.key).attr("alignment-baseline", "hanging").attr("transform", "translate(5, 5)");
+        g.append("line").attr("class", "groupSeparator").attr("x1", -(cellContentWidth)).attr("x2", groupLabelWidth).attr("y1", -1).attr("y2", -1).attr("stroke", "#dcdcdc").attr("stroke-width", 1);
+
+        lgs.exit().remove();
+    }
     //Exposing necessary components
     this.plot = plot;
     return this;

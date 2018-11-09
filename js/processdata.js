@@ -17,7 +17,7 @@ dataProcessor = function (data) {
     });
 
     let wells = getAllWells(data);
-    debugger;
+
     //Sort the wells by number of samples.
     wells = wells.sort((a, b) => b.values.length - a.values.length);
     let allWellIds = unpack(wells, "key");
@@ -135,4 +135,5 @@ dataProcessor = function (data) {
     this.nestedByWellTimeStepData = [nestedByWellMonthData, nestedByWellYearData];
     this.allWellIds = allWellIds;
     this.monthIndexToYear = monthIndexToYear;
+    this.data = data;
 }

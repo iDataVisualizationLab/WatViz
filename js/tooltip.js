@@ -22,7 +22,8 @@ function formatData(d) {
         wellId = wellId.replace('$', '').split('_')[0];
     }
     let position = `Long: ${d[COL_LONG]}<br/>Lat: ${d[COL_LAT]}`;
-    let htmlStr = `<b>Well id: ${wellId}</b><br/>${position}`;
+    let county = `County: ${d.values[0][COL_COUNTY]}`;
+    let htmlStr = `<b>Well id: ${wellId}</b><br/>${position}<br/>${county}`;
     let table = "<table>";
     let values = d.values;
     values.forEach(value=>{
