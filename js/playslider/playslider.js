@@ -137,9 +137,8 @@ function createPlaySlider(startDate, endDate, divId, divWidth, updatePlot, inter
             }
         });
 
-    function step() {
-        update(x.invert(currentValue));
-        currentValue = currentValue + (targetValue / steps);
+    function setPosition(position) {
+        currentValue = position;
         if (currentValue >= targetValue) {
             //Due to the division precision of JS (for the step) + convertion back to date => sometimes the last year is not called => so in that case we just update to the last one for sure.
             update(endDate);
@@ -148,6 +147,17 @@ function createPlaySlider(startDate, endDate, divId, divWidth, updatePlot, inter
             clearInterval(timer);
             playButton.text(play);
         }
+        update(x.invert(currentValue));
+    }
+
+    function setTime(time){
+        currentValue = x(time);
+        setPosition(currentValue);
+    }
+
+    function step() {
+        currentValue = currentValue + (targetValue / steps);
+        setPosition(currentValue);
     }
 
     function update(h) {
@@ -164,4 +174,9 @@ function createPlaySlider(startDate, endDate, divId, divWidth, updatePlot, inter
             .text(formatTimeStep(h));
         updatePlot(h);
     }
+
+    this.setPosition = setPosition;
+    this.setTime = setTime;
+    return this;
+
 }

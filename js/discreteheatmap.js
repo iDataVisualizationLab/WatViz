@@ -107,6 +107,8 @@ function discreteHeatMapPlotter(dp, theDivId, plotOptions) {
                                     title: d.key,
                                     zIndex: 1000
                                 });
+                                //Slide the play slider to corresponding location.
+                                playSlider.setTime(d.values[0][COL_MEASUREMENT_DATE]);
                             })
                             .on("mouseout", () => {
                                 hidetip();
@@ -185,7 +187,7 @@ function changeTimeAggregation(){
     timeStepTypeIndex = document.getElementById("aggregationSelect").selectedIndex;
     wells = dp.getWellByTimeSteps[timeStepTypeIndex](0);
     plotMaps(dp);
-    createPlaySlider(dp.minDate, dp.maxDate, "playButtonDiv", mapWidth, updatePlot, 500);
+    playSlider = createPlaySlider(dp.minDate, dp.maxDate, "playButtonDiv", mapWidth, updatePlot, 500);
     //Plot the discrete heatmap
     heatmapPlotter = discreteHeatMapPlotter(dp, "heatmap", {});
     heatmapPlotter.plot();
