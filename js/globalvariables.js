@@ -31,7 +31,7 @@ let mapWidth = 800,
     groupSortIndex = 0,
     wellSortIndex = 1,
     rowPositionTransitionDuration=500,
-    contourOpacity = 0.5;
+    contourOpacity = 0.4;
 
 function sortCountiesAlphabetically(a, b){
     return a.key.localeCompare(b.key);
