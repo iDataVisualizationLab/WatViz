@@ -10,6 +10,7 @@
 let timer;
 
 function createPlaySlider(startDate, endDate, divId, divWidth, updatePlot, interval) {
+    d3.select("#"+divId).selectAll("*").remove();
     let handlePath = "M-5.5,-5.5v10l6,5.5l6,-5.5v-10z";
     let divHeight = 50;
     let sliderMargin = {left: 40, top: 0, buttom: 0, right: 10};

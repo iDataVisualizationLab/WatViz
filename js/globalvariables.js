@@ -19,16 +19,19 @@ let mapWidth = 800,
     timeStepOptions = ["Month", "Year"],
     timeStepTypeIndex = 1,
 
-    groupByGroups = [COL_WELL_ID, COL_COUNTY],
-    groupOptions = ["None", "County"],
-    countySortOptions = ["Alphabetical", "Number of wells"],
+    groupByGroups = [COL_COUNTY],
+    groupOptions = ["County"],
+    groupSortOptions = ["Alphabetical", "Number of wells"],
+
     wellSortOptions = ["Alphabetical", "Number of samples"],
     wellSortFunctions = [sortWellsAlphabetically, sortWellsByNumberOfSamples],
     countySortFunctions = [sortCountiesAlphabetically, sortCountiesByNumberOfWells],
-    groupSortFunctions = [wellSortFunctions, countySortFunctions],
-    groupByIndex = 1,
+    groupSortFunctions = [countySortFunctions],
+    groupByIndex = 0,
     groupSortIndex = 0,
-    wellSortIndex = 1;
+    wellSortIndex = 1,
+    rowPositionTransitionDuration=500,
+    contourOpacity = 0.5;
 
 function sortCountiesAlphabetically(a, b){
     return a.key.localeCompare(b.key);

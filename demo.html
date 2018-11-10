@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>WatViz</title>
-    <script src="lib/plotly-latest.min.js"></script>
+    <script src="lib/jquery.js"></script>
+
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
     <style>
         @import "css/globalvariables.css";
@@ -12,10 +13,35 @@
         @import "css/tooltip.css";
         @import "js/playslider/playslider.css";
         @import "css/discreteheatmap.css";
+        @import "css/floatingbutton.css";
+        @import "css/floatingBox.css";
     </style>
 </head>
 <body>
+<div id="controlPanelContainer" class="floatingBox">
+    <div id="controlPanelHeader" class="floatingBoxHeader"><span class="floatingBoxButton" onclick="closeFloatingBox('btnControlPanel', 'controlPanelContainer')">[-]</span> Control panel
+    </div>
+    <div id="controlPanel" class="floatingBoxContent">
+        Aggregate time:
+        <select onchange="changeTimeAggregation()" id="aggregationSelect">
+        </select>
+        Group by
+        <select onchange="changeGroup()" id="groupSelect"></select>
+        <br/>
+        Group order
+        <select onchange="changeGroupOrder()" id="groupOrderSelect">
+        </select>
+        Well order
+        <select onchange="changeWellOrder()" id="wellOrderSelect">
+        </select>
+        <div>
+            Color scale: <img src="images/colorScale.png" width="200" height="20"/>
+        </div>
+    </div>
+</div>
+
 <div id="loadingSpinner"></div>
+
 <div class="left">
     <div id="map"></div>
     <div id="playButtonDiv">
@@ -28,6 +54,9 @@
     <div id="heatmap"></div>
 </div>
 
+<!--section for the buttons-->
+
+<a id="btnControlPanel" class="tab tab_right" style="opacity: 0.0;" onclick="openFloatingBox('btnControlPanel', 'controlPanelContainer')" ><img src="images/tabicon.gif" alt="">Control panel<span class="screen_reader"> Will open a new window</span></a>
 
 <!--Libraries-->
 <script src="lib/spin.min.js"></script>
@@ -50,5 +79,8 @@
 <script src="js/playslider/playslider.js"></script>
 <script src="js/discreteheatmap.js"></script>
 <script src="js/main.js"></script>
+
+<script src="js/floatingBox.js"></script>
+<script src="js/controlPanel.js"></script>
 </body>
 </html>

@@ -84,7 +84,7 @@ function plotMaps(dp) {
             .attr("stroke", "#000")
             .attr("stroke-width", 0.3)
             .attr("class", "marker")
-            .attr("opacity", 1)
+            .attr("opacity", contourOpacity)
             .attr("stroke-linejoin", "round");
     }
 }
