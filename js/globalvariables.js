@@ -15,9 +15,13 @@ let dp, //store data processor
     COL_SATURATED_THICKNESS = 'SaturatedThickness',
     COL_WATER_ELEVATION = 'WaterElevation',
     COL_COUNTY = "County",
-    COL_AVERAGE_OVERTIME = 'averageOverTime',
+    COL_AVERAGE_OVER_TIME_STEP = 'averageOverTimeStep',
+    COL_AVERAGE_DIFFERENCE_OVER_TIME_STEP = "averageDifferenceOverTimeStep",
     COL_STANDARD_DEVIATION = 'standardDeviation',
     COL_STANDARD_DEVIATION_GROUP = 'standardDeviationGroup',
+    COL_OVERALL_AVERAGE = 'overallAverage',
+    COL_OVERALL_AVERAGE_GROUP = 'overallAverageGroup',
+
     COL_SUDDEN_INCREMENT = "suddenIncrement",
     COL_SUDDEN_DECREMENT = "suddenDecrement",
     COL_SUDDEN_INCREMENT_GROUP = "suddenIncrementGroup",
@@ -28,19 +32,28 @@ let dp, //store data processor
     COL_SUDDEN_DECREMENT_D1 = "suddenDecrementD1",
     COL_SUDDEN_DECREMENT_D2 = "suddenDecrementD2",
 
+
+
     suddenChangeTypes = [COL_SUDDEN_INCREMENT, COL_SUDDEN_DECREMENT],
     suddenChangeTypesDates = [[COL_SUDDEN_INCREMENT_D1, COL_SUDDEN_INCREMENT_D2], [COL_SUDDEN_DECREMENT_D1, COL_SUDDEN_DECREMENT_D2]],
+    cellStrokeNormalColor = "black",
+    cellNormalOpacity = 1.0,
+    cellFadeOpacity = 0.2,
 
     timeStepTypes = [COL_MONTH_INDEX, COL_YEAR_INDEX],
     timeStepOptions = ["Month", "Year"],
     timeStepTypeIndex = 1,
 
-    groupByGroups = [groupByCounty, groupBySuddenIncrement, groupBySuddenDecrement, groupByStandardDeviation],
-    groupOptions = ["County", "Sudden increment", "Sudden decrement", "Standard deviation"],
-    groupSortOptions = [["Alphabetical", "Number of wells"], ["Ascending", "Descending"], ["Ascending", "Descending"], ["Ascending", "Descending"]],
+    analyzeValues = [COL_AVERAGE_OVER_TIME_STEP, COL_AVERAGE_DIFFERENCE_OVER_TIME_STEP],
+    analyzeValueOptions = ["Average over time step", "Average difference over time step"],
+    analyzeValueIndex = 0,
+
+    groupByGroups = [groupByCounty, groupBySuddenIncrement, groupBySuddenDecrement, groupByStandardDeviation, groupByOverallAverage],
+    groupOptions = ["County", "Sudden increment", "Sudden decrement", "Standard deviation", "Overall average"],
+    groupSortOptions = [["Alphabetical", "Number of wells"], ["Ascending", "Descending"], ["Ascending", "Descending"], ["Ascending", "Descending"], ["Ascending", "Descending"]],
     countySortFunctions = [sortCountiesAlphabetically, sortCountiesByNumberOfWells],
     statisticSortFunctions = [ascendingOrder, descendingOrder],
-    groupSortFunctions = [countySortFunctions, statisticSortFunctions, statisticSortFunctions, statisticSortFunctions],
+    groupSortFunctions = [countySortFunctions, statisticSortFunctions, statisticSortFunctions, statisticSortFunctions, statisticSortFunctions],
     wellSortOptions = ["Alphabetical", "Number of samples", "Sudden increment", "Sudden decrement", "Standard deviation"],
     wellSortFunctions = [sortWellsAlphabetically, sortWellsByNumberOfSamples, sortWellsBySuddenIncrement, sortWellsBySuddenDecrement, sortWellsByStandardDeviation],
     groupByIndex = 0,
@@ -50,7 +63,8 @@ let dp, //store data processor
     contourOpacity = 0.4,
     wells,
     heatmapPlotter,
-    playSlider;
+    playSlider,
+    plotWellsOption=false;
 
 
 function ascendingOrder(a, b){
@@ -71,6 +85,9 @@ function groupBySuddenDecrement(well){
 }
 function groupByStandardDeviation(well){
     return dp.wellStatistics[well[COL_WELL_ID]][COL_STANDARD_DEVIATION_GROUP];
+}
+function groupByOverallAverage(well){
+    return dp.wellStatistics[well[COL_WELL_ID]][COL_OVERALL_AVERAGE_GROUP];
 }
 function sortCountiesAlphabetically(a, b){
     return a.key.localeCompare(b.key);

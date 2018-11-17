@@ -15,11 +15,10 @@ dataProcessor = function (data) {
             return true;
         }
     });
+    let wellStatistics = processWellStatistics(data);
 
     let wells = getAllWells(data);
-    let wellStatistics = processWellStatistics(wells);
 
-    debugger
     //Sort the wells by number of samples.
     wells = wells.sort((a, b) => b.values.length - a.values.length);
     let allWellIds = unpack(wells, "key");
@@ -40,8 +39,6 @@ dataProcessor = function (data) {
     function getAllWells(rows) {
         let nested = d3.nest().key(d => d[COL_WELL_ID]).entries(rows);
         processAverageValue(nested);
-        processStandardDeviation(nested);
-        processSuddenChange(nested);
         return nested;
     }
 
@@ -95,7 +92,12 @@ dataProcessor = function (data) {
         //Add sudden increment, group
 
     }
-    function processWellStatistics(wells){
+    function processWellStatistics(rows){
+        let wells = d3.nest().key(d => d[COL_WELL_ID]).entries(rows);
+        processStandardDeviationAndMean(wells);
+        processSuddenChange(wells);
+
+
         let result = {};
         //Process the sudden decrement
         wells = wells.sort((a, b) => a[COL_SUDDEN_DECREMENT] - b[COL_SUDDEN_DECREMENT]);
@@ -122,6 +124,13 @@ dataProcessor = function (data) {
             result[well.key][COL_STANDARD_DEVIATION] = well[COL_STANDARD_DEVIATION];
             result[well.key][COL_STANDARD_DEVIATION_GROUP] = (i<topRows) ? 1: 2;
         });
+        //Process the overall average
+        wells = wells.sort((a, b) => b[COL_OVERALL_AVERAGE] - a[COL_OVERALL_AVERAGE]);
+        wells.forEach((well, i)=>{
+            if(!result[well.key]) result[well.key] = {};
+            result[well.key][COL_OVERALL_AVERAGE] = well[COL_OVERALL_AVERAGE];
+            result[well.key][COL_OVERALL_AVERAGE_GROUP] = (i<topRows) ? 1: 2;
+        });
         return result;
     }
     //We separate average out from standard deviation since for standard deviation (we measures for all wells in all time steps) but for average, it average over time step only (month, year)
@@ -129,19 +138,25 @@ dataProcessor = function (data) {
         wells.forEach(well => {
             let measures = well.values;
             let thicknesses = unpack(measures, COL_SATURATED_THICKNESS);
-            well[COL_AVERAGE_OVERTIME] = d3.mean(thicknesses);
+            well[COL_AVERAGE_OVER_TIME_STEP] = d3.mean(thicknesses);
+            well[COL_AVERAGE_DIFFERENCE_OVER_TIME_STEP] = well[COL_AVERAGE_OVER_TIME_STEP] - wellStatistics[well.key];
             well[COL_LAT] = d3.mean(unpack(measures, COL_LAT));
             well[COL_LONG] = d3.mean(unpack(measures, COL_LONG));
         });
     }
-    function processStandardDeviation(wells) {
+    function processStandardDeviationAndMean(wells) {
         wells.forEach(well => {
             let measures = well.values;
             let thicknesses = unpack(measures, COL_SATURATED_THICKNESS);
             well[COL_STANDARD_DEVIATION] = d3.deviation(thicknesses);
+            well[COL_OVERALL_AVERAGE] = d3.mean(thicknesses);
             well[COL_LAT] = d3.mean(unpack(measures, COL_LAT));
             well[COL_LONG] = d3.mean(unpack(measures, COL_LONG));
         });
+    }
+
+    function processMinMax(){
+        getNestedByWellMonthData();
     }
 
     function getNestedByWellMonthData() {
@@ -204,6 +219,8 @@ dataProcessor = function (data) {
     let wellYearData = getWellYearData(COL_YEAR_INDEX);
     let nestedByWellMonthData = getNestedByWellMonthData();
     let nestedByWellYearData = getNestedByWellYearData();
+
+    debugger
 
     function getWellByMonthIndex(monthIndex) {
         return wellMonthData[monthIndex];

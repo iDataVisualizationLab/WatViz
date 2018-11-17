@@ -27,6 +27,10 @@
         </select>
         Group by
         <select onchange="changeGroup()" id="groupSelect"></select>
+
+        <label for="changeFocus">Focus</label>
+        <input type="checkbox" id="changeFocus" onchange="focusOptionChange()" disabled="true"/>
+
         <br/>
         Group order
         <select onchange="changeGroupOrder()" id="groupOrderSelect">
@@ -34,6 +38,8 @@
         Well order
         <select onchange="changeWellOrder()" id="wellOrderSelect">
         </select>
+        <label for="changePlotWells">Plot wells</label>
+        <input type="checkbox" id="changePlotWells" onchange="plotWellsOptionChange()"/>
     </div>
 </div>
 

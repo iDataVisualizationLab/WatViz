@@ -3,7 +3,7 @@ let cellWidths = [6, 12],
 let nestedByWellTimeStepObjects = new Array(timeStepTypes.length);
 
 function discreteHeatMapPlotter(dp, theDivId, plotOptions) {
-    d3.select("#"+theDivId).selectAll("*").remove();
+    d3.select("#" + theDivId).selectAll("*").remove();
     let labelsGroup;
     //Process the group position.
     let cellWidth = cellWidths[timeStepTypeIndex];
@@ -12,32 +12,33 @@ function discreteHeatMapPlotter(dp, theDivId, plotOptions) {
     //process row positions
     let rowPositions;
     let groups;
-    function processRowPositions(){
+
+    function processRowPositions() {
         rowPositions = {};
-        groups = d3.nest().key(d=>groupByGroups[groupByIndex](d)).key(d=>d[COL_WELL_ID]).entries(dp.data);
+        groups = d3.nest().key(d => groupByGroups[groupByIndex](d)).key(d => d[COL_WELL_ID]).entries(dp.data);
         //Sort the group.
         groups = groups.sort(groupSortFunctions[groupByIndex][groupSortIndex]);
         //Sort the subgroup
-        groups.forEach(g=>{
+        groups.forEach(g => {
             g.values = g.values.sort(wellSortFunctions[wellSortIndex]);
         });
         //Process group position
         for (let i = 0; i < groups.length; i++) {
-            if(i==0){
+            if (i == 0) {
                 groups[i].y = 0;
-            }else{
-                groups[i].y = groups[i-1].y + cellHeight * groups[i-1].values.length;
+            } else {
+                groups[i].y = groups[i - 1].y + cellHeight * groups[i - 1].values.length;
             }
         }
         //Process the well position.
-        groups.forEach(g=>{
-            g.values.forEach((well, i)=>{
-                well.y = g.y + i*cellHeight;
+        groups.forEach(g => {
+            g.values.forEach((well, i) => {
+                well.y = g.y + i * cellHeight;
             });
         });
 
-        groups.forEach(g =>{
-            g.values.forEach(well=>{
+        groups.forEach(g => {
+            g.values.forEach(well => {
                 rowPositions[well.key] = well.y;
             })
         });
@@ -66,39 +67,42 @@ function discreteHeatMapPlotter(dp, theDivId, plotOptions) {
     let width = steps * cellWidth;
     let rows = {};
     let svg = d3.select("#" + theDivId).append("svg").attr("width", width + groupLabelWidth).attr("height", allWellIds.length * cellHeight).attr("overflow", "scroll");
+
     function plot() {
         generateTimeLabels(timeStepTypeIndex);
         generateGroupLabels();
         generateRows();
         setRowPositions();
     }
-    function updatePositions(){
+
+    function updatePositions() {
         processRowPositions();
         generateGroupLabels();
         setRowPositions();
     }
-    function generateRows(){
+
+    function generateRows() {
         let mainGroup = svg.append("g").attr("transform", `translate(0, 0)`);
         for (let row = 0; row < allWellIds.length; row++) {
             let wellId = allWellIds[row];
-            if(!rows[wellId]){
-                let rowGroup = mainGroup.append("g").attr("transform", `translate(${0}, ${row * cellHeight})`).attr("id", wellId);
+            if (!rows[wellId]) {
+                let rowGroup = mainGroup.append("g").attr("transform", `translate(${0}, ${row * cellHeight})`).attr("id", `well${wellId}`);
                 for (let step = 0; step < steps; step++) {
                     let key = "$" + wellId + "_" + step;
                     let d = nestedByWellTimeStepObject[key];
                     if (d) {
                         let strokeWidth = borderScale(d.values.length);
                         let locationMarker;
-                        rowGroup.append("g").attr("transform", `translate(${step*cellWidth}, 0)`)
+                        rowGroup.append("g").attr("transform", `translate(${step * cellWidth}, 0)`)
                             .selectAll("rect")
                             .data([d]).enter()
                             .append("rect")
-                            .attr("rect", `cell${step}`)
+                            .attr("class", `timeStep${step}`)
                             .attr("stroke-width", strokeWidth)
-                            .attr("stroke", "black")
+                            .attr("stroke", cellStrokeNormalColor)
                             .attr("width", (cellWidth - strokeWidth / 2))
                             .attr("height", (cellHeight - strokeWidth / 2))
-                            .attr("fill", d => color.waterLevel(d[COL_AVERAGE_OVERTIME]))
+                            .attr("fill", d => color.waterLevel(d[COL_AVERAGE_OVER_TIME_STEP]))
                             .on("mouseover", d => {
                                 showTip(d, formatData);
                                 let myLatLng = {lat: d[COL_LAT], lng: d[COL_LONG]};
@@ -121,11 +125,13 @@ function discreteHeatMapPlotter(dp, theDivId, plotOptions) {
             }
         }
     }
-    function setRowPositions(){
-        d3.keys(rows).forEach(wellId =>{
+
+    function setRowPositions() {
+        d3.keys(rows).forEach(wellId => {
             rows[wellId].transition().duration(rowPositionTransitionDuration).attr("transform", `translate(0, ${rowPositions[wellId]})`)
         });
     }
+
     function generateTimeLabels(timeStepTypeIndex) {
         let timeSvg = d3.select("#mapHeaderSVG").attr("overflow", "visible");
         timeSvg.selectAll("*").remove();
@@ -144,7 +150,7 @@ function discreteHeatMapPlotter(dp, theDivId, plotOptions) {
         }
         if (timeStepTypeIndex === 1) {//Year
             let firstYear = dp.minDate.getFullYear();
-            for (let year = firstYear; year < firstYear+steps; year++) {
+            for (let year = firstYear; year < firstYear + steps; year++) {
                 if ((year - firstYear) % 5 === 0) {
                     labels.push({
                         text: year,
@@ -153,45 +159,30 @@ function discreteHeatMapPlotter(dp, theDivId, plotOptions) {
                 }
             }
         }
-        timeSvg.selectAll(".label").data(labels).enter().append("text").text(d=>d.text).attr("transform", d=> "translate(" + (d.x) + ", " + (40) + ")")
+        timeSvg.selectAll(".label").data(labels).enter().append("text").text(d => d.text).attr("transform", d => "translate(" + (d.x) + ", " + (40) + ")")
             .attr("text-anchor", "start").attr("alignment-baseline", "middle").attr("style", "font-size: 10px;");
         //Add the separator line
-        timeSvg.append("g").attr("transform", `translate(0, ${timeLabelHeight})`).append("line").attr("x1", 0).attr("x2", width+groupLabelWidth).attr("y1", 0).attr("y2", 0).attr("stroke", "black").attr("stroke-width", 1);
+        timeSvg.append("g").attr("transform", `translate(0, ${timeLabelHeight})`).append("line").attr("x1", 0).attr("x2", width + groupLabelWidth).attr("y1", 0).attr("y2", 0).attr("stroke", "black").attr("stroke-width", 1);
     }
 
-    function generateGroupLabels(){
-        if(labelsGroup){
+    function generateGroupLabels() {
+        if (labelsGroup) {
             labelsGroup.selectAll("*").remove();
         }
-        let cellContentWidth = steps*cellWidth;
+        let cellContentWidth = steps * cellWidth;
         // let cellContentHeight = allWellIds.length*cellHeight;
-        if(!labelsGroup){
+        if (!labelsGroup) {
             labelsGroup = svg.append("g").attr("class", "labelsGroup").attr("transform", `translate(${(cellContentWidth)}, 0)`);
         }
         let lgs = labelsGroup.selectAll(".groupLabel").data(groups);
         let enter = lgs.enter();
-        let g = enter.append("g").attr("transform", d=>`translate(0, ${d.y})`);
-        g.append("text").text(d=>d.key).attr("alignment-baseline", "hanging").attr("transform", "translate(5, 5)");
+        let g = enter.append("g").attr("transform", d => `translate(0, ${d.y})`);
+        g.append("text").text(d => d.key).attr("alignment-baseline", "hanging").attr("transform", "translate(5, 5)");
         g.append("line").attr("class", "groupSeparator").attr("x1", -(cellContentWidth)).attr("x2", groupLabelWidth).attr("y1", -1).attr("y2", -1).attr("stroke", "#dcdcdc").attr("stroke-width", 1);
 
         lgs.exit().remove();
     }
 
-    function processBlinkingCells(){
-
-    }
-
-    function processBlinkingSuddenChange(typeColIndex){
-        d3.keys(dp.wellStatistics).forEach(wellId =>{
-            if(dp.wellStatistics[wellId][suddenChangeTypes[typeColIndex]] > 0){
-                let d0 = dp.wellStatistics[wellId][suddenChangeTypesDates[0]];
-                let d1 = dp.wellStatistics[wellId][suddenChangeTypesDates[1]];
-                //Select the well
-                //Select the time step
-
-            }
-        });
-    }
     //Exposing necessary components
     this.plot = plot;
     this.updatePositions = updatePositions;
@@ -199,7 +190,7 @@ function discreteHeatMapPlotter(dp, theDivId, plotOptions) {
 }
 
 /*Control options*/
-function changeTimeAggregation(){
+function changeTimeAggregation() {
     spinner.spin(target);
     timeStepTypeIndex = document.getElementById("aggregationSelect").selectedIndex;
     wells = dp.getWellByTimeSteps[timeStepTypeIndex](0);
@@ -210,7 +201,8 @@ function changeTimeAggregation(){
     heatmapPlotter.plot();
     spinner.stop();
 }
-function changeGroupOrder(){
+
+function changeGroupOrder() {
     groupSortIndex = document.getElementById("groupOrderSelect").selectedIndex;
     //Need to change the group sort order options
     setOptions(groupSortOptions[groupByIndex], "groupOrderSelect", groupSortIndex);
@@ -218,10 +210,68 @@ function changeGroupOrder(){
     wellSortIndex = document.getElementById("wellOrderSelect").selectedIndex;
     heatmapPlotter.updatePositions();
 }
-function changeGroup(){
+
+function changeGroup() {
     groupByIndex = document.getElementById("groupSelect").selectedIndex;
+    //TODO: Check by text to avoid order changes
+    if (groupByIndex === 1 || groupByIndex === 2) {//for sudden changes
+        //enable focus options
+        document.getElementById("changeFocus").disabled = false;
+    } else {
+        document.getElementById("changeFocus").checked = false;
+        document.getElementById("changeFocus").disabled = false;
+    }
     changeGroupOrder();
 }
-function changeWellOrder(){
+
+function changeWellOrder() {
     changeGroupOrder();
+}
+
+function processFocusCells() {
+    let typeColIndex = groupByIndex - 1;//first option is for the county group
+    processFocusSuddenChange(typeColIndex);
+
+}
+
+function focusOptionChange() {
+    if (document.getElementById("changeFocus").checked == true) {
+        processFocusCells();
+    } else {
+        d3.selectAll("rect").attr("opacity", cellNormalOpacity);
+    }
+}
+
+let focusCells;
+
+function processFocusSuddenChange(typeColIndex) {
+    //Clear previous focus cells
+    d3.selectAll("rect").attr("opacity", cellFadeOpacity);
+
+    if (typeColIndex < suddenChangeTypes.length) {
+        //Select all cells and set to faded
+        focusCells = [];
+        d3.keys(dp.wellStatistics).forEach(wellId => {
+            if (dp.wellStatistics[wellId][suddenChangeTypes[typeColIndex]] != 0) {
+                let d0 = dp.wellStatistics[wellId][suddenChangeTypesDates[typeColIndex][0]];
+                let d1 = dp.wellStatistics[wellId][suddenChangeTypesDates[typeColIndex][1]];
+                //Select the well group
+                let step0 = dp.dateToTimeIndexFunctions[timeStepTypeIndex](d0);
+                let step1 = dp.dateToTimeIndexFunctions[timeStepTypeIndex](d1);
+                let blinking0 = d3.select(`#well${wellId}`).select(".timeStep" + step0);
+                focusCells.push(blinking0);
+                if (step1 != step0) {
+                    let blinking1 = d3.select(`#well${wellId}`).select(".timeStep" + step1);
+                    focusCells.push(blinking1);
+                }
+            }
+        });
+        setFocusCells(focusCells);
+
+        function setFocusCells(cells) {
+            cells.forEach(cell => {
+                cell.attr("opacity", cellNormalOpacity);
+            });
+        }
+    }
 }
