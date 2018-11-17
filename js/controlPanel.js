@@ -1,6 +1,9 @@
 function setOptions(theOptions, theDiv, theSelectedIndex){
+    let sel = $("#"+theDiv);
+    //Remove previous options
+    sel.find('option')
+        .remove();
     $.each(theOptions, (i, value) => {
-        let sel = $("#"+theDiv);
         let op = $("<option></option>");
         if (i == theSelectedIndex) {
             op.attr("selected", "true");
@@ -11,7 +14,7 @@ function setOptions(theOptions, theDiv, theSelectedIndex){
 }
 setOptions(timeStepOptions, "aggregationSelect", timeStepTypeIndex);
 setOptions(groupOptions, "groupSelect", groupByIndex);
-setOptions(groupSortOptions, "groupOrderSelect", groupSortIndex);
+setOptions(groupSortOptions[groupByIndex], "groupOrderSelect", groupSortIndex);
 setOptions(wellSortOptions, "wellOrderSelect", wellSortIndex);
 
 

@@ -14,7 +14,7 @@ function discreteHeatMapPlotter(dp, theDivId, plotOptions) {
     let groups;
     function processRowPositions(){
         rowPositions = {};
-        groups = d3.nest().key(d=>d[groupByGroups[groupByIndex]]).key(d=>d[COL_WELL_ID]).entries(dp.data);
+        groups = d3.nest().key(d=>groupByGroups[groupByIndex](d)).key(d=>d[COL_WELL_ID]).entries(dp.data);
         //Sort the group.
         groups = groups.sort(groupSortFunctions[groupByIndex][groupSortIndex]);
         //Sort the subgroup
@@ -82,7 +82,7 @@ function discreteHeatMapPlotter(dp, theDivId, plotOptions) {
         for (let row = 0; row < allWellIds.length; row++) {
             let wellId = allWellIds[row];
             if(!rows[wellId]){
-                let rowGroup = mainGroup.append("g").attr("transform", `translate(${0}, ${row * cellHeight})`);
+                let rowGroup = mainGroup.append("g").attr("transform", `translate(${0}, ${row * cellHeight})`).attr("id", wellId);
                 for (let step = 0; step < steps; step++) {
                     let key = "$" + wellId + "_" + step;
                     let d = nestedByWellTimeStepObject[key];
@@ -93,6 +93,7 @@ function discreteHeatMapPlotter(dp, theDivId, plotOptions) {
                             .selectAll("rect")
                             .data([d]).enter()
                             .append("rect")
+                            .attr("rect", `cell${step}`)
                             .attr("stroke-width", strokeWidth)
                             .attr("stroke", "black")
                             .attr("width", (cellWidth - strokeWidth / 2))
@@ -175,6 +176,22 @@ function discreteHeatMapPlotter(dp, theDivId, plotOptions) {
 
         lgs.exit().remove();
     }
+
+    function processBlinkingCells(){
+
+    }
+
+    function processBlinkingSuddenChange(typeColIndex){
+        d3.keys(dp.wellStatistics).forEach(wellId =>{
+            if(dp.wellStatistics[wellId][suddenChangeTypes[typeColIndex]] > 0){
+                let d0 = dp.wellStatistics[wellId][suddenChangeTypesDates[0]];
+                let d1 = dp.wellStatistics[wellId][suddenChangeTypesDates[1]];
+                //Select the well
+                //Select the time step
+
+            }
+        });
+    }
     //Exposing necessary components
     this.plot = plot;
     this.updatePositions = updatePositions;
@@ -195,6 +212,9 @@ function changeTimeAggregation(){
 }
 function changeGroupOrder(){
     groupSortIndex = document.getElementById("groupOrderSelect").selectedIndex;
+    //Need to change the group sort order options
+    setOptions(groupSortOptions[groupByIndex], "groupOrderSelect", groupSortIndex);
+
     wellSortIndex = document.getElementById("wellOrderSelect").selectedIndex;
     heatmapPlotter.updatePositions();
 }
