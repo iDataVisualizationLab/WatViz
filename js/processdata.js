@@ -131,6 +131,14 @@ dataProcessor = function (data) {
             result[well.key][COL_OVERALL_AVERAGE] = well[COL_OVERALL_AVERAGE];
             result[well.key][COL_OVERALL_AVERAGE_GROUP] = (i<topRows) ? 1: 2;
         });
+
+        //Process overall reduction
+        wells = wells.sort((a, b) => b[COL_OVERALL_REDUCTION] - a[COL_OVERALL_REDUCTION]);
+        wells.forEach((well, i)=>{
+            if(!result[well.key]) result[well.key] = {};
+            result[well.key][COL_OVERALL_REDUCTION] = well[COL_OVERALL_REDUCTION];
+            result[well.key][COL_OVERALL_REDUCTION] = (i<topRows) ? 1: 2;
+        });
         return result;
     }
     //We separate average out from standard deviation since for standard deviation (we measures for all wells in all time steps) but for average, it average over time step only (month, year)
@@ -150,6 +158,9 @@ dataProcessor = function (data) {
             let thicknesses = unpack(measures, COL_SATURATED_THICKNESS);
             well[COL_STANDARD_DEVIATION] = d3.deviation(thicknesses);
             well[COL_OVERALL_AVERAGE] = d3.mean(thicknesses);
+            let extent = d3.extent(thicknesses);
+            well[COL_OVERALL_REDUCTION] = extent[1] - extent[0];
+
             well[COL_LAT] = d3.mean(unpack(measures, COL_LAT));
             well[COL_LONG] = d3.mean(unpack(measures, COL_LONG));
         });

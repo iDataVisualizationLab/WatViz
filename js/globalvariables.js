@@ -24,6 +24,9 @@ let dp, //store data processor
     COL_STANDARD_DEVIATION = 'standardDeviation',
     COL_STANDARD_DEVIATION_GROUP = 'standardDeviationGroup',
 
+    COL_OVERALL_REDUCTION = 'overallReduction',
+    COL_OVERALL_REDUCTION_GROUP = 'overallReductionGroup',
+
     COL_OVERALL_AVERAGE = 'overallAverage',
     COL_OVERALL_AVERAGE_GROUP = 'overallAverageGroup',
 
@@ -56,14 +59,14 @@ let dp, //store data processor
     averageDifferenceValueRanges = new Array(2),
     colorRanges = [averageValueRanges, averageDifferenceValueRanges],
 
-    groupByGroups = [groupByCounty, groupBySuddenIncrement, groupBySuddenDecrement, groupByStandardDeviation, groupByOverallAverage],
-    groupOptions = ["County", "Sudden increment", "Sudden decrement", "Standard deviation", "Overall average"],
-    groupSortOptions = [["Alphabetical", "Number of wells"], ["Ascending", "Descending"], ["Ascending", "Descending"], ["Ascending", "Descending"], ["Ascending", "Descending"]],
+    groupByGroups = [groupByCounty, groupBySuddenIncrement, groupBySuddenDecrement, groupByStandardDeviation, groupByOverallAverage, groupByOverallReduction],
+    groupOptions = ["County", "Sudden increment", "Sudden decrement", "Standard deviation", "Overall average", "Overall reduction"],
+    groupSortOptions = [["Alphabetical", "Number of wells"], ["Ascending", "Descending"], ["Ascending", "Descending"], ["Ascending", "Descending"], ["Ascending", "Descending"], ["Ascending", "Descending"]],
     countySortFunctions = [sortCountiesAlphabetically, sortCountiesByNumberOfWells],
     statisticSortFunctions = [ascendingOrder, descendingOrder],
-    groupSortFunctions = [countySortFunctions, statisticSortFunctions, statisticSortFunctions, statisticSortFunctions, statisticSortFunctions],
-    wellSortOptions = ["Alphabetical", "Number of samples", "Sudden increment", "Sudden decrement", "Standard deviation"],
-    wellSortFunctions = [sortWellsAlphabetically, sortWellsByNumberOfSamples, sortWellsBySuddenIncrement, sortWellsBySuddenDecrement, sortWellsByStandardDeviation],
+    groupSortFunctions = [countySortFunctions, statisticSortFunctions, statisticSortFunctions, statisticSortFunctions, statisticSortFunctions, statisticSortFunctions],
+    wellSortOptions = ["Alphabetical", "Number of samples", "Sudden increment", "Sudden decrement", "Standard deviation", "Overall reduction"],
+    wellSortFunctions = [sortWellsAlphabetically, sortWellsByNumberOfSamples, sortWellsBySuddenIncrement, sortWellsBySuddenDecrement, sortWellsByStandardDeviation, sortWellsByOverallReduction],
     groupByIndex = 0,
     groupSortIndex = 0,
     wellSortIndex = 1,
@@ -94,6 +97,9 @@ function groupBySuddenDecrement(well){
 function groupByStandardDeviation(well){
     return dp.wellStatistics[well[COL_WELL_ID]][COL_STANDARD_DEVIATION_GROUP];
 }
+function groupByOverallReduction(well){
+    return dp.wellStatistics[well[COL_WELL_ID]][COL_OVERALL_REDUCTION];
+}
 function groupByOverallAverage(well){
     return dp.wellStatistics[well[COL_WELL_ID]][COL_OVERALL_AVERAGE_GROUP];
 }
@@ -116,5 +122,8 @@ function sortWellsBySuddenDecrement(a, b){
     return dp.wellStatistics[a.key][COL_SUDDEN_DECREMENT] - dp.wellStatistics[b.key][COL_SUDDEN_DECREMENT];
 }
 function sortWellsByStandardDeviation(a, b){
-    return dp.wellStatistics[b.key][COL_STANDARD_DEVIATION]- dp.wellStatistics[b.key][COL_STANDARD_DEVIATION];
+    return dp.wellStatistics[b.key][COL_STANDARD_DEVIATION]- dp.wellStatistics[a.key][COL_STANDARD_DEVIATION];
+}
+function sortWellsByOverallReduction(a, b){
+    return dp.wellStatistics[b.key][COL_OVERALL_REDUCTION]- dp.wellStatistics[a.key][COL_OVERALL_REDUCTION];
 }
