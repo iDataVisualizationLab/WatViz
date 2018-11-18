@@ -61,6 +61,8 @@ function plotMaps(dp) {
     }
 
     function plotContours(event) {
+        let valueDiffScale = d3.scaleLinear().domain(colorRanges[analyzeValueIndex][timeStepTypeIndex]).range([0, 1]);
+
         let svg = event.overlayLayer;
         let g = svg.select("#contoursGroup");
         g.selectAll("*").remove();
@@ -70,12 +72,14 @@ function plotMaps(dp) {
 
         let fromLatLngToDivPixel = event.fromLatLngToDivPixel;
         wells = addDivPixelFromLatLng(wells, fromLatLngToDivPixel);
+
         let gridSize = 30;
         let recbin = new RecBinner(wells, gridSize);
         let grid = recbin.grid;
 
         g.attr("class", "contour");
         g.attr("transform", `translate(${grid.x}, ${grid.y})`);
+        //TODO: Continue from here to update the contour value.
         g.selectAll("path")
             .data(d3.contours().smooth(true)
                 .size(grid.size)
@@ -84,7 +88,12 @@ function plotMaps(dp) {
             .enter().append("path")
             .attr("d", d3.geoPath(d3.geoIdentity().scale(grid.scale)))
             .attr("fill", function (d) {
-                return color.waterLevel(d.value);
+                if(analyzeValueIndex === 0){
+                    return color.waterLevel(d.value);
+                }
+                if(analyzeValueIndex === 1){
+                    return d3.interpolateRdYlBu(valueDiffScale(d.value));
+                }
             })
             .attr("stroke", "#000")
             .attr("stroke-width", 0.3)

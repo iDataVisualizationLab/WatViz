@@ -17,8 +17,13 @@ let dp, //store data processor
     COL_COUNTY = "County",
     COL_AVERAGE_OVER_TIME_STEP = 'averageOverTimeStep',
     COL_AVERAGE_DIFFERENCE_OVER_TIME_STEP = "averageDifferenceOverTimeStep",
+
+
+
+
     COL_STANDARD_DEVIATION = 'standardDeviation',
     COL_STANDARD_DEVIATION_GROUP = 'standardDeviationGroup',
+
     COL_OVERALL_AVERAGE = 'overallAverage',
     COL_OVERALL_AVERAGE_GROUP = 'overallAverageGroup',
 
@@ -46,7 +51,10 @@ let dp, //store data processor
 
     analyzeValues = [COL_AVERAGE_OVER_TIME_STEP, COL_AVERAGE_DIFFERENCE_OVER_TIME_STEP],
     analyzeValueOptions = ["Average over time step", "Average difference over time step"],
-    analyzeValueIndex = 0,
+    analyzeValueIndex = 1,
+    averageValueRanges = new Array(2),
+    averageDifferenceValueRanges = new Array(2),
+    colorRanges = [averageValueRanges, averageDifferenceValueRanges],
 
     groupByGroups = [groupByCounty, groupBySuddenIncrement, groupBySuddenDecrement, groupByStandardDeviation, groupByOverallAverage],
     groupOptions = ["County", "Sudden increment", "Sudden decrement", "Standard deviation", "Overall average"],

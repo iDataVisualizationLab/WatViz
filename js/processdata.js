@@ -139,7 +139,7 @@ dataProcessor = function (data) {
             let measures = well.values;
             let thicknesses = unpack(measures, COL_SATURATED_THICKNESS);
             well[COL_AVERAGE_OVER_TIME_STEP] = d3.mean(thicknesses);
-            well[COL_AVERAGE_DIFFERENCE_OVER_TIME_STEP] = well[COL_AVERAGE_OVER_TIME_STEP] - wellStatistics[well.key];
+            well[COL_AVERAGE_DIFFERENCE_OVER_TIME_STEP] = well[COL_AVERAGE_OVER_TIME_STEP] - wellStatistics[measures[0][COL_WELL_ID]][COL_OVERALL_AVERAGE];
             well[COL_LAT] = d3.mean(unpack(measures, COL_LAT));
             well[COL_LONG] = d3.mean(unpack(measures, COL_LONG));
         });
@@ -155,9 +155,6 @@ dataProcessor = function (data) {
         });
     }
 
-    function processMinMax(){
-        getNestedByWellMonthData();
-    }
 
     function getNestedByWellMonthData() {
         return getNestedByWellTimeStepData(COL_MONTH_INDEX);
@@ -219,8 +216,17 @@ dataProcessor = function (data) {
     let wellYearData = getWellYearData(COL_YEAR_INDEX);
     let nestedByWellMonthData = getNestedByWellMonthData();
     let nestedByWellYearData = getNestedByWellYearData();
+    processMinMax();
 
-    debugger
+    debugger;
+    function processMinMax(){
+        //Get analyze value index
+        averageValueRanges[0] = d3.extent(nestedByWellMonthData.map(d=>d[COL_AVERAGE_OVER_TIME_STEP]));
+        averageValueRanges[1] = d3.extent(nestedByWellYearData.map(d=>d[COL_AVERAGE_OVER_TIME_STEP]));
+
+        averageDifferenceValueRanges[0] = d3.extent(nestedByWellMonthData.map(d=>d[COL_AVERAGE_DIFFERENCE_OVER_TIME_STEP]));
+        averageDifferenceValueRanges[1] = d3.extent(nestedByWellYearData.map(d=>d[COL_AVERAGE_DIFFERENCE_OVER_TIME_STEP]));
+    }
 
     function getWellByMonthIndex(monthIndex) {
         return wellMonthData[monthIndex];
@@ -241,7 +247,6 @@ dataProcessor = function (data) {
         return utils.yeardiff(minDate, date);
     }
     //Exposing methods and data.
-    this.wells = wells;
     this.getWellByTimeSteps = [getWellByMonthIndex, getWellByYearIndex];
     this.minDate = minDate;
     this.maxDate = maxDate;

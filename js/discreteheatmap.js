@@ -82,6 +82,8 @@ function discreteHeatMapPlotter(dp, theDivId, plotOptions) {
     }
 
     function generateRows() {
+        let valueDiffScale = d3.scaleLinear().domain(colorRanges[analyzeValueIndex][timeStepTypeIndex]).range([0, 1]);
+
         let mainGroup = svg.append("g").attr("transform", `translate(0, 0)`);
         for (let row = 0; row < allWellIds.length; row++) {
             let wellId = allWellIds[row];
@@ -102,7 +104,14 @@ function discreteHeatMapPlotter(dp, theDivId, plotOptions) {
                             .attr("stroke", cellStrokeNormalColor)
                             .attr("width", (cellWidth - strokeWidth / 2))
                             .attr("height", (cellHeight - strokeWidth / 2))
-                            .attr("fill", d => color.waterLevel(d[COL_AVERAGE_OVER_TIME_STEP]))
+                            .attr("fill", d => {
+                                if(analyzeValueIndex === 0){
+                                    return color.waterLevel(d[COL_AVERAGE_OVER_TIME_STEP]);
+                                }
+                                if(analyzeValueIndex === 1){
+                                    return d3.interpolateRdYlBu(valueDiffScale(d[COL_AVERAGE_DIFFERENCE_OVER_TIME_STEP]));
+                                }
+                            })
                             .on("mouseover", d => {
                                 showTip(d, formatData);
                                 let myLatLng = {lat: d[COL_LAT], lng: d[COL_LONG]};
