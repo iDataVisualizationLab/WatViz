@@ -98,7 +98,7 @@ function groupByStandardDeviation(well){
     return dp.wellStatistics[well[COL_WELL_ID]][COL_STANDARD_DEVIATION_GROUP];
 }
 function groupByOverallReduction(well){
-    return dp.wellStatistics[well[COL_WELL_ID]][COL_OVERALL_REDUCTION];
+    return dp.wellStatistics[well[COL_WELL_ID]][COL_OVERALL_REDUCTION_GROUP];
 }
 function groupByOverallAverage(well){
     return dp.wellStatistics[well[COL_WELL_ID]][COL_OVERALL_AVERAGE_GROUP];

@@ -137,7 +137,7 @@ dataProcessor = function (data) {
         wells.forEach((well, i)=>{
             if(!result[well.key]) result[well.key] = {};
             result[well.key][COL_OVERALL_REDUCTION] = well[COL_OVERALL_REDUCTION];
-            result[well.key][COL_OVERALL_REDUCTION] = (i<topRows) ? 1: 2;
+            result[well.key][COL_OVERALL_REDUCTION_GROUP] = (i<topRows) ? 1: 2;
         });
         return result;
     }
