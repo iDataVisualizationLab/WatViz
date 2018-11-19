@@ -12,6 +12,8 @@ function setOptions(theOptions, theDiv, theSelectedIndex){
         sel.append(op);
     });
 }
+setOptions(analyzeValueOptions, "analyzedValueSelect", analyzeValueIndex);
+
 setOptions(timeStepOptions, "aggregationSelect", timeStepTypeIndex);
 setOptions(groupOptions, "groupSelect", groupByIndex);
 setOptions(groupSortOptions[groupByIndex], "groupOrderSelect", groupSortIndex);

@@ -18,9 +18,6 @@ let dp, //store data processor
     COL_AVERAGE_OVER_TIME_STEP = 'averageOverTimeStep',
     COL_AVERAGE_DIFFERENCE_OVER_TIME_STEP = "averageDifferenceOverTimeStep",
 
-
-
-
     COL_STANDARD_DEVIATION = 'standardDeviation',
     COL_STANDARD_DEVIATION_GROUP = 'standardDeviationGroup',
 
@@ -40,8 +37,6 @@ let dp, //store data processor
     COL_SUDDEN_DECREMENT_D1 = "suddenDecrementD1",
     COL_SUDDEN_DECREMENT_D2 = "suddenDecrementD2",
 
-
-
     suddenChangeTypes = [COL_SUDDEN_INCREMENT, COL_SUDDEN_DECREMENT],
     suddenChangeTypesDates = [[COL_SUDDEN_INCREMENT_D1, COL_SUDDEN_INCREMENT_D2], [COL_SUDDEN_DECREMENT_D1, COL_SUDDEN_DECREMENT_D2]],
     cellStrokeNormalColor = "black",
@@ -53,11 +48,12 @@ let dp, //store data processor
     timeStepTypeIndex = 1,
 
     analyzeValues = [COL_AVERAGE_OVER_TIME_STEP, COL_AVERAGE_DIFFERENCE_OVER_TIME_STEP],
-    analyzeValueOptions = ["Average over time step", "Average difference over time step"],
+    analyzeValueOptions = ["Average", "Average difference"],
     analyzeValueIndex = 1,
     averageValueRanges = new Array(2),
     averageDifferenceValueRanges = new Array(2),
     colorRanges = [averageValueRanges, averageDifferenceValueRanges],
+
 
     groupByGroups = [groupByCounty, groupBySuddenIncrement, groupBySuddenDecrement, groupByStandardDeviation, groupByOverallAverage, groupByOverallReduction],
     groupOptions = ["County", "Sudden increment", "Sudden decrement", "Standard deviation", "Overall average", "Overall reduction"],

@@ -1,7 +1,7 @@
 let cellWidths = [6, 12],
     cellHeights = [6, 6];
 let nestedByWellTimeStepObjects = new Array(timeStepTypes.length);
-
+let valueDiffScale;//Used to scale the value range to [0, 1] => to use the RedYellowBlue scale.
 function discreteHeatMapPlotter(dp, theDivId, plotOptions) {
     d3.select("#" + theDivId).selectAll("*").remove();
     let labelsGroup;
@@ -82,8 +82,7 @@ function discreteHeatMapPlotter(dp, theDivId, plotOptions) {
     }
 
     function generateRows() {
-        let valueDiffScale = d3.scaleLinear().domain(colorRanges[analyzeValueIndex][timeStepTypeIndex]).range([0, 1]);
-
+        valueDiffScale = d3.scaleLinear().domain(colorRanges[analyzeValueIndex][timeStepTypeIndex]).range([0, 1]);
         let mainGroup = svg.append("g").attr("transform", `translate(0, 0)`);
         for (let row = 0; row < allWellIds.length; row++) {
             let wellId = allWellIds[row];
@@ -211,6 +210,23 @@ function changeTimeAggregation() {
     spinner.stop();
 }
 
+function changeAnalyzedValue(){
+    analyzeValueIndex = document.getElementById("analyzedValueSelect").selectedIndex;
+    //Update cell colors based on the selection.
+    //TODO: may need to change this by a class name => since rect may be used for different things rather than cell only.
+    let cells = d3.selectAll("rect");
+    cells.attr("fill", d => {
+        if(analyzeValueIndex === 0){
+            return color.waterLevel(d[COL_AVERAGE_OVER_TIME_STEP]);
+        }
+        if(analyzeValueIndex === 1){
+            return d3.interpolateRdYlBu(valueDiffScale(d[COL_AVERAGE_DIFFERENCE_OVER_TIME_STEP]));
+        }
+    })
+    //Update contour colors based on the selection.
+    gm.updateMap();
+}
+
 function changeGroupOrder() {
     groupSortIndex = document.getElementById("groupOrderSelect").selectedIndex;
     //Need to change the group sort order options
@@ -255,6 +271,7 @@ let focusCells;
 
 function processFocusSuddenChange(typeColIndex) {
     //Clear previous focus cells
+    //TODO: may need to change this by a class name => since rect may be used for different things rather than cell only.
     d3.selectAll("rect").attr("opacity", cellFadeOpacity);
 
     if (typeColIndex < suddenChangeTypes.length) {
