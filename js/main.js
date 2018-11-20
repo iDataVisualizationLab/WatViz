@@ -12,5 +12,10 @@ d3.csv("data/well_data_full.optimized1.csv", function(err, data){
 function updatePlot(h){
     let index = timeStepTypeIndex===0? utils.monthdiff(dp.minDate, h): utils.yeardiff(dp.minDate, h);
     wells = dp.getWellByTimeSteps[timeStepTypeIndex](index);
-    gm.updateMap();
+    try{
+        gm.updateMap();
+    }catch(ex){
+        console.log("waiting for google resource.")
+    }
+
 }

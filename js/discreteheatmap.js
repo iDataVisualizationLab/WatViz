@@ -244,7 +244,7 @@ function changeGroup() {
         document.getElementById("changeFocus").disabled = false;
     } else {
         document.getElementById("changeFocus").checked = false;
-        document.getElementById("changeFocus").disabled = false;
+        document.getElementById("changeFocus").disabled = true;
     }
     changeGroupOrder();
 }
@@ -259,11 +259,18 @@ function processFocusCells() {
 
 }
 
+function selectAllCells() {
+//TODO: may need to change this by a class name => since rect may be used for different things rather than cell only.
+    let cellsSelection = d3.selectAll("rect");
+    return cellsSelection;
+}
+
 function focusOptionChange() {
     if (document.getElementById("changeFocus").checked == true) {
         processFocusCells();
     } else {
-        d3.selectAll("rect").attr("opacity", cellNormalOpacity);
+        let cellsSelection = selectAllCells();
+        setFocusSelection(cellsSelection);
     }
 }
 
@@ -271,9 +278,9 @@ let focusCells;
 
 function processFocusSuddenChange(typeColIndex) {
     //Clear previous focus cells
-    //TODO: may need to change this by a class name => since rect may be used for different things rather than cell only.
-    d3.selectAll("rect").attr("opacity", cellFadeOpacity);
-
+    let cellsSelection = selectAllCells();
+    //Set all to fade
+    setFadeCells(cellsSelection);
     if (typeColIndex < suddenChangeTypes.length) {
         //Select all cells and set to faded
         focusCells = [];
@@ -292,12 +299,22 @@ function processFocusSuddenChange(typeColIndex) {
                 }
             }
         });
+        //Set the focus cells to focus.
         setFocusCells(focusCells);
-
         function setFocusCells(cells) {
             cells.forEach(cell => {
-                cell.attr("opacity", cellNormalOpacity);
+                cell.classed("fadeCell", false);
+                cell.classed("focusCell", true);
             });
         }
     }
+
+}
+function setFocusSelection(cellsSelection){
+    cellsSelection.classed("fadeCell", false);
+    cellsSelection.classed("focusCell", true);
+}
+function setFadeCells(cellsSelection){
+    cellsSelection.classed("fadeCell", true);
+    cellsSelection.classed("focusCell", false);
 }

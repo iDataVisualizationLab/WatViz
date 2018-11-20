@@ -43,7 +43,7 @@ class RecBinner {
         //Calculate the value for the grid.
         grid.forEach(g =>{
             if(g.length>0){
-                g.value = d3.mean(g.map(w=>w[COL_AVERAGE_OVER_TIME_STEP]));
+                g.value = d3.mean(g.map(w=>w[analyzeValues[analyzeValueIndex]]));
             }else{
                 g.value = null;
             }

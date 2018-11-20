@@ -1,4 +1,4 @@
-dataProcessor = function (data) {
+function dataProcessor(data) {
     //convert data type.
     data = data.map(d => {
         d[COL_LONG] = +d[COL_LONG];
@@ -229,14 +229,33 @@ dataProcessor = function (data) {
     let nestedByWellYearData = getNestedByWellYearData();
     processMinMax();
 
-    debugger;
     function processMinMax(){
         //Get analyze value index
         averageValueRanges[0] = d3.extent(nestedByWellMonthData.map(d=>d[COL_AVERAGE_OVER_TIME_STEP]));
         averageValueRanges[1] = d3.extent(nestedByWellYearData.map(d=>d[COL_AVERAGE_OVER_TIME_STEP]));
-
+        //Process the thresholds
         averageDifferenceValueRanges[0] = d3.extent(nestedByWellMonthData.map(d=>d[COL_AVERAGE_DIFFERENCE_OVER_TIME_STEP]));
         averageDifferenceValueRanges[1] = d3.extent(nestedByWellYearData.map(d=>d[COL_AVERAGE_DIFFERENCE_OVER_TIME_STEP]));
+
+        // //Process the thresholds
+        // //For month data
+        // let thresholds0 = processThresholds(averageDifferenceValueRanges[0]);
+        // averageDifferenceValueThresholds.push(thresholds0);
+        // //For year data
+        // let thresholds1 = processThresholds(averageDifferenceValueRanges[1]);
+        // averageDifferenceValueThresholds.push(thresholds1);
+        //
+        // function processThresholds(range){
+        //     let min0 = range[0];//added some value
+        //     let max0 = range[1];
+        //     let step0 = (max0 - min0)/numberOfThresholds;
+        //     let thresholds0 = [];
+        //     for (let i = 0; i < numberOfThresholds; i++) {
+        //         thresholds0.push(i*step0);//Push it up from zero or above (to avoid zero threshold which is for null value (otherwise null values will be zero and will cover the data)
+        //     }
+        //     thresholds0[0] = thresholds0[0] + 10e-6; //remove the zero values (to avoid it in the contour).
+        //     return thresholds0;
+        // }
     }
 
     function getWellByMonthIndex(monthIndex) {
@@ -268,4 +287,4 @@ dataProcessor = function (data) {
     this.data = data;
     this.wellStatistics = wellStatistics;
     this.dateToTimeIndexFunctions = [dateToMonthIndex, dateToYearIndex];
-}
+};

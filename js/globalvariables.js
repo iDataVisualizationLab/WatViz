@@ -1,5 +1,5 @@
 let dp, //store data processor
-    topRows = 19,
+    topRows = 100,
     mapWidth = 800,
     mapHeight = 1200,
     timeLabelHeight = 50,
@@ -48,13 +48,14 @@ let dp, //store data processor
     timeStepTypeIndex = 1,
 
     analyzeValues = [COL_AVERAGE_OVER_TIME_STEP, COL_AVERAGE_DIFFERENCE_OVER_TIME_STEP],
-    analyzeValueOptions = ["Average", "Average difference"],
+    analyzeValueOptions = ["Absolute value", "Difference"],
     analyzeValueIndex = 1,
     averageValueRanges = new Array(2),
     averageDifferenceValueRanges = new Array(2),
     colorRanges = [averageValueRanges, averageDifferenceValueRanges],
-
-
+    numberOfThresholds = 14,
+    averageValueThresholds = [10e-6, 80, 140, 200, 260, 320, 380, 440, 500, 560, 620, 680,740, 10e10],
+    averageDifferenceValueThresholds = [],
     groupByGroups = [groupByCounty, groupBySuddenIncrement, groupBySuddenDecrement, groupByStandardDeviation, groupByOverallAverage, groupByOverallReduction],
     groupOptions = ["County", "Sudden increment", "Sudden decrement", "Standard deviation", "Overall average", "Overall reduction"],
     groupSortOptions = [["Alphabetical", "Number of wells"], ["Ascending", "Descending"], ["Ascending", "Descending"], ["Ascending", "Descending"], ["Ascending", "Descending"], ["Ascending", "Descending"]],

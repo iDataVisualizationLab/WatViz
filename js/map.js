@@ -32,9 +32,7 @@ function plotMaps(dp) {
 
             enter.append("circle")
                 .attr("r", 1.4326530612244897)
-                // .attr("fill", d => color.waterLevel(d[COL_AVERAGE_OVER_TIME_STEP]))
-                // .attr("fill", "rgba(0,0,0,0.5)")
-                .attr("fill", "red")
+                .attr("fill", "rgba(0,0,0,0.5)")
                 .attr("stroke", "black")
                 .attr("fill-opacity", .5)
                 .attr("stroke-width", 0.6)
@@ -77,14 +75,35 @@ function plotMaps(dp) {
         let recbin = new RecBinner(wells, gridSize);
         let grid = recbin.grid;
 
+
         g.attr("class", "contour");
         g.attr("transform", `translate(${grid.x}, ${grid.y})`);
         //TODO: Continue from here to update the contour value.
+        let gridValues = grid.map(g=>g.value);
+        let minValue = d3.min(gridValues);
+        let thresholds = processThresholds(d3.extent(gridValues));
+
+        function processThresholds(range){
+            let min0 = range[0];//added some value
+            let max0 = range[1];
+            let step0 = (max0 - min0)/numberOfThresholds;
+            let thresholds0 = [];
+            for (let i = 0; i < numberOfThresholds; i++) {
+                thresholds0.push(i*step0);//Push it up from zero or above (to avoid zero threshold which is for null value (otherwise null values will be zero and will cover the data)
+            }
+            thresholds0[0] = thresholds0[0]+10e-6;
+            return thresholds0;
+        }
+
+        let gridData = grid.map(g=>g.value);
+        if(analyzeValueIndex === 1){
+           gridData = grid.map(g => (g.value!==null)?g.value-minValue : null);
+        }
         g.selectAll("path")
             .data(d3.contours().smooth(true)
                 .size(grid.size)
-                .thresholds(color.waterLevel.domain())
-                (grid.map(g => g.value)))
+                .thresholds(thresholds)
+                (gridData))
             .enter().append("path")
             .attr("d", d3.geoPath(d3.geoIdentity().scale(grid.scale)))
             .attr("fill", function (d) {
@@ -92,11 +111,11 @@ function plotMaps(dp) {
                     return color.waterLevel(d.value);
                 }
                 if(analyzeValueIndex === 1){
-                    return d3.interpolateRdYlBu(valueDiffScale(d.value));
+                    return d3.interpolateRdYlBu(valueDiffScale(d.value + minValue));
                 }
             })
             .attr("stroke", "#000")
-            .attr("stroke-width", 0.3)
+            .attr("stroke-width", 0.1)
             .attr("class", "marker")
             .attr("opacity", contourOpacity)
             .attr("stroke-linejoin", "round");

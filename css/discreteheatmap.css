@@ -10,3 +10,9 @@
     width: 1700px;
     overflow: scroll;
 }
+.fadeCell{
+    opacity: 0.2;
+}
+.focusCell{
+    opacity: 1.0;
+}
