@@ -67,7 +67,7 @@ let dp, //store data processor
     groupSortIndex = 0,
     wellSortIndex = 1,
     rowPositionTransitionDuration=500,
-    contourOpacity = 0.4,
+    contourOpacity = 0.5,
     wells,
     heatmapPlotter,
     playSlider,
