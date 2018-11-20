@@ -55,7 +55,6 @@ let dp, //store data processor
     colorRanges = [averageValueRanges, averageDifferenceValueRanges],
     numberOfThresholds = 14,
     averageValueThresholds = [10e-6, 80, 140, 200, 260, 320, 380, 440, 500, 560, 620, 680,740, 10e10],
-    averageDifferenceValueThresholds = [],
     groupByGroups = [groupByCounty, groupBySuddenIncrement, groupBySuddenDecrement, groupByStandardDeviation, groupByOverallAverage, groupByOverallReduction],
     groupOptions = ["County", "Sudden increment", "Sudden decrement", "Standard deviation", "Overall average", "Overall reduction"],
     groupSortOptions = [["Alphabetical", "Number of wells"], ["Ascending", "Descending"], ["Ascending", "Descending"], ["Ascending", "Descending"], ["Ascending", "Descending"], ["Ascending", "Descending"]],
