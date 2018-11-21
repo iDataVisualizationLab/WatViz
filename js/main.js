@@ -1,5 +1,5 @@
 
-d3.csv("data/well_data_full.optimized.csv", function(err, data){
+d3.csv("data/well_data_full.optimized1.csv", function(err, data){
     dp = new dataProcessor(data);
     wells = dp.getWellByTimeSteps[timeStepTypeIndex](0);
     plotMaps(dp);
