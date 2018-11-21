@@ -83,7 +83,6 @@ function discreteHeatMapPlotter(dp, theDivId, plotOptions) {
 
 
     function generateRows() {
-        valueDiffScale = d3.scaleLinear().domain(colorRanges[analyzeValueIndex][timeStepTypeIndex]).range([0, 1]);
         positiveValueDiffScale = d3.scaleLinear().domain([0, colorRanges[analyzeValueIndex][timeStepTypeIndex][1]]).range([0.05, 1]);
         negativeValueDiffScale = d3.scaleLinear().domain([0, -colorRanges[analyzeValueIndex][timeStepTypeIndex][0]]).range([0.05, 1]);
         let mainGroup = svg.append("g").attr("transform", `translate(0, 0)`);

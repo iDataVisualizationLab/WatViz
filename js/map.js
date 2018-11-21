@@ -84,6 +84,8 @@ function plotMaps(dp) {
         let gridSize = 25;
         let recbin = new RecBinner(wells, gridSize);
         let grid = recbin.grid;
+
+
         g.attr("class", "contour");
         g.attr("transform", `translate(${grid.x}, ${grid.y})`);
         let positiveGrid = copy(grid);
@@ -110,7 +112,6 @@ function plotMaps(dp) {
             }
             return output;
         }
-
 
         plotContoursFromData(g, positiveGrid, colorType("positive"));
         if(negativeGrid.filter(g=>g.value!==null).length>0){
@@ -140,31 +141,51 @@ function colorType(type){
         }
     }
 }
+
 function plotContoursFromData(group, grid, colorFunction) {
     let gridData = grid.map(g => g.value);
     let thresholds = processThresholds(d3.extent(gridData));
     let g = group.append("g");
+    let contourData = d3.contours().smooth(true)
+        .size(grid.size)
+        .thresholds(thresholds)
+        (gridData);
+    // const interpolate = d3.line()
+    //     .x(d => d[0] )
+    //     .y(d => d[1] )
+    //     .curve(d3.curveCardinalClosed);
+    // const smoothPath = (pstr) => {
+    //     var polygons = pstr.split("ZM");
+    //     let result = "";
+    //     polygons.forEach(plg =>{
+    //         let sp = plg.replace(/M/, "").replace(/Z/, "").split("L").map(d=>d.split(","));
+    //         result = result + interpolate(sp) + "Z";
+    //     });
+    //     return result;
+    // }
     g.selectAll("path")
-        .data(d3.contours().smooth(true)
-            .size(grid.size)
-            .thresholds(thresholds)
-            (gridData))
+        .data(contourData)
         .enter().append("path")
-        .attr("d", d3.geoPath(d3.geoIdentity().scale(grid.scale)))
+        .attr("d", d=>{
+            let path = d3.geoPath(d3.geoIdentity().scale(grid.scale))(d);
+            // return smoothPath(path);
+            return path;
+        })
         .attr("fill", colorFunction)
         .attr("stroke", "#000")
-        .attr("stroke-width", 0.1)
+        .attr("stroke-width", contourStrokeWidth)
         .attr("class", "marker")
         .attr("opacity", contourOpacity)
         .attr("stroke-linejoin", "round");
 }
 
+
 function processThresholds(range) {
     let min0 = range[0];//added some value
     let max0 = range[1];
-    let step0 = (max0 - min0) / numberOfThresholds;
+    let step0 = (max0 - min0) / numberOfThresholds[analyzeValueIndex];
     let thresholds0 = [];
-    for (let i = 0; i < numberOfThresholds; i++) {
+    for (let i = 0; i < numberOfThresholds[analyzeValueIndex]; i++) {
         thresholds0.push(i * step0);//Push it up from zero or above (to avoid zero threshold which is for null value (otherwise null values will be zero and will cover the data)
     }
     thresholds0[0] = thresholds0[0] + 10e-6;
@@ -173,9 +194,9 @@ function processThresholds(range) {
 function processThresholds1(range) {
     let min0 = range[0];//added some value
     let max0 = range[1];
-    let step0 = (max0 - min0) / numberOfThresholds;
+    let step0 = (max0 - min0) / numberOfThresholds[analyzeValueIndex];
     let thresholds0 = [];
-    for (let i = 0; i < numberOfThresholds; i++) {
+    for (let i = 0; i < numberOfThresholds[analyzeValueIndex]; i++) {
         thresholds0.push(min0 + i * step0);//Push it up from zero or above (to avoid zero threshold which is for null value (otherwise null values will be zero and will cover the data)
     }
     return thresholds0;
@@ -242,14 +263,14 @@ function createPlotColorScale(ticks, colorFunction, width, height){
     svg.attr("width", width);
     svg.attr("height", (height+margin.top+margin.bottom));
 
-    svg.append("g").attr("transform", `translate(35, ${margin.top})`).call(d3.axisLeft(y));
 
     let step = y(ticks[0]) - y(ticks[1]);
     ticks.shift();
-    svg.append("g").attr("transform", `translate(34, ${margin.top})`).selectAll("rect").data(ticks.map(d=>{return {value: d}})).enter().append("rect")
+    let enter = svg.append("g").attr("transform", `translate(0, ${margin.top})`).selectAll("rect").data(ticks.map(d=>{return {value: d}})).enter();
+    enter.append("rect")
         .attr("width", 25)
         .attr("height", step)
-        .attr("x", 0)
+        .attr("x", 34)
         .attr("y", (d, i)=>(y(ticks[i])))
         .attr("fill", d=>{
         if (analyzeValueIndex === 0) {
@@ -264,6 +285,12 @@ function createPlotColorScale(ticks, colorFunction, width, height){
             }
         }
     });
+    enter.append("text")
+        .attr("x", 30)
+        .attr("y", (d, i)=> (y(ticks[i]) + step/2))
+        .attr("alignment-baseline", "middle")
+        .attr("text-anchor", "end")
+        .text((d, i)=>ticks[i]);
 
     controlDiv.appendChild(svg.node());
 

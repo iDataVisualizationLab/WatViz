@@ -19,28 +19,30 @@
 </head>
 <body>
 <div id="controlPanelContainer" class="floatingBox">
-    <div id="controlPanelHeader" class="floatingBoxHeader"><span class="floatingBoxButton" onclick="closeFloatingBox('btnControlPanel', 'controlPanelContainer')">[-]</span> Control panel
+    <div id="controlPanelHeader" class="floatingBoxHeader"><span class="floatingBoxButton"
+                                                                 onclick="closeFloatingBox('btnControlPanel', 'controlPanelContainer')">[-]</span>
+        Control panel
     </div>
     <div id="controlPanel" class="floatingBoxContent">
-        Select color scale:
-        <select onchange="changeAnalyzedValue()" id="analyzedValueSelect"></select>
-        Aggregate time by:
-        <select onchange="changeTimeAggregation()" id="aggregationSelect">
-        </select>
-        <br/>
-        Group by
-        <select onchange="changeGroup()" id="groupSelect"></select>
+        <div>
+            <label for="analyzedValueSelect" class="labelWidth"><span>Color scale</span></label>
+            <select onchange="changeAnalyzedValue()" id="analyzedValueSelect" class="soflow"></select>
+            <br/>
+            <label for="aggregationSelect"><span>Time aggregation</span></label>
+            <select onchange="changeTimeAggregation()" id="aggregationSelect" class="soflow"></select>
+            <br/>
+            <label for="groupSelect"><span>Group by</span></label>
+            <select onchange="changeGroup()" id="groupSelect" class="soflow"></select>
 
-        <label for="changeFocus">Focus</label>
-        <input type="checkbox" id="changeFocus" onchange="focusOptionChange()" disabled="true"/>
-
-        <br/>
-        Group order
-        <select onchange="changeGroupOrder()" id="groupOrderSelect">
-        </select>
-        Well order
-        <select onchange="changeWellOrder()" id="wellOrderSelect">
-        </select>
+            <label for="changeFocus" style="width: 50px;"><span>Focus</span></label>
+            <input type="checkbox" id="changeFocus" onchange="focusOptionChange()" disabled="true"/>
+            <br/>
+            <label for="groupOrderSelect"><span>Group order</span></label>
+            <select onchange="changeGroupOrder()" id="groupOrderSelect" class="soflow"></select>
+            <br/>
+            <label for="wellOrderSelect"><span>Well order</span></label>
+            <select onchange="changeWellOrder()" id="wellOrderSelect" class="soflow"></select>
+        </div>
     </div>
 </div>
 
@@ -60,7 +62,9 @@
 
 <!--section for the buttons-->
 
-<a id="btnControlPanel" class="tab tab_right" style="opacity: 0.0;" onclick="openFloatingBox('btnControlPanel', 'controlPanelContainer')" ><img src="images/tabicon.gif" alt="">Control panel<span class="screen_reader"> Will open a new window</span></a>
+<a id="btnControlPanel" class="tab tab_right" style="opacity: 0.0;"
+   onclick="openFloatingBox('btnControlPanel', 'controlPanelContainer')"><img src="images/tabicon.gif" alt="">Control
+    panel<span class="screen_reader"> Will open a new window</span></a>
 
 <!--Libraries-->
 <script src="lib/spin.min.js"></script>
