@@ -24,12 +24,15 @@ function plotMaps(dp) {
         plotContours(event);
         plotWells(event);
     }
-
+    let radiusScale = d3.scaleLinear().domain([1, 19]).range([5, 2]);
+    let colorValueScale = d3.scaleLinear().domain([1, 19]).range([1, 0]);
     function plotWells(event) {
         let layer = event.overlayMouseTarget;
 
         if (plotWellsOption) {
             let marker = layer.select("#wellsGroup").selectAll("g").data(wells);
+            wells = wells.sort(wellSortFunctions[wellSortIndex]).reverse();//Reverse it to print the smaller size first (bigger size later)
+
             let transform = event.transform(longAccessor, latAccessor);
             //Update existing
             marker.each(transform);
@@ -40,7 +43,8 @@ function plotMaps(dp) {
                 .attr("class", "marker");
 
             enter.append("circle")
-                .attr("r", 1.4326530612244897)
+                .attr("id", (d, i)=>`wellCircle${i}`)
+                .attr("r", 1.4)
                 .attr("fill", "rgba(0,0,0,0.5)")
                 .attr("stroke", "black")
                 .attr("fill-opacity", .5)
@@ -51,6 +55,11 @@ function plotMaps(dp) {
                 .on("mouseout", () => {
                     hidetip();
                 });
+            //Highlights and
+            let length = wells.length;//select 19 last ones (are the biggest)
+            for (let i = 1; i <= 19; i++) {
+                d3.select(`#wellCircle${length-i}`).attr("fill", d3.interpolateReds(colorValueScale(i))).attr("r", radiusScale(i));
+            }
         } else {
             layer.select("#wellsGroup").selectAll("*").remove();
         }
