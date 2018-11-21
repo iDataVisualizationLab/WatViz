@@ -1,7 +1,7 @@
 let cellWidths = [6, 12],
     cellHeights = [6, 6];
 let nestedByWellTimeStepObjects = new Array(timeStepTypes.length);
-let valueDiffScale;//Used to scale the value range to [0, 1] => to use the RedYellowBlue scale.
+
 function discreteHeatMapPlotter(dp, theDivId, plotOptions) {
     d3.select("#" + theDivId).selectAll("*").remove();
     let labelsGroup;
@@ -81,8 +81,11 @@ function discreteHeatMapPlotter(dp, theDivId, plotOptions) {
         setRowPositions();
     }
 
+
     function generateRows() {
         valueDiffScale = d3.scaleLinear().domain(colorRanges[analyzeValueIndex][timeStepTypeIndex]).range([0, 1]);
+        positiveValueDiffScale = d3.scaleLinear().domain([0, colorRanges[analyzeValueIndex][timeStepTypeIndex][1]]).range([0.05, 1]);
+        negativeValueDiffScale = d3.scaleLinear().domain([0, -colorRanges[analyzeValueIndex][timeStepTypeIndex][0]]).range([0.05, 1]);
         let mainGroup = svg.append("g").attr("transform", `translate(0, 0)`);
         for (let row = 0; row < allWellIds.length; row++) {
             let wellId = allWellIds[row];
@@ -98,18 +101,20 @@ function discreteHeatMapPlotter(dp, theDivId, plotOptions) {
                             .selectAll("rect")
                             .data([d]).enter()
                             .append("rect")
-                            .attr("class", `timeStep${step}`)
+                            .attr("class", `timeStep${step} cell`)
+
                             .attr("stroke-width", strokeWidth)
                             .attr("stroke", cellStrokeNormalColor)
                             .attr("width", (cellWidth - strokeWidth / 2))
                             .attr("height", (cellHeight - strokeWidth / 2))
                             .attr("fill", d => {
-                                if(analyzeValueIndex === 0){
-                                    return color.waterLevel(d[COL_AVERAGE_OVER_TIME_STEP]);
+                                if (analyzeValueIndex === 0) {
+                                    d.value = d[COL_AVERAGE_OVER_TIME_STEP];
                                 }
-                                if(analyzeValueIndex === 1){
-                                    return d3.interpolateRdYlBu(valueDiffScale(d[COL_AVERAGE_DIFFERENCE_OVER_TIME_STEP]));
+                                if (analyzeValueIndex === 1) {
+                                    d.value = d[COL_AVERAGE_DIFFERENCE_OVER_TIME_STEP];
                                 }
+                                return colorType(d);
                             })
                             .on("mouseover", d => {
                                 showTip(d, formatData);
@@ -130,6 +135,20 @@ function discreteHeatMapPlotter(dp, theDivId, plotOptions) {
                     }
                 }
                 rows[wellId] = rowGroup;
+            }
+        }
+
+        function colorType(d) {
+            if (analyzeValueIndex === 0) {
+                return color.waterLevel(d.value);
+            }
+            if (analyzeValueIndex === 1) {
+                if (d.value < 0) {
+                    return d3.interpolateReds(positiveValueDiffScale(-d.value));
+                }
+                if (d.value >= 0) {
+                    return d3.interpolateBlues(negativeValueDiffScale(d.value));
+                }
             }
         }
     }
@@ -210,21 +229,33 @@ function changeTimeAggregation() {
     spinner.stop();
 }
 
-function changeAnalyzedValue(){
+function changeAnalyzedValue() {
     analyzeValueIndex = document.getElementById("analyzedValueSelect").selectedIndex;
     //Update cell colors based on the selection.
-    //TODO: may need to change this by a class name => since rect may be used for different things rather than cell only.
-    let cells = d3.selectAll("rect");
+    positiveValueDiffScale = d3.scaleLinear().domain([0, colorRanges[analyzeValueIndex][timeStepTypeIndex][1]]).range([0.05, 1]);
+    negativeValueDiffScale = d3.scaleLinear().domain([0, -colorRanges[analyzeValueIndex][timeStepTypeIndex][0]]).range([0.05, 1]);
+    let cells = selectAllCells();
     cells.attr("fill", d => {
-        if(analyzeValueIndex === 0){
-            return color.waterLevel(d[COL_AVERAGE_OVER_TIME_STEP]);
-        }
-        if(analyzeValueIndex === 1){
-            return d3.interpolateRdYlBu(valueDiffScale(d[COL_AVERAGE_DIFFERENCE_OVER_TIME_STEP]));
-        }
-    })
+        return colorType(d);
+    });
     //Update contour colors based on the selection.
     gm.updateMap();
+
+    function colorType(d) {
+        if (analyzeValueIndex === 0) {
+            return color.waterLevel(d[COL_AVERAGE_OVER_TIME_STEP]);
+        }
+        if (analyzeValueIndex === 1) {
+            if (d.value < 0) {
+                return d3.interpolateReds(positiveValueDiffScale(-d.value));
+            }
+            if (d.value >= 0) {
+                return d3.interpolateBlues(negativeValueDiffScale(d.value));
+            }
+        }
+    }
+
+    createColorScale();
 }
 
 function changeGroupOrder() {
@@ -260,7 +291,6 @@ function processFocusCells() {
 }
 
 function selectAllCells() {
-//TODO: may need to change this by a class name => since rect may be used for different things rather than cell only.
     let cellsSelection = d3.selectAll("rect");
     return cellsSelection;
 }
@@ -301,6 +331,7 @@ function processFocusSuddenChange(typeColIndex) {
         });
         //Set the focus cells to focus.
         setFocusCells(focusCells);
+
         function setFocusCells(cells) {
             cells.forEach(cell => {
                 cell.classed("fadeCell", false);
@@ -310,11 +341,13 @@ function processFocusSuddenChange(typeColIndex) {
     }
 
 }
-function setFocusSelection(cellsSelection){
+
+function setFocusSelection(cellsSelection) {
     cellsSelection.classed("fadeCell", false);
     cellsSelection.classed("focusCell", true);
 }
-function setFadeCells(cellsSelection){
+
+function setFadeCells(cellsSelection) {
     cellsSelection.classed("fadeCell", true);
     cellsSelection.classed("focusCell", false);
 }

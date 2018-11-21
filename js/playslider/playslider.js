@@ -165,7 +165,7 @@ function createPlaySlider(startDate, endDate, divId, divWidth, updatePlot, inter
         let position = x(h);
         //Disable the ticks (at current step).
         let currentIndex = Math.floor(ticks.length*position/targetValue);
-        d3.selectAll(".tick").attr("opacity", (d, i)=>{
+        slider.selectAll(".tick").attr("opacity", (d, i)=>{
            return (i===currentIndex || i=== currentIndex-1 || i===currentIndex+1)?0:1;
         });
 
