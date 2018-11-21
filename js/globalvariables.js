@@ -63,7 +63,7 @@ let dp, //store data processor
     groupSortFunctions = [countySortFunctions, statisticSortFunctions, statisticSortFunctions, statisticSortFunctions, statisticSortFunctions, statisticSortFunctions],
     wellSortOptions = ["Alphabetical", "Number of samples", "Sudden increment", "Sudden decrement", "Standard deviation", "Overall reduction"],
     wellSortFunctions = [sortWellsAlphabetically, sortWellsByNumberOfSamples, sortWellsBySuddenIncrement, sortWellsBySuddenDecrement, sortWellsByStandardDeviation, sortWellsByOverallReduction],
-    groupByIndex = 0,
+    groupByIndex = 5,
     groupSortIndex = 0,
     wellSortIndex = 5,
     rowPositionTransitionDuration=500,
