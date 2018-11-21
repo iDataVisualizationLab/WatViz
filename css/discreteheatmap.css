@@ -3,7 +3,7 @@
     top: 0px;
     left: calc(var(--map-width) + 2*var(--margin-left));
     background: white;
-    z-index: 999;
+    z-index: 8;
 }
 #heatmap{
     height: 1200px;

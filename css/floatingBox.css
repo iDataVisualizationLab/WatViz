@@ -13,7 +13,7 @@
     transform-origin: 100% 100% 0;
     -webkit-transform-origin: 100% 100% 0;
     -ms-transform-origin: 100% 100% 0;
-    z-index: 99999;
+    z-index: 999;
 }
 .floatingBoxHeader{
     height: 20px;
