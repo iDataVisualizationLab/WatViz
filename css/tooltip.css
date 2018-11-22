@@ -26,3 +26,7 @@ div.tooltip td {
     padding: 1px;
     background-color: #fff;
 }
+
+div.tooltip .headertip h5, div.tooltip .headertip h6 {
+    display: inline-block;
+}
