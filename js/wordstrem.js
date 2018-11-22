@@ -43,7 +43,7 @@ var wordTip = function (d) {
         str +=  (d.text||d.key) +" "+'</b>';
         str += "<br/>  Frequency: ";
         str += (d.frequency||d.value.articlenum);
-        str += "<br/>  Date: ";
+        str += "<br/>  Year: ";
         str += outputFormat(d.data[0].time);
 
         str += "</div>"
