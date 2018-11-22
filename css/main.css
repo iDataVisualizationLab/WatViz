@@ -10,8 +10,3 @@
     top: var(--margin-top);
     left: calc(var(--map-width) + 2*var(--margin-left));
 }
-.wordStreamDiv{
-    border: 1px solid black;
-    width: 800px;
-    height: 250px;
-}
