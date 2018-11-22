@@ -270,10 +270,10 @@ function changeGroup() {
     //TODO: Check by text to avoid order changes
     if (groupByIndex === 1 || groupByIndex === 2) {//for sudden changes
         //enable focus options
-        document.getElementById("changeFocus").disabled = false;
+        document.getElementById("focusGroup").hidden = false;
     } else {
         document.getElementById("changeFocus").checked = false;
-        document.getElementById("changeFocus").disabled = true;
+        document.getElementById("focusGroup").hidden = true;
     }
     changeGroupOrder();
 }
