@@ -101,7 +101,6 @@ function discreteHeatMapPlotter(dp, theDivId, plotOptions) {
                             .data([d]).enter()
                             .append("rect")
                             .attr("class", `timeStep${step} cell`)
-
                             .attr("stroke-width", strokeWidth)
                             .attr("stroke", cellStrokeNormalColor)
                             .attr("width", (cellWidth - strokeWidth / 2))
@@ -290,7 +289,7 @@ function processFocusCells() {
 }
 
 function selectAllCells() {
-    let cellsSelection = d3.selectAll("rect");
+    let cellsSelection = d3.selectAll(".cell");
     return cellsSelection;
 }
 
