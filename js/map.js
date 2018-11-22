@@ -8,6 +8,11 @@ function createColorScale() {
     colorScaleControl.index = 3;
     gm.map.controls[google.maps.ControlPosition.RIGHT_CENTER].push(colorScaleControl);
 }
+function updateId(d) {
+    return d3.select(this).attr("id", `wellCircle${d.key}`);
+}
+let radiusScale = d3.scaleLinear().domain([0, 19]).range([5, 2]);
+let colorValueScale = d3.scaleLinear().domain([0, 19]).range([1, 0]);
 
 function plotMaps(dp) {
     let longAccessor = (d) => {
@@ -24,18 +29,20 @@ function plotMaps(dp) {
         plotContours(event);
         plotWells(event);
     }
-    let radiusScale = d3.scaleLinear().domain([1, 19]).range([5, 2]);
-    let colorValueScale = d3.scaleLinear().domain([1, 19]).range([1, 0]);
+
     function plotWells(event) {
         let layer = event.overlayMouseTarget;
 
         if (plotWellsOption) {
-            let marker = layer.select("#wellsGroup").selectAll("g").data(wells);
-            wells = wells.sort(wellSortFunctions[wellSortIndex]).reverse();//Reverse it to print the smaller size first (bigger size later)
+            let wells1 = wells.sort(wellSortFunctions[wellSortIndex]).reverse();
+
+            let marker = layer.select("#wellsGroup").selectAll("g").data(wells1);
 
             let transform = event.transform(longAccessor, latAccessor);
             //Update existing
             marker.each(transform);
+            marker.each(updateId);
+
             marker.exit().remove();
 
             let enter = marker.enter().append("g")
@@ -43,9 +50,7 @@ function plotMaps(dp) {
                 .attr("class", "marker");
 
             enter.append("circle")
-                .attr("id", (d, i)=>`wellCircle${i}`)
-                .attr("r", 1.4)
-                .attr("fill", "rgba(0,0,0,0.5)")
+                .attr("id", (d, i)=>`wellCircle${d.key}`)
                 .attr("stroke", "black")
                 .attr("fill-opacity", .5)
                 .attr("stroke-width", 0.6)
@@ -55,10 +60,14 @@ function plotMaps(dp) {
                 .on("mouseout", () => {
                     hidetip();
                 });
-            //Highlights and
-            let length = wells.length;//select 19 last ones (are the biggest)
-            for (let i = 1; i <= 19; i++) {
-                d3.select(`#wellCircle${length-i}`).attr("fill", d3.interpolateReds(colorValueScale(i))).attr("r", radiusScale(i));
+            //Change
+            let length = wells1.length;
+            let cutpoint = length - 19;
+            for (let i = 0; i < length; i++) {
+                d3.select(`#wellCircle${wells1[i].key}`).attr("r", 1.4).attr("fill", "rgba(0,0,0,0.5)");
+                if(i>=cutpoint){
+                    d3.select(`#wellCircle${wells1[i].key}`).attr("r", radiusScale(length-i-1)).attr("fill", d3.interpolateReds(colorValueScale(length-i-1)));
+                }
             }
         } else {
             layer.select("#wellsGroup").selectAll("*").remove();
