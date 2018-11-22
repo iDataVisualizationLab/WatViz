@@ -47,7 +47,7 @@ var wordTip = function (d) {
         str += outputFormat(d.data[0].time);
 
         str += "</div>"
-        str += "<table>";
+        str += "<table class ='headertable'>";
         str += "<tr>";
         str += '<th >Source(s)</th>';
         str += '<th >Title</th>';
@@ -550,7 +550,7 @@ function blacklist(data,category){
     var categoriesmap = {};
     for ( k in categoriesgroup)
         categoriesgroup[k].forEach(kk=> categoriesmap[kk]= k);
-    var blackw = ["texas","(usgs)","1)","collected","study","data"];
+    var blackw = ["texas","(usgs)","usgs","1)","collected","study","data"];
     termscollection_org =[];
     data.forEach(d=>{
         d.keywords.filter(w => {

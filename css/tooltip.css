@@ -30,3 +30,7 @@ div.tooltip td {
 div.tooltip .headertip h5, div.tooltip .headertip h6 {
     display: inline-block;
 }
+
+div.tooltip .headertable {
+    max-width: 300px;
+}
