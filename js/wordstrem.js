@@ -336,7 +336,7 @@ function readyWordStream (error, data){
 
     //data = data.filter(d=> d.time> parseTime('Apr 15 2018'));
     termscollection_org = blacklist(data,"category");
-    //forcegraph("#slide-out","#autocomplete-input");
+    forcegraph(".networkDiv");
     var listjson = {};
     d3.map(termscollection_org, function(d){return d.term;}).keys().forEach(d=>listjson[d]=null);
 
@@ -550,7 +550,7 @@ function blacklist(data,category){
     var categoriesmap = {};
     for ( k in categoriesgroup)
         categoriesgroup[k].forEach(kk=> categoriesmap[kk]= k);
-    var blackw = ["texas","(usgs)","usgs","1)","collected","study","data"];
+    var blackw = ["texas","(usgs)","usgs","1)","collected","study","data","water","texa"];
     termscollection_org =[];
     data.forEach(d=>{
         d.keywords.filter(w => {
