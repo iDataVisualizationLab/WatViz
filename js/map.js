@@ -9,6 +9,13 @@ function createColorScale() {
     gm.map.controls[google.maps.ControlPosition.RIGHT_CENTER].push(colorScaleControl);
 }
 
+function updateId(d) {
+    return d3.select(this).attr("id", `wellCircle${d.key}`);
+}
+
+let radiusScale = d3.scaleLinear().domain([0, 19]).range([5, 2]);
+let colorValueScale = d3.scaleLinear().domain([0, 19]).range([1, 0]);
+
 function plotMaps(dp) {
     let longAccessor = (d) => {
         return d[COL_LONG];
@@ -30,12 +37,15 @@ function plotMaps(dp) {
         let layer = event.overlayMouseTarget;
 
         if (plotWellsOption) {
-            let marker = layer.select("#wellsGroup").selectAll("g").data(wells);
-            wells = wells.sort(wellSortFunctions[wellSortIndex]).reverse();//Reverse it to print the smaller size first (bigger size later)
+            let wells1 = wells.sort(wellSortFunctions[wellSortIndex]);
+
+            let marker = layer.select("#wellsGroup").selectAll("g").data(wells1);
 
             let transform = event.transform(longAccessor, latAccessor);
             //Update existing
             marker.each(transform);
+            marker.each(updateId);
+
             marker.exit().remove();
 
             let enter = marker.enter().append("g")
@@ -43,12 +53,24 @@ function plotMaps(dp) {
                 .attr("class", "marker");
 
             enter.append("circle")
-                .attr("id", (d, i)=>`wellCircle${i}`)
-                .attr("r", 1.4)
-                .attr("fill", "rgba(0,0,0,0.5)")
+                .attr("id", (d, i) => `wellCircle${d.key}`)
                 .attr("stroke", "black")
                 .attr("fill-opacity", .5)
                 .attr("stroke-width", 0.6)
+                .attr("r", (d, i)=>{
+                    if(i<=19){
+                        return radiusScale(i);
+                    }else{
+                        return 1.4;
+                    }
+                })
+                .attr("fill", (d, i)=>{
+                    if(i<=19){
+                        return d3.interpolateReds(colorValueScale(i));
+                    }else{
+                        return "rgba(0,0,0,0.5)";
+                    }
+                })
                 .on("mouseover", d => {
                     showTip(d, formatData);
                 })
@@ -98,18 +120,18 @@ function plotMaps(dp) {
         g.attr("class", "contour");
         g.attr("transform", `translate(${grid.x}, ${grid.y})`);
         let positiveGrid = copy(grid);
-        positiveGrid.forEach(d=>{
-            if(d.value<0||typeof d.value==="object"){
+        positiveGrid.forEach(d => {
+            if (d.value < 0 || typeof d.value === "object") {
                 d.value = null;
             }
         });
         let negativeGrid = copy(grid);
-        negativeGrid.forEach(d=>{
-           if(d.value>=0 || typeof d.value==="object"){
-                d.value=null;
-           }else{
-               d.value = -d.value;//Convert to positive.
-           }
+        negativeGrid.forEach(d => {
+            if (d.value >= 0 || typeof d.value === "object") {
+                d.value = null;
+            } else {
+                d.value = -d.value;//Convert to positive.
+            }
         });
 
         function copy(o) {
@@ -123,10 +145,11 @@ function plotMaps(dp) {
         }
 
         plotContoursFromData(g, positiveGrid, colorType("positive"));
-        if(negativeGrid.filter(g=>g.value!==null).length>0){
+        if (negativeGrid.filter(g => g.value !== null).length > 0) {
             plotContoursFromData(g, negativeGrid, colorType("negative"));
         }
     }
+
     //Plot some extra controls
     //create and set the plot well controls
     let plotWellControl = createPlotWellsControl();
@@ -135,16 +158,17 @@ function plotMaps(dp) {
 
     createColorScale();
 }
-function colorType(type){
-    return function(d){
+
+function colorType(type) {
+    return function (d) {
         if (analyzeValueIndex === 0) {
             return color.waterLevel(d.value);
         }
         if (analyzeValueIndex === 1) {
-            if(type=="negative"){
+            if (type == "negative") {
                 return d3.interpolateReds(negativeValueDiffScale(d.value));
             }
-            if(type==="positive"){
+            if (type === "positive") {
                 return d3.interpolateBlues(positiveValueDiffScale(d.value));
             }
         }
@@ -175,7 +199,7 @@ function plotContoursFromData(group, grid, colorFunction) {
     g.selectAll("path")
         .data(contourData)
         .enter().append("path")
-        .attr("d", d=>{
+        .attr("d", d => {
             let path = d3.geoPath(d3.geoIdentity().scale(grid.scale))(d);
             // return smoothPath(path);
             return path;
@@ -200,6 +224,7 @@ function processThresholds(range) {
     thresholds0[0] = thresholds0[0] + 10e-6;
     return thresholds0;
 }
+
 function processThresholds1(range) {
     let min0 = range[0];//added some value
     let max0 = range[1];
@@ -210,6 +235,7 @@ function processThresholds1(range) {
     }
     return thresholds0;
 }
+
 function plotWellsOptionChange() {
     plotWellsOption = document.getElementById("changePlotWells").checked;
     gm.updateMap();
@@ -246,60 +272,63 @@ function createPlotWellsControl() {
     controlUI.appendChild(controlText);
     return controlDiv;
 }
-function createPlotColorScale(ticks, colorFunction, width, height){
+
+function createPlotColorScale(ticks, colorFunction, width, height) {
     d3.select("#colorScaleDiv").remove();
     d3.select("#colorScaleSvg").remove();
-    ticks = ticks.map(d=>Math.round(d));
+    ticks = ticks.map(d => Math.round(d));
     positiveValueDiffScale = d3.scaleLinear().domain([0, colorRanges[analyzeValueIndex][timeStepTypeIndex][1]]).range([0.05, 1]);
     negativeValueDiffScale = d3.scaleLinear().domain([0, -colorRanges[analyzeValueIndex][timeStepTypeIndex][0]]).range([0.05, 1]);
     let margin = {left: 10, right: 10, top: 10, bottom: 10};
     let controlDiv = document.createElement('div');
     controlDiv.id = "colorScaleDiv";
-    controlDiv.style.width = width+"px";
-    controlDiv.style.height = (height+margin.top+margin.bottom)+"px";
+    controlDiv.style.width = width + "px";
+    controlDiv.style.height = (height + margin.top + margin.bottom) + "px";
     controlDiv.style.backgroundColor = '#fff';
     controlDiv.style.borderRadius = '2px';
     controlDiv.style.boxShadow = 'rgba(0, 0, 0, 0.3) 4px 4px 1px 1px;';
     controlDiv.style.cursor = 'pointer';
     controlDiv.style.marginRight = "10px";
 
-    let y = d3.scaleLinear().domain(d3.extent(ticks)).range([height-margin.top-margin.bottom, 0]);
+    let y = d3.scaleLinear().domain(d3.extent(ticks)).range([height - margin.top - margin.bottom, 0]);
     // let svg = d3.select(document.createElement('svg'));
     let svg = d3.select("body").append("svg");
     svg.node().style.all = "unset";
     svg.attr("overflow", "visible");
     svg.attr("id", "colorScaleSvg");
     svg.attr("width", width);
-    svg.attr("height", (height+margin.top+margin.bottom));
+    svg.attr("height", (height + margin.top + margin.bottom));
 
 
     let step = y(ticks[0]) - y(ticks[1]);
     ticks.shift();
-    let enter = svg.append("g").attr("transform", `translate(0, ${margin.top})`).selectAll("rect").data(ticks.map(d=>{return {value: d}})).enter();
+    let enter = svg.append("g").attr("transform", `translate(0, ${margin.top})`).selectAll("rect").data(ticks.map(d => {
+        return {value: d}
+    })).enter();
     enter.append("rect")
         .attr("width", 25)
         .attr("height", step)
         .attr("x", 34)
-        .attr("y", (d, i)=>(y(ticks[i])))
-        .attr("fill", d=>{
-        if (analyzeValueIndex === 0) {
-            return color.waterLevel(d.value);
-        }
-        if (analyzeValueIndex === 1) {
-            if(d.value<0){
-                return d3.interpolateReds(negativeValueDiffScale(-d.value));
+        .attr("y", (d, i) => (y(ticks[i])))
+        .attr("fill", d => {
+            if (analyzeValueIndex === 0) {
+                return color.waterLevel(d.value);
             }
-            if(d.value>=0){
-                return d3.interpolateBlues(positiveValueDiffScale(d.value));
+            if (analyzeValueIndex === 1) {
+                if (d.value < 0) {
+                    return d3.interpolateReds(negativeValueDiffScale(-d.value));
+                }
+                if (d.value >= 0) {
+                    return d3.interpolateBlues(positiveValueDiffScale(d.value));
+                }
             }
-        }
-    });
+        });
     enter.append("text")
         .attr("x", 30)
-        .attr("y", (d, i)=> (y(ticks[i]) + step/2))
+        .attr("y", (d, i) => (y(ticks[i]) + step / 2))
         .attr("alignment-baseline", "middle")
         .attr("text-anchor", "end")
-        .text((d, i)=>ticks[i]);
+        .text((d, i) => ticks[i]);
 
     controlDiv.appendChild(svg.node());
 

@@ -25,6 +25,7 @@ function formatData(d) {
     let county = `County: ${d.values[0][COL_COUNTY]}`;
     let htmlStr = `<b>Well id: ${wellId}</b><br/>${position}<br/>${county}`;
         htmlStr +=`<br/>Overall deviation: ${dp.wellStatistics[wellId][COL_STANDARD_DEVIATION]}`;
+    htmlStr +=`<br/>Overall reduction: ${dp.wellStatistics[wellId][COL_OVERALL_REDUCTION]}`;
         htmlStr +=`<br/>Sudden increment: ${dp.wellStatistics[wellId][COL_SUDDEN_INCREMENT]}`;
         htmlStr +=`<br/>Sudden decrement: ${dp.wellStatistics[wellId][COL_SUDDEN_DECREMENT]}`;
     let table = "<table>";
