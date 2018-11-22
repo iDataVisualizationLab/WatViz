@@ -31,7 +31,8 @@ function plotMaps(dp) {
         plotContours(event);
         plotWells(event);
     }
-
+    let radiusScale = d3.scaleLinear().domain([1, 19]).range([5, 2]);
+    let colorValueScale = d3.scaleLinear().domain([1, 19]).range([1, 0]);
     function plotWells(event) {
         let layer = event.overlayMouseTarget;
 
@@ -76,6 +77,11 @@ function plotMaps(dp) {
                 .on("mouseout", () => {
                     hidetip();
                 });
+            //Highlights and
+            let length = wells.length;//select 19 last ones (are the biggest)
+            for (let i = 1; i <= 19; i++) {
+                d3.select(`#wellCircle${length-i}`).attr("fill", d3.interpolateReds(colorValueScale(i))).attr("r", radiusScale(i));
+            }
         } else {
             layer.select("#wellsGroup").selectAll("*").remove();
         }

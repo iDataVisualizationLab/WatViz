@@ -15,10 +15,18 @@
         @import "css/discreteheatmap.css";
         @import "css/floatingbutton.css";
         @import "css/floatingBox.css";
+        @import "css/wordstream.css";
     </style>
 </head>
 <body>
-<div class="wordStreamDiv"></div>
+<div class="othersrcDiv">
+    <div class="wordStreamDiv">
+
+    </div>
+    <div class="networkDiv">
+
+    </div>
+</div>
 <div id="controlPanelContainer" class="floatingBox">
     <div id="controlPanelHeader" class="floatingBoxHeader"><span class="floatingBoxButton"
                                                                  onclick="closeFloatingBox('btnControlPanel', 'controlPanelContainer')">[-]</span>
@@ -76,6 +84,8 @@
 <script src="lib/d3-hsv.v0.1.min.js"></script>
 <script src="lib/d3-contour.v1.min.js"></script>
 <script src="//maps.google.com/maps/api/js?key=AIzaSyAA-YOLIVTWEZLS7316nJfEX3C9FedRkLg"></script>
+<script src="https://d3js.org/d3-selection-multi.v1.min.js"></script>
+<script src="lib/d3.layout.wordstream.js"></script>
 
 
 <!--custom code-->
@@ -90,6 +100,7 @@
 <script src="js/map.js"></script>
 <script src="js/playslider/playslider.js"></script>
 <script src="js/discreteheatmap.js"></script>
+<script src="js/wordstrem.js"></script>
 <script src="js/main.js"></script>
 
 <script src="js/floatingBox.js"></script>
