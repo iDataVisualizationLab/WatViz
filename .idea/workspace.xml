@@ -1,17 +1,58 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
+<<<<<<< HEAD
+    <list default="true" id="e26e8c38-f985-4cbf-a7e9-198351b08448" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/js/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/main.js" afterDir="false" />
+    </list>
+=======
     <list default="true" id="6eb9fd8f-af74-4cf5-b581-741a436ee844" name="Default" comment="" />
+>>>>>>> e0733ce83314abaa1a7629786d4d71bff191b103
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
     <ignored path="$PROJECT_DIR$/tmp/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+<<<<<<< HEAD
+=======
     <option name="TRACKING_ENABLED" value="true" />
+>>>>>>> e0733ce83314abaa1a7629786d4d71bff191b103
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+<<<<<<< HEAD
+  <component name="FUSProjectUsageTrigger">
+    <session id="873108202">
+      <usages-collector id="statistics.file.extensions.edit">
+        <counts>
+          <entry key="js" value="15" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.edit">
+        <counts>
+          <entry key="JavaScript" value="15" />
+        </counts>
+      </usages-collector>
+    </session>
+  </component>
+  <component name="FileEditorManager">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/js/discreteheatmap.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="143">
+              <caret line="190" column="61" lean-forward="true" selection-start-line="190" selection-start-column="61" selection-end-line="190" selection-end-column="61" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/js/processdata.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="424">
+              <caret line="156" column="39" lean-forward="true" selection-start-line="156" selection-start-column="39" selection-end-line="156" selection-end-column="39" />
+=======
   <component name="FileEditorManager">
     <leaf>
       <file leaf-file-name="main.js" pinned="false" current-in-tab="false">
@@ -20,30 +61,57 @@
             <state relative-caret-position="0">
               <caret line="0" column="47" lean-forward="false" selection-start-line="0" selection-start-column="32" selection-end-line="0" selection-end-column="47" />
               <folding />
+>>>>>>> e0733ce83314abaa1a7629786d4d71bff191b103
             </state>
           </provider>
         </entry>
       </file>
+<<<<<<< HEAD
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/js/main.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="361">
+              <caret line="19" column="17" selection-start-line="19" selection-start-column="17" selection-end-line="19" selection-end-column="17" />
+=======
       <file leaf-file-name="wordstrem.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js/wordstrem.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="249">
               <caret line="552" column="36" lean-forward="true" selection-start-line="552" selection-start-column="36" selection-end-line="552" selection-end-column="36" />
               <folding />
+>>>>>>> e0733ce83314abaa1a7629786d4d71bff191b103
             </state>
           </provider>
         </entry>
       </file>
+<<<<<<< HEAD
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/js/globalvariables.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="462">
+              <caret line="91" column="22" selection-start-line="91" selection-start-column="22" selection-end-line="91" selection-end-column="22" />
+=======
       <file leaf-file-name="dataWatViz.json" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/data/dataWatViz.json">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="437">
               <caret line="0" column="966164" lean-forward="false" selection-start-line="0" selection-start-column="966164" selection-end-line="0" selection-end-column="966164" />
               <folding />
+>>>>>>> e0733ce83314abaa1a7629786d4d71bff191b103
             </state>
           </provider>
         </entry>
       </file>
+<<<<<<< HEAD
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/demo.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="253">
+              <caret line="75" column="46" lean-forward="true" selection-start-line="75" selection-start-column="46" selection-end-line="75" selection-end-column="46" />
+              <folding>
+                <element signature="n#style#0;n#label#3;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#a#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+=======
       <file leaf-file-name="tooltip.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js/tooltip.js">
           <provider selected="true" editor-type-id="text-editor">
@@ -51,31 +119,64 @@
               <caret line="26" column="23" lean-forward="false" selection-start-line="26" selection-start-column="19" selection-end-line="26" selection-end-column="23" />
               <folding>
                 <marker date="1542855311023" expanded="true" signature="1608:1646" ph="..." />
+>>>>>>> e0733ce83314abaa1a7629786d4d71bff191b103
               </folding>
             </state>
           </provider>
         </entry>
       </file>
+<<<<<<< HEAD
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/css/floatingBox.css">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="171">
+              <caret line="9" column="23" lean-forward="true" selection-start-line="9" selection-start-column="23" selection-end-line="9" selection-end-column="23" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/css/main.css">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="285">
+              <caret line="15" column="18" lean-forward="true" selection-start-line="15" selection-start-column="18" selection-end-line="15" selection-end-column="18" />
+=======
       <file leaf-file-name="tooltip.css" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/css/tooltip.css">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="362">
               <caret line="33" column="24" lean-forward="false" selection-start-line="33" selection-start-column="13" selection-end-line="33" selection-end-column="24" />
               <folding />
+>>>>>>> e0733ce83314abaa1a7629786d4d71bff191b103
             </state>
           </provider>
         </entry>
       </file>
+<<<<<<< HEAD
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/js/map.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="6194">
+              <caret line="326" column="39" selection-start-line="326" selection-start-column="39" selection-end-line="326" selection-end-column="39" />
+=======
       <file leaf-file-name="wordstream.css" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/css/wordstream.css">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="204">
               <caret line="12" column="0" lean-forward="true" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
               <folding />
+>>>>>>> e0733ce83314abaa1a7629786d4d71bff191b103
             </state>
           </provider>
         </entry>
       </file>
+<<<<<<< HEAD
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/js/d3googlemap.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1248">
+              <caret line="72" column="21" lean-forward="true" selection-start-line="68" selection-start-column="27" selection-end-line="72" selection-end-column="21" />
+=======
       <file leaf-file-name="demo.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/demo.html">
           <provider selected="true" editor-type-id="text-editor">
@@ -84,16 +185,28 @@
               <folding>
                 <element signature="n#style#0;n#label#3;n#div#0;n#div#1;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
               </folding>
+>>>>>>> e0733ce83314abaa1a7629786d4d71bff191b103
             </state>
           </provider>
         </entry>
       </file>
+<<<<<<< HEAD
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/js/tooltip.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="418">
+              <caret line="22" column="5" lean-forward="true" selection-start-line="22" selection-start-column="5" selection-end-line="22" selection-end-column="5" />
+              <folding>
+                <element signature="n#style#0;n#td#1;n#!!top" expanded="true" />
+              </folding>
+=======
       <file leaf-file-name="main.css" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/css/main.css">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="153">
               <caret line="9" column="27" lean-forward="false" selection-start-line="9" selection-start-column="27" selection-end-line="9" selection-end-column="27" />
               <folding />
+>>>>>>> e0733ce83314abaa1a7629786d4d71bff191b103
             </state>
           </provider>
         </entry>
@@ -103,13 +216,55 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+<<<<<<< HEAD
+        <option value="HTML File" />
+        <option value="CSS File" />
+        <option value="JavaScript File" />
+=======
         <option value="JavaScript File" />
         <option value="CSS File" />
+>>>>>>> e0733ce83314abaa1a7629786d4d71bff191b103
       </list>
     </option>
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
+<<<<<<< HEAD
+      <find>plot</find>
+      <find>tick</find>
+      <find>colorType</find>
+      <find>25</find>
+      <find>30</find>
+      <find>overallRe</find>
+      <find>interpo</find>
+      <find>contours</find>
+      <find>curve</find>
+      <find>gridSize</find>
+      <find>stroke</find>
+      <find>border</find>
+      <find>smooth</find>
+      <find>negative</find>
+      <find>grid</find>
+      <find>positive</find>
+      <find>numberOf</find>
+      <find>plotWell</find>
+      <find>d3.interpolateReds</find>
+      <find>groupBy</find>
+      <find>highli</find>
+      <find>sortFunctions</find>
+      <find>dispatch</find>
+      <find>wellStatustics</find>
+      <find>formatData</find>
+      <find>interpolateRed</find>
+      <find>id</find>
+      <find>plotWells</find>
+      <find>transform</find>
+      <find>interpolateReds</find>
+    </findStrings>
+    <dirStrings>
+      <dir>$PROJECT_DIR$</dir>
+    </dirStrings>
+=======
       <find>key</find>
       <find>spi</find>
       <find>sidenav</find>
@@ -128,6 +283,7 @@
       <find>sudden</find>
       <find>black</find>
     </findStrings>
+>>>>>>> e0733ce83314abaa1a7629786d4d71bff191b103
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -135,6 +291,36 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
+<<<<<<< HEAD
+        <option value="$PROJECT_DIR$/index.html" />
+        <option value="$PROJECT_DIR$/example.html" />
+        <option value="$PROJECT_DIR$/js/leaderbinner.js" />
+        <option value="$PROJECT_DIR$/js/playslider.js" />
+        <option value="$PROJECT_DIR$/js/playslider/discreteheatmap.js" />
+        <option value="$PROJECT_DIR$/css/map.css" />
+        <option value="$PROJECT_DIR$/js/spinner.js" />
+        <option value="$PROJECT_DIR$/js/util.js" />
+        <option value="$PROJECT_DIR$/css/globalvariables.css" />
+        <option value="$PROJECT_DIR$/js/playslider/playslider.css" />
+        <option value="$PROJECT_DIR$/data/well_data_full.optimized.csv" />
+        <option value="$PROJECT_DIR$/js/floatingBox.js" />
+        <option value="$PROJECT_DIR$/css/tooltip.css" />
+        <option value="$PROJECT_DIR$/js/controlPanel.js" />
+        <option value="$PROJECT_DIR$/js/colormanager.js" />
+        <option value="$PROJECT_DIR$/js/recbin.js" />
+        <option value="$PROJECT_DIR$/js/playslider/playslider.js" />
+        <option value="$PROJECT_DIR$/js/discreteheatmap.js" />
+        <option value="$PROJECT_DIR$/css/main.css" />
+        <option value="$PROJECT_DIR$/css/discreteheatmap.css" />
+        <option value="$PROJECT_DIR$/demo.html" />
+        <option value="$PROJECT_DIR$/css/floatingBox.css" />
+        <option value="$PROJECT_DIR$/js/globalvariables.js" />
+        <option value="$PROJECT_DIR$/js/d3googlemap.js" />
+        <option value="$PROJECT_DIR$/js/processdata.js" />
+        <option value="$PROJECT_DIR$/js/tooltip.js" />
+        <option value="$PROJECT_DIR$/js/map.js" />
+        <option value="$PROJECT_DIR$/js/main.js" />
+=======
         <option value="$PROJECT_DIR$/js/main.js" />
         <option value="$PROJECT_DIR$/css/main.css" />
         <option value="$PROJECT_DIR$/data/dataWatViz.json" />
@@ -142,6 +328,7 @@
         <option value="$PROJECT_DIR$/js/wordstrem.js" />
         <option value="$PROJECT_DIR$/demo.html" />
         <option value="$PROJECT_DIR$/css/wordstream.css" />
+>>>>>>> e0733ce83314abaa1a7629786d4d71bff191b103
       </list>
     </option>
   </component>
@@ -151,6 +338,13 @@
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
   </component>
+<<<<<<< HEAD
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+=======
   <component name="ProjectFrameBounds">
     <option name="x" value="1273" />
     <option name="width" value="1294" />
@@ -172,6 +366,7 @@
     </navigator>
     <panes>
       <pane id="Scratches" />
+>>>>>>> e0733ce83314abaa1a7629786d4d71bff191b103
       <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
@@ -193,7 +388,22 @@
             <path>
               <item name="WatViz" type="b2602c69:ProjectViewProjectNode" />
               <item name="WatViz" type="462c0819:PsiDirectoryNode" />
+<<<<<<< HEAD
+              <item name="images" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="WatViz" type="b2602c69:ProjectViewProjectNode" />
+              <item name="WatViz" type="462c0819:PsiDirectoryNode" />
               <item name="js" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="WatViz" type="b2602c69:ProjectViewProjectNode" />
+              <item name="WatViz" type="462c0819:PsiDirectoryNode" />
+              <item name="js" type="462c0819:PsiDirectoryNode" />
+              <item name="playslider" type="462c0819:PsiDirectoryNode" />
+=======
+              <item name="js" type="462c0819:PsiDirectoryNode" />
+>>>>>>> e0733ce83314abaa1a7629786d4d71bff191b103
             </path>
             <path>
               <item name="WatViz" type="b2602c69:ProjectViewProjectNode" />
@@ -206,6 +416,8 @@
       </pane>
     </panes>
   </component>
+<<<<<<< HEAD
+=======
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
@@ -218,6 +430,7 @@
       <recent name="E:\nvtng\Projects\GitHub\idvl\WatViz\data" />
     </key>
   </component>
+>>>>>>> e0733ce83314abaa1a7629786d4d71bff191b103
   <component name="RunDashboard">
     <option name="ruleStates">
       <list>
@@ -230,17 +443,301 @@
       </list>
     </option>
   </component>
+<<<<<<< HEAD
+  <component name="RunManager" selected="JavaScript Debug.demo.html">
+    <configuration name="demo.html" type="JavascriptDebugType" factoryName="JavaScript Debug" temporary="true" nameIsGenerated="true" uri="http://localhost:63342/WatViz/demo.html">
+      <method v="2" />
+    </configuration>
+    <configuration name="heatmap.html" type="JavascriptDebugType" factoryName="JavaScript Debug" temporary="true" nameIsGenerated="true" uri="http://localhost:63342/WatViz/heatmap.html">
+      <method v="2" />
+    </configuration>
+    <configuration name="index.html" type="JavascriptDebugType" factoryName="JavaScript Debug" temporary="true" nameIsGenerated="true" uri="http://localhost:63342/WatViz/index.html">
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="JavaScript Debug.index.html" />
+      <item itemvalue="JavaScript Debug.heatmap.html" />
+      <item itemvalue="JavaScript Debug.demo.html" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JavaScript Debug.demo.html" />
+        <item itemvalue="JavaScript Debug.heatmap.html" />
+        <item itemvalue="JavaScript Debug.index.html" />
+      </list>
+    </recent_temporary>
+=======
   <component name="RunManager">
     <configuration name="demo.html" type="JavascriptDebugType" factoryName="JavaScript Debug" nameIsGenerated="true" engineId="98ca6316-2f89-46d9-a9e5-fa9e2b0625b3" uri="http://localhost:64320/WatViz/demo.html" />
   </component>
   <component name="ShelveChangesManager" show_recycled="false">
     <option name="remove_strategy" value="false" />
+>>>>>>> e0733ce83314abaa1a7629786d4d71bff191b103
   </component>
   <component name="SvnConfiguration">
     <configuration />
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
+<<<<<<< HEAD
+      <changelist id="e26e8c38-f985-4cbf-a7e9-198351b08448" name="Default Changelist" comment="" />
+      <created>1540847004277</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1540847004277</updated>
+      <workItem from="1540847006025" duration="1160000" />
+      <workItem from="1541106006018" duration="1081000" />
+      <workItem from="1541108614587" duration="4628000" />
+      <workItem from="1541125608865" duration="254000" />
+      <workItem from="1541213782335" duration="12340000" />
+      <workItem from="1541612776897" duration="7621000" />
+      <workItem from="1541693204432" duration="2154000" />
+      <workItem from="1541696514027" duration="4290000" />
+      <workItem from="1541708685897" duration="22948000" />
+      <workItem from="1541801871911" duration="17746000" />
+      <workItem from="1542133909354" duration="1275000" />
+      <workItem from="1542146288907" duration="1732000" />
+      <workItem from="1542208292518" duration="8684000" />
+      <workItem from="1542407071965" duration="32082000" />
+      <workItem from="1542562602001" duration="3538000" />
+      <workItem from="1542643851068" duration="18927000" />
+      <workItem from="1542764918964" duration="785000" />
+      <workItem from="1542815213161" duration="29367000" />
+    </task>
+    <task id="LOCAL-00001" summary="Added option to plot wells with sizes">
+      <created>1542849656223</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1542849656223</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Stop the timer at the end of the max date">
+      <created>1541523939300</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1541523939300</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Stop the timer at the end of the max date">
+      <created>1541523962879</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1541523962879</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Added Heatmap">
+      <created>1541551001119</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1541551001119</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Added spinner">
+      <created>1541553836032</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1541553836032</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Reformat wellID (from the heatmap cell key)">
+      <created>1541554023661</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1541554023661</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Change z-index of the heatmap time label">
+      <created>1541554185791</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1541554185791</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Added marker on the map for the location">
+      <created>1541555082372</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1541555082373</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Changed play slider display">
+      <created>1541708525504</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1541708525504</updated>
+    </task>
+    <task id="LOCAL-00010" summary="Completed group by and sort by functions&#10;Commit before adding menus">
+      <created>1541727308325</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1541727308325</updated>
+    </task>
+    <task id="LOCAL-00011" summary="Added control panels for exploration function">
+      <created>1541815695742</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1541815695742</updated>
+    </task>
+    <task id="LOCAL-00012" summary="Added opacity for the contours">
+      <created>1541816023272</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1541816023273</updated>
+    </task>
+    <task id="LOCAL-00013" summary="On mouseover the cell on heatmap will move the time slider + contour map to corresponding time.">
+      <created>1541872310475</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1541872310475</updated>
+    </task>
+    <task id="LOCAL-00014" summary="Added group + sorting options for statistical analysis">
+      <created>1542478243280</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1542478243280</updated>
+    </task>
+    <task id="LOCAL-00015" summary="Added Plot wells + Focus options">
+      <created>1542497079920</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1542497079920</updated>
+    </task>
+    <task id="LOCAL-00016" summary="Added option for sorting by the range (max-min overtime)">
+      <created>1542565415178</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1542565415178</updated>
+    </task>
+    <task id="LOCAL-00017" summary="Fig bugs about overall reduction">
+      <created>1542590588003</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1542590588003</updated>
+    </task>
+    <task id="LOCAL-00018" summary="Added options to select values to analyze, either&#10;- Average value (over a time step)&#10;- Mean of a time step minus overall mean.">
+      <created>1542660648043</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1542660648043</updated>
+    </task>
+    <task id="LOCAL-00019" summary="Changed color scale for the contours">
+      <created>1542678945320</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1542678945320</updated>
+    </task>
+    <task id="LOCAL-00020" summary="Changed color scale for the contours">
+      <created>1542679410620</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1542679410620</updated>
+    </task>
+    <task id="LOCAL-00021" summary="Draw positive/negative contours separately">
+      <created>1542700601426</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1542700601426</updated>
+    </task>
+    <task id="LOCAL-00022" summary="Added color scales on map + changed plot wells to map menu">
+      <created>1542765541503</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1542765541503</updated>
+    </task>
+    <task id="LOCAL-00023" summary="Commit before adding top div">
+      <created>1542835042835</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1542835042836</updated>
+    </task>
+    <task id="LOCAL-00024" summary="Add top div for WordStream">
+      <created>1542835326120</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1542835326120</updated>
+    </task>
+    <task id="LOCAL-00025" summary="Changed z-index for the header bar + control panel">
+      <created>1542835743985</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1542835743985</updated>
+    </task>
+    <task id="LOCAL-00026" summary="Added plot well size">
+      <created>1542839083803</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1542839083803</updated>
+    </task>
+    <task id="LOCAL-00027" summary="Changed default groupby option">
+      <created>1542839122549</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1542839122549</updated>
+    </task>
+    <task id="LOCAL-00028" summary="Added option to plot wells">
+      <created>1542847511569</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1542847511570</updated>
+    </task>
+    <task id="LOCAL-00029" summary="Added option to plot wells with sizes">
+      <created>1542848141490</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1542848141490</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
+    <servers />
+  </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="450000" />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="0" y="23" width="2560" height="1417" extended-state="6" />
+    <editor active="true" />
+    <layout>
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.15170771" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Messages" sideWeight="0.49960285" visible="true" weight="0.32925898" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32925898" />
+      <window_info anchor="bottom" id="Run" order="2" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" weight="0.32925898" />
+      <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Version Control" order="8" weight="0.32925898" />
+      <window_info anchor="bottom" id="Terminal" order="9" />
+      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.50039715" side_tool="true" visible="true" weight="0.32925898" />
+      <window_info anchor="bottom" id="Database Changes" order="11" show_stripe_button="false" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="Database" order="3" weight="0.32962668" />
+=======
       <changelist id="6eb9fd8f-af74-4cf5-b581-741a436ee844" name="Default" comment="" />
       <created>1542842381905</created>
       <option name="number" value="Default" />
@@ -274,6 +771,7 @@
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+>>>>>>> e0733ce83314abaa1a7629786d4d71bff191b103
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -282,6 +780,44 @@
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
   </component>
+<<<<<<< HEAD
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Added Heatmap" />
+    <MESSAGE value="Added spinner" />
+    <MESSAGE value="Reformat wellID (from the heatmap cell key)" />
+    <MESSAGE value="Change z-index of the heatmap time label" />
+    <MESSAGE value="Added marker on the map for the location" />
+    <MESSAGE value="Changed play slider display" />
+    <MESSAGE value="Completed group by and sort by functions&#10;Commit before adding menus" />
+    <MESSAGE value="Added control panels for exploration function" />
+    <MESSAGE value="Added opacity for the contours" />
+    <MESSAGE value="On mouseover the cell on heatmap will move the time slider + contour map to corresponding time." />
+    <MESSAGE value="Added group + sorting options for statistical analysis" />
+    <MESSAGE value="Added Plot wells + Focus options" />
+    <MESSAGE value="Added option for sorting by the range (max-min overtime)" />
+    <MESSAGE value="Fig bugs about overall reduction" />
+    <MESSAGE value="Added options to select values to analyze, either&#10;- Average value (over a time step)&#10;- Mean of a time step minus overall mean." />
+    <MESSAGE value="Changed color scale for the contours" />
+    <MESSAGE value="Draw positive/negative contours separately" />
+    <MESSAGE value="Added color scales on map + changed plot wells to map menu" />
+    <MESSAGE value="Commit before adding top div" />
+    <MESSAGE value="Add top div for WordStream" />
+    <MESSAGE value="Changed z-index for the header bar + control panel" />
+    <MESSAGE value="Added plot well size" />
+    <MESSAGE value="Changed default groupby option" />
+    <MESSAGE value="Added option to plot wells" />
+    <MESSAGE value="Added option to plot wells with sizes" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added option to plot wells with sizes" />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/demo.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="253">
+          <caret line="75" column="46" lean-forward="true" selection-start-line="75" selection-start-column="46" selection-end-line="75" selection-end-column="46" />
+          <folding>
+            <element signature="n#style#0;n#label#3;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#a#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+=======
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
@@ -343,10 +879,38 @@
           <caret line="26" column="23" lean-forward="false" selection-start-line="26" selection-start-column="19" selection-end-line="26" selection-end-column="23" />
           <folding>
             <marker date="1542855311023" expanded="true" signature="1608:1646" ph="..." />
+>>>>>>> e0733ce83314abaa1a7629786d4d71bff191b103
           </folding>
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
+    <entry file="file://$PROJECT_DIR$/css/floatingBox.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="171">
+          <caret line="9" column="23" lean-forward="true" selection-start-line="9" selection-start-column="23" selection-end-line="9" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/d3googlemap.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1248">
+          <caret line="72" column="21" lean-forward="true" selection-start-line="68" selection-start-column="27" selection-end-line="72" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/map.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="6194">
+          <caret line="326" column="39" selection-start-line="326" selection-start-column="39" selection-end-line="326" selection-end-column="39" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/main.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="361">
+          <caret line="19" column="17" selection-start-line="19" selection-start-column="17" selection-end-line="19" selection-end-column="17" />
+=======
     <entry file="file://$PROJECT_DIR$/css/main.css">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="153">
@@ -394,6 +958,7 @@
         <state relative-caret-position="204">
           <caret line="12" column="0" lean-forward="true" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
           <folding />
+>>>>>>> e0733ce83314abaa1a7629786d4d71bff191b103
         </state>
       </provider>
     </entry>

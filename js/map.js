@@ -331,6 +331,5 @@ function createPlotColorScale(ticks, colorFunction, width, height) {
         .text((d, i) => ticks[i]);
 
     controlDiv.appendChild(svg.node());
-
     return controlDiv;
 }
