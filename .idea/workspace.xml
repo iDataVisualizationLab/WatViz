@@ -2,22 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e26e8c38-f985-4cbf-a7e9-198351b08448" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/css/googleMapControls.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/TX-48-texas-counties.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/d3-color.v1.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/d3-interpolate.v1.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/d3-scale-chromatic.v1.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/d3-selection-multi.v1.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/texascountyids.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/topojson.v2.min.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/css/floatingBox.css" beforeDir="false" afterPath="$PROJECT_DIR$/css/floatingBox.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/demo.html" beforeDir="false" afterPath="$PROJECT_DIR$/demo.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/discreteheatmap.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/discreteheatmap.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/js/globalvariables.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/globalvariables.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/main.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/map.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/map.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/processdata.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/processdata.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -90,9 +76,9 @@
         <counts>
           <entry key="css" value="1328" />
           <entry key="html" value="2638" />
-          <entry key="js" value="41496" />
+          <entry key="js" value="41550" />
           <entry key="json" value="3" />
-          <entry key="txt" value="879" />
+          <entry key="txt" value="1076" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
@@ -100,8 +86,8 @@
           <entry key="CSS" value="1328" />
           <entry key="HTML" value="2642" />
           <entry key="JSON" value="3" />
-          <entry key="JavaScript" value="41492" />
-          <entry key="PLAIN_TEXT" value="879" />
+          <entry key="JavaScript" value="41546" />
+          <entry key="PLAIN_TEXT" value="1076" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -145,8 +131,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js/discreteheatmap.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="413">
-              <caret line="268" column="19" selection-start-line="268" selection-start-column="19" selection-end-line="268" selection-end-column="19" />
+            <state relative-caret-position="147">
+              <caret line="254" column="9" lean-forward="true" selection-start-line="254" selection-start-column="9" selection-end-line="254" selection-end-column="9" />
             </state>
           </provider>
         </entry>
@@ -160,11 +146,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/demo.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="337">
-              <caret line="47" column="65" lean-forward="true" selection-start-line="47" selection-start-column="65" selection-end-line="47" selection-end-column="65" />
+            <state relative-caret-position="56">
+              <caret line="52" column="19" lean-forward="true" selection-start-line="52" selection-start-column="19" selection-end-line="52" selection-end-column="19" />
               <folding>
                 <element signature="n#style#0;n#span#1;n#div#0;n#div#1;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#label#3;n#div#0;n#div#1;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -216,11 +202,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/js/globalvariables.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="523">
-              <caret line="69" column="18" selection-start-line="69" selection-start-column="4" selection-end-line="69" selection-end-column="18" />
+            <state relative-caret-position="140">
+              <caret line="61" column="96" selection-start-line="61" selection-start-column="96" selection-end-line="61" selection-end-column="96" />
             </state>
           </provider>
         </entry>
@@ -256,7 +242,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>rect</find>
       <find>valueDiffS</find>
       <find>wellStatistics</find>
       <find>min0</find>
@@ -283,9 +268,10 @@
       <find>controls</find>
       <find>groupByCounty</find>
       <find>focusGroup</find>
-      <find>changeGroup</find>
       <find>hidden</find>
       <find>group</find>
+      <find>County</find>
+      <find>changeGroup</find>
     </findStrings>
     <replaceStrings>
       <replace>&quot;</replace>
@@ -327,10 +313,10 @@
         <option value="$PROJECT_DIR$/css/googleMapControls.css" />
         <option value="$PROJECT_DIR$/js/processdata.js" />
         <option value="$PROJECT_DIR$/css/floatingBox.css" />
-        <option value="$PROJECT_DIR$/js/globalvariables.js" />
         <option value="$PROJECT_DIR$/js/main.js" />
         <option value="$PROJECT_DIR$/js/discreteheatmap.js" />
         <option value="$PROJECT_DIR$/demo.html" />
+        <option value="$PROJECT_DIR$/js/globalvariables.js" />
       </list>
     </option>
   </component>
@@ -610,11 +596,18 @@
       <option name="project" value="LOCAL" />
       <updated>1542700601426</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="Added&#10;- Plot or not plot contours&#10;- Highlight county&#10;- Keep group by county options only (remove other group options)&#10;- Serveral more well order options">
+      <created>1543367164938</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1543367164938</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="279698000" />
+    <option name="totallyTimeSpent" value="280759000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -642,7 +635,7 @@
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" show_stripe_button="false" />
       <window_info anchor="bottom" id="Terminal" order="9" />
-      <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
+      <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" visible="true" weight="0.32925898" />
       <window_info anchor="bottom" id="Database Changes" order="11" show_stripe_button="false" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -676,7 +669,8 @@
     <MESSAGE value="Added options to select values to analyze, either&#10;- Average value (over a time step)&#10;- Mean of a time step minus overall mean." />
     <MESSAGE value="Changed color scale for the contours" />
     <MESSAGE value="Draw positive/negative contours separately" />
-    <option name="LAST_COMMIT_MESSAGE" value="Draw positive/negative contours separately" />
+    <MESSAGE value="Added&#10;- Plot or not plot contours&#10;- Highlight county&#10;- Keep group by county options only (remove other group options)&#10;- Serveral more well order options" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added&#10;- Plot or not plot contours&#10;- Highlight county&#10;- Keep group by county options only (remove other group options)&#10;- Serveral more well order options" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/index.html" />
@@ -869,24 +863,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/globalvariables.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="523">
-          <caret line="69" column="18" selection-start-line="69" selection-start-column="4" selection-end-line="69" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/js/controlPanel.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="418">
           <caret line="22" column="34" lean-forward="true" selection-start-line="22" selection-start-column="34" selection-end-line="22" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/discreteheatmap.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="413">
-          <caret line="268" column="19" selection-start-line="268" selection-start-column="19" selection-end-line="268" selection-end-column="19" />
         </state>
       </provider>
     </entry>
@@ -899,14 +879,28 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/demo.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="337">
-          <caret line="47" column="65" lean-forward="true" selection-start-line="47" selection-start-column="65" selection-end-line="47" selection-end-column="65" />
+        <state relative-caret-position="56">
+          <caret line="52" column="19" lean-forward="true" selection-start-line="52" selection-start-column="19" selection-end-line="52" selection-end-column="19" />
           <folding>
             <element signature="n#style#0;n#span#1;n#div#0;n#div#1;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#label#3;n#div#0;n#div#1;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#span#2;n#div#0;n#div#1;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#a#0;n#body#0;n#html#0;n#!!top" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/discreteheatmap.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="147">
+          <caret line="254" column="9" lean-forward="true" selection-start-line="254" selection-start-column="9" selection-end-line="254" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/globalvariables.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="140">
+          <caret line="61" column="96" selection-start-line="61" selection-start-column="96" selection-end-line="61" selection-end-column="96" />
         </state>
       </provider>
     </entry>
