@@ -125,6 +125,8 @@ function discreteHeatMapPlotter(dp, theDivId, plotOptions) {
                                 });
                                 //Slide the play slider to corresponding location.
                                 playSlider.setTime(d.values[0][COL_MEASUREMENT_DATE]);
+                                //Plot county
+                                plotCounties(d.values[0][COL_COUNTY]);
                             })
                             .on("mouseout", () => {
                                 hidetip();
@@ -257,25 +259,49 @@ function changeAnalyzedValue() {
 }
 
 function changeGroupOrder() {
+    wellSortIndex = document.getElementById("wellOrderSelect").selectedIndex;
+    setGroupIndexByWellOrderIndex(wellSortIndex);
     groupSortIndex = document.getElementById("groupOrderSelect").selectedIndex;
     //Need to change the group sort order options
     setOptions(groupSortOptions[groupByIndex], "groupOrderSelect", groupSortIndex);
-
-    wellSortIndex = document.getElementById("wellOrderSelect").selectedIndex;
     heatmapPlotter.updatePositions();
+    //update the map too
+    gm.updateMap();
 }
 
 function changeGroup() {
-    groupByIndex = document.getElementById("groupSelect").selectedIndex;
-    //TODO: Check by text to avoid order changes
-    if (groupByIndex === 1 || groupByIndex === 2) {//for sudden changes
-        //enable focus options
-        document.getElementById("focusGroup").hidden = false;
-    } else {
-        document.getElementById("changeFocus").checked = false;
-        document.getElementById("focusGroup").hidden = true;
+    isGroupedByCounty = document.getElementById("groupByCounty").checked;
+
+    if(!isGroupedByCounty){
+        document.getElementById("groupOrderSpan").style.display="none";
+    }else{
+        document.getElementById("groupOrderSpan").style.display="block";
     }
+
+
+    document.getElementById("groupSelect").selectedIndex = 0;
+    groupByIndex = 0;
     changeGroupOrder();
+}
+
+function setGroupIndexByWellOrderIndex(wellOrderIndex){
+    if(!isGroupedByCounty){
+        if(wellOrderIndex <=5){//For all other options
+            groupByIndex = wellOrderIndex + 1;
+            groupSortIndex = 0;//Order ascending by defauult
+        }else if(wellOrderIndex==6){//average ascending
+            groupByIndex = wellOrderIndex + 1;
+            groupSortIndex = 1;
+        }else if(wellOrderIndex==7){//average descending
+            groupByIndex = wellOrderIndex;
+            groupSortIndex = 0;
+        }
+        document.getElementById("groupSelect").selectedIndex = groupByIndex;
+        document.getElementById("groupOrderSelect").selectedIndex = groupSortIndex;
+    }else{
+
+    }
+
 }
 
 function changeWellOrder() {

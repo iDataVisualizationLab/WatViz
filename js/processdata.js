@@ -9,6 +9,10 @@ function dataProcessor(data) {
     });
     //Filter data with negative saturated thickness
     data = data.filter(d => {
+        //Filter out Ector since it has only one well + only one year measurement
+        if(d[COL_COUNTY]  === "Ector"){
+            return false;
+        }
         if (d[COL_SATURATED_THICKNESS] <= 0 || d[COL_SATURATED_THICKNESS] == d[COL_WATER_ELEVATION]) {
             return false;
         } else {
@@ -99,6 +103,20 @@ function dataProcessor(data) {
 
 
         let result = {};
+        //Process the well name alphabetically
+        wells = wells.sort((a, b) => a.key.localeCompare(b.key));
+        wells.forEach((well, i)=>{
+            if(!result[well.key]) result[well.key] = {};
+            result[well.key][COL_WELL_ALPHABETICAL_GROUP] = (i<topRows) ? 1: 2;
+        });
+
+        //Process the well number of samples
+        wells = wells.sort((a, b) => b.values.length - a.values.length);
+        wells.forEach((well, i)=>{
+            if(!result[well.key]) result[well.key] = {};
+            result[well.key][COL_WELL_NUM_SAMPLES_GROUP] = (i<topRows) ? 1: 2;
+        });
+
         //Process the sudden decrement
         wells = wells.sort((a, b) => a[COL_SUDDEN_DECREMENT] - b[COL_SUDDEN_DECREMENT]);
         wells.forEach((well, i)=>{

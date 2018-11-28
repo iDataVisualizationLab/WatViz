@@ -16,6 +16,7 @@
         @import "css/floatingbutton.css";
         @import "css/floatingBox.css";
         @import "css/wordstream.css";
+        @import "css/googleMapControls.css";
     </style>
 </head>
 <body>
@@ -40,16 +41,21 @@
             <label for="aggregationSelect" class="formLabel"><span>Time aggregation</span></label>
             <select onchange="changeTimeAggregation()" id="aggregationSelect" class="soflow"></select>
             <br/>
-            <label for="groupSelect" class="formLabel"><span>Group by</span></label>
-            <select onchange="changeGroup()" id="groupSelect" class="soflow"></select>
-            <span id="focusGroup" hidden="true">
+            <label for="groupByCounty" class="formLabel"><span>Group by county</span></label>
+            <input onchange="changeGroup()" type="checkbox" id="groupByCounty" class="soflow"/>
+            <span hidden>
+                <label for="groupSelect" class="formLabel"><span>Group by</span></label>
+                <select id="groupSelect" class="soflow"></select>
+            </span>
+            <span id="focusGroup" style="display: none;">
                 <label for="changeFocus" style="width: 50px;"><span>Focus</span></label>
-                <input type="checkbox" id="changeFocus" onchange="focusOptionChange()" disabled="true"/>
+                <input type="checkbox" id="changeFocus" onchange="focusOptionChange()" disabled="true" class="soflow"/>
             </span>
             <br/>
-            <label for="groupOrderSelect" class="formLabel"><span>Group order</span></label>
-            <select onchange="changeGroupOrder()" id="groupOrderSelect" class="soflow"></select>
-            <br/>
+            <span id="groupOrderSpan" style="display: none;">
+                <label for="groupOrderSelect" class="formLabel"><span>County order</span></label>
+                <select onchange="changeGroupOrder()" id="groupOrderSelect" class="soflow"></select>
+            </span>
             <label for="wellOrderSelect" class="formLabel"><span>Well order</span></label>
             <select onchange="changeWellOrder()" id="wellOrderSelect" class="soflow"></select>
         </div>
@@ -79,13 +85,14 @@
 <!--Libraries-->
 <script src="lib/spin.min.js"></script>
 <script src="lib/d3.v4.min.js"></script>
-<script src="https://d3js.org/d3-color.v1.min.js"></script>
-<script src="https://d3js.org/d3-interpolate.v1.min.js"></script>
-<script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+<script src="lib/topojson.v2.min.js"></script>
+<script src="lib/d3-color.v1.min.js"></script>
+<script src="lib/d3-interpolate.v1.min.js"></script>
+<script src="lib/d3-scale-chromatic.v1.min.js"></script>
 <script src="lib/d3-hsv.v0.1.min.js"></script>
 <script src="lib/d3-contour.v1.min.js"></script>
 <script src="//maps.google.com/maps/api/js?key=AIzaSyAA-YOLIVTWEZLS7316nJfEX3C9FedRkLg"></script>
-<script src="https://d3js.org/d3-selection-multi.v1.min.js"></script>
+<script src="lib/d3-selection-multi.v1.min.js"></script>
 <script src="lib/d3.layout.wordstream.js"></script>
 
 

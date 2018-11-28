@@ -18,6 +18,9 @@ let dp, //store data processor
     COL_AVERAGE_OVER_TIME_STEP = 'averageOverTimeStep',
     COL_AVERAGE_DIFFERENCE_OVER_TIME_STEP = "averageDifferenceOverTimeStep",
 
+    COL_WELL_ALPHABETICAL_GROUP = 'wellAlphabeticalGroup',
+    COL_WELL_NUM_SAMPLES_GROUP = 'wellNumberOfSamplesGroup',
+
     COL_STANDARD_DEVIATION = 'standardDeviation',
     COL_STANDARD_DEVIATION_GROUP = 'standardDeviationGroup',
 
@@ -54,73 +57,130 @@ let dp, //store data processor
     averageDifferenceValueRanges = new Array(2),
     colorRanges = [averageValueRanges, averageDifferenceValueRanges],
     numberOfThresholds = [14, 8],
-    averageValueThresholds = [10e-6, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 1100,1200, 1500],
-    groupByGroups = [groupByCounty, groupBySuddenIncrement, groupBySuddenDecrement, groupByStandardDeviation, groupByOverallAverage, groupByOverallReduction],
-    groupOptions = ["County", "Sudden increment", "Sudden decrement", "Standard deviation", "Overall average", "Overall reduction"],
-    groupSortOptions = [["Alphabetical", "Number of wells"], ["Ascending", "Descending"], ["Ascending", "Descending"], ["Ascending", "Descending"], ["Ascending", "Descending"], ["Ascending", "Descending"]],
-    countySortFunctions = [sortCountiesAlphabetically, sortCountiesByNumberOfWells],
+    averageValueThresholds = [10e-6, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1500],
+    groupByGroups = [groupByCounty, groupByWellAlphabetical, groupByWellNumberOfSamples, groupBySuddenIncrement, groupBySuddenDecrement, groupByStandardDeviation, groupByOverallReduction, groupByOverallAverage],
+    groupOptions = ["County", "Well alphabetical", "Well number of samples", "Sudden increment", "Sudden decrement", "Standard deviation", "Overall reduction", "Overall average"],
+    groupSortOptions = [["Alphabetical", "Number of wells", "Overall reduction", "Average thickness (ASC)", "Average thickness (DSC)"], ["Ascending", "Descending"], ["Ascending", "Descending"],["Ascending", "Descending"], ["Ascending", "Descending"], ["Ascending", "Descending"], ["Ascending", "Descending"], ["Ascending", "Descending"]],
+    countySortFunctions = [sortCountiesAlphabetically, sortCountiesByNumberOfWells, sortCountiesByOverallReduction, sortCountiesBySaturatedThickness(true), sortCountiesBySaturatedThickness(false)],
     statisticSortFunctions = [ascendingOrder, descendingOrder],
-    groupSortFunctions = [countySortFunctions, statisticSortFunctions, statisticSortFunctions, statisticSortFunctions, statisticSortFunctions, statisticSortFunctions],
-    wellSortOptions = ["Alphabetical", "Number of samples", "Sudden increment", "Sudden decrement", "Standard deviation", "Overall reduction"],
-    wellSortFunctions = [sortWellsAlphabetically, sortWellsByNumberOfSamples, sortWellsBySuddenIncrement, sortWellsBySuddenDecrement, sortWellsByStandardDeviation, sortWellsByOverallReduction],
+    groupSortFunctions = [countySortFunctions, statisticSortFunctions, statisticSortFunctions, statisticSortFunctions, statisticSortFunctions, statisticSortFunctions, statisticSortFunctions, statisticSortFunctions],
+    wellSortOptions = ["Alphabetical", "Number of samples", "Sudden increment", "Sudden decrement", "Standard deviation", "Overall reduction", "Average thickness (ASC)", "Average thickness (DSC)"],
+    wellSortFunctions = [sortWellsAlphabetically, sortWellsByNumberOfSamples, sortWellsBySuddenIncrement, sortWellsBySuddenDecrement, sortWellsByStandardDeviation, sortWellsByOverallReduction, sortWellsByAverageThickness(true), sortWellsByAverageThickness(false)],
     groupByIndex = 5,
     groupSortIndex = 0,
     wellSortIndex = 5,
-    rowPositionTransitionDuration=500,
+    rowPositionTransitionDuration = 500,
     contourOpacity = 0.5,
     contourStrokeWidth = 0.1,
     wells,
     heatmapPlotter,
     playSlider,
-    plotWellsOption=false;
+    plotWellsOption = false,
+    plotContoursOption = true,
+    plotCountyOption = true,
+    isGroupedByCounty = false,
+    us;
 
 
-function ascendingOrder(a, b){
+function ascendingOrder(a, b) {
     return a.key - b.key;
 }
-function descendingOrder(a, b){
+
+function descendingOrder(a, b) {
     return b.key - a.key;
 }
 
-function groupByCounty(well){
+function groupByCounty(well) {
     return well[COL_COUNTY];
 }
-function groupBySuddenIncrement(well){
+
+function groupBySuddenIncrement(well) {
     return dp.wellStatistics[well[COL_WELL_ID]][COL_SUDDEN_INCREMENT_GROUP];
 }
-function groupBySuddenDecrement(well){
+
+function groupByWellAlphabetical(well){
+    return dp.wellStatistics[well[COL_WELL_ID]][COL_WELL_ALPHABETICAL_GROUP];
+}
+
+function groupByWellNumberOfSamples(well){
+    return dp.wellStatistics[well[COL_WELL_ID]][COL_WELL_NUM_SAMPLES_GROUP];
+}
+
+function groupBySuddenDecrement(well) {
     return dp.wellStatistics[well[COL_WELL_ID]][COL_SUDDEN_DECREMENT_GROUP];
 }
-function groupByStandardDeviation(well){
+
+function groupByStandardDeviation(well) {
     return dp.wellStatistics[well[COL_WELL_ID]][COL_STANDARD_DEVIATION_GROUP];
 }
-function groupByOverallReduction(well){
+
+function groupByOverallReduction(well) {
     return dp.wellStatistics[well[COL_WELL_ID]][COL_OVERALL_REDUCTION_GROUP];
 }
-function groupByOverallAverage(well){
+
+function groupByOverallAverage(well) {
     return dp.wellStatistics[well[COL_WELL_ID]][COL_OVERALL_AVERAGE_GROUP];
 }
-function sortCountiesAlphabetically(a, b){
+
+function sortCountiesAlphabetically(a, b) {
     return a.key.localeCompare(b.key);
 }
-function sortCountiesByNumberOfWells(a, b){
+
+function sortCountiesByNumberOfWells(a, b) {
     return b.values.length - a.values.length;
 }
-function sortWellsAlphabetically(a, b){
+
+function sortCountiesByOverallReduction(a, b) {
+    let aReduction = d3.sum(a.values.map(w => dp.wellStatistics[w.key][COL_OVERALL_REDUCTION]));
+    let bReduction = d3.sum(b.values.map(w => dp.wellStatistics[w.key][COL_OVERALL_REDUCTION]));
+    return bReduction - aReduction;
+}
+
+function sortCountiesBySaturatedThickness(ascending) {
+    return function (a, b) {
+        let aAverage = d3.mean(a.values.map(w => dp.wellStatistics[w.key][COL_OVERALL_AVERAGE]));
+        let bAverage = d3.mean(b.values.map(w => dp.wellStatistics[w.key][COL_OVERALL_AVERAGE]));
+        if (ascending) {
+            return aAverage - bAverage;
+        } else {
+            return bAverage - aAverage;
+        }
+    }
+}
+
+function sortWellsAlphabetically(a, b) {
     return a.key.localeCompare(b.key);
 }
-function sortWellsByNumberOfSamples(a, b){
+
+function sortWellsByNumberOfSamples(a, b) {
     return b.values.length - a.values.length;
 }
-function sortWellsBySuddenIncrement(a, b){
+
+function sortWellsBySuddenIncrement(a, b) {
     return dp.wellStatistics[b.key][COL_SUDDEN_INCREMENT] - dp.wellStatistics[a.key][COL_SUDDEN_INCREMENT];
 }
-function sortWellsBySuddenDecrement(a, b){
+
+function sortWellsBySuddenDecrement(a, b) {
     return dp.wellStatistics[a.key][COL_SUDDEN_DECREMENT] - dp.wellStatistics[b.key][COL_SUDDEN_DECREMENT];
 }
-function sortWellsByStandardDeviation(a, b){
-    return dp.wellStatistics[b.key][COL_STANDARD_DEVIATION]- dp.wellStatistics[a.key][COL_STANDARD_DEVIATION];
+
+function sortWellsByStandardDeviation(a, b) {
+    return dp.wellStatistics[b.key][COL_STANDARD_DEVIATION] - dp.wellStatistics[a.key][COL_STANDARD_DEVIATION];
 }
-function sortWellsByOverallReduction(a, b){
-    return dp.wellStatistics[b.key][COL_OVERALL_REDUCTION]- dp.wellStatistics[a.key][COL_OVERALL_REDUCTION];
+
+function sortWellsByOverallReduction(a, b) {
+    return dp.wellStatistics[b.key][COL_OVERALL_REDUCTION] - dp.wellStatistics[a.key][COL_OVERALL_REDUCTION];
+}
+
+function sortWellsByAverageThickness(ascending) {
+    return function (a, b) {
+        let aAverageThickness = dp.wellStatistics[a.key][COL_OVERALL_AVERAGE];
+        let bAverageThickness = dp.wellStatistics[b.key][COL_OVERALL_AVERAGE];
+        if (ascending) {
+            return aAverageThickness - bAverageThickness;
+        } else {
+            return bAverageThickness - aAverageThickness;
+        }
+    }
+
 }

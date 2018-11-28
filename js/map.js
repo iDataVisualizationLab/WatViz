@@ -30,9 +30,12 @@ function plotMaps(dp) {
     function draw(event) {
         plotContours(event);
         plotWells(event);
+
     }
+
     let radiusScale = d3.scaleLinear().domain([1, 19]).range([5, 2]);
     let colorValueScale = d3.scaleLinear().domain([1, 19]).range([1, 0]);
+
     function plotWells(event) {
         let layer = event.overlayMouseTarget;
 
@@ -57,17 +60,17 @@ function plotMaps(dp) {
                 .attr("stroke", "black")
                 .attr("fill-opacity", .5)
                 .attr("stroke-width", 0.6)
-                .attr("r", (d, i)=>{
-                    if(i<=19){
+                .attr("r", (d, i) => {
+                    if (i <= 19) {
                         return radiusScale(i);
-                    }else{
+                    } else {
                         return 1.4;
                     }
                 })
-                .attr("fill", (d, i)=>{
-                    if(i<=19){
+                .attr("fill", (d, i) => {
+                    if (i <= 19) {
                         return d3.interpolateReds(colorValueScale(i));
-                    }else{
+                    } else {
                         return "rgba(0,0,0,0.5)";
                     }
                 })
@@ -80,7 +83,7 @@ function plotMaps(dp) {
             //Highlights and
             let length = wells.length;//select 19 last ones (are the biggest)
             for (let i = 1; i <= 19; i++) {
-                d3.select(`#wellCircle${length-i}`).attr("fill", d3.interpolateReds(colorValueScale(i))).attr("r", radiusScale(i));
+                d3.select(`#wellCircle${length - i}`).attr("fill", d3.interpolateReds(colorValueScale(i))).attr("r", radiusScale(i));
             }
         } else {
             layer.select("#wellsGroup").selectAll("*").remove();
@@ -148,13 +151,20 @@ function plotMaps(dp) {
         if (negativeGrid.filter(g => g.value !== null).length > 0) {
             plotContoursFromData(g, negativeGrid, colorType("negative"));
         }
+
+        if (plotContoursOption) {
+            g.style("visibility", "visible");
+        } else {
+            g.style("visibility", "hidden");
+        }
     }
 
     //Plot some extra controls
     //create and set the plot well controls
-    let plotWellControl = createPlotWellsControl();
-    plotWellControl.index = 3;
-    gm.map.controls[google.maps.ControlPosition.TOP_LEFT].push(plotWellControl);
+    let plotControls = createPlotControls();
+    plotControls.index = 3;
+    gm.map.controls[google.maps.ControlPosition.TOP_LEFT].push(plotControls);
+
 
     createColorScale();
 }
@@ -172,6 +182,29 @@ function colorType(type) {
                 return d3.interpolateBlues(positiveValueDiffScale(d.value));
             }
         }
+    }
+}
+
+function plotCounties(county) {
+    //Clear the previous county
+    gm.map.data.forEach(function(feature) {
+        // If you want, check here for some constraints.
+        gm.map.data.remove(feature);
+    });
+    if(plotCountyOption){
+        let ctPath = {
+            type: "GeometryCollection"
+        };
+        ctPath.geometries = us.objects.cb_2015_texas_county_20m.geometries.filter(d=>d.properties.NAME.toLowerCase()===county.toLowerCase());
+        geoJsonObject = topojson.feature(us, ctPath)
+
+        gm.map.data.addGeoJson(geoJsonObject);
+
+        // Set the stroke width, and fill color for each polygon
+        gm.map.data.setStyle({
+            fillColor: 'green',
+            strokeWeight: 1
+        });
     }
 }
 
@@ -241,14 +274,24 @@ function plotWellsOptionChange() {
     gm.updateMap();
 }
 
-function createPlotWellsControl() {
+function plotCountyOptionChange() {
+    plotCountyOption = document.getElementById("changePlotCounty").checked;
+    gm.updateMap();
+}
+
+function plotContoursOptionChange() {
+    plotContoursOption = document.getElementById("changePlotContours").checked;
+    gm.updateMap();
+}
+
+function createPlotControls() {
     let controlDiv = document.createElement('div');
-    controlDiv.style.marginLeft = '-12px';
+    controlDiv.style.marginLeft = '-10px';
     // Set CSS for the control border.
     var controlUI = document.createElement('div');
     controlUI.style.backgroundColor = '#fff';
-    controlUI.style.borderBottomRightRadius = '2px';
-    controlUI.style.borderTopRightRadius = '2px';
+    controlUI.style.borderBottomRightRadius = '3px';
+    controlUI.style.borderTopRightRadius = '3px';
     controlUI.style.boxShadow = 'rgba(0, 0, 0, 0.3) 0px 1px 4px -1px;';
     controlUI.style.height = '40px';
     controlUI.style.cursor = 'pointer';
@@ -256,21 +299,46 @@ function createPlotWellsControl() {
     controlUI.style.cssFloat = 'left';
     controlUI.style.position = 'relative';
     controlUI.style.textAlign = 'center';
-    controlUI.title = 'Click to plot well';
+    controlUI.title = 'Click to control plot options';
     controlDiv.appendChild(controlUI);
 
     // Set CSS for the control interior.
     var controlText = document.createElement('div');
-    controlText.style.color = 'rgb(25,25,25)';
-    controlText.style.fontFamily = 'Roboto,Arial,sans-serif';
-    controlText.style.fontSize = '16px';
-    controlText.style.lineHeight = '38px';
-    controlText.style.paddingLeft = '5px';
-    controlText.style.paddingRight = '5px';
-    controlText.innerHTML = '<label for="changePlotWells">Plot wells</label>\n' +
-        '        <input type="checkbox" id="changePlotWells" onchange="plotWellsOptionChange()"/>';
+    // controlText.innerHTML = '';
+    controlText.innerHTML = '<div class="dropdown" >\n' +
+        '  <div onclick="togglePlotOptions()" class="dropbtn">Plot options</div>\n' +
+        '  <div id="myDropdown" class="dropdown-content">\n' +
+        '    <div><label for="changePlotContours">Plot contours</label>\n' +
+        '    <input type="checkbox" id="changePlotContours" onchange="plotContoursOptionChange()" checked="checked"/></div>\n' +
+        '    <div><label for="changePlotWells">Plot wells</label>\n' +
+        '    <input type="checkbox" id="changePlotWells" onchange="plotWellsOptionChange()"/></div>\n' +
+        '    <div><label for="changePlotCounty">Highlight county</label>\n' +
+        '    <input type="checkbox" id="changePlotCounty" onchange="plotCountyOptionChange()" checked="checked"/></div>\n' +
+        '  </div>\n' +
+        '</div>';
+
     controlUI.appendChild(controlText);
     return controlDiv;
+}
+
+/* When the user clicks on the button,
+toggle between hiding and showing the dropdown content */
+function togglePlotOptions() {
+    document.getElementById("myDropdown").classList.toggle("show");
+}
+
+// Close the dropdown menu if the user clicks outside of it
+window.onclick = function (event) {
+    if (!event.target.matches('.dropbtn') && !event.target.matches('.dropdown')) {
+        var dropdowns = document.getElementsByClassName("dropdown-content");
+        var i;
+        for (i = 0; i < dropdowns.length; i++) {
+            var openDropdown = dropdowns[i];
+            if (openDropdown.classList.contains('show')) {
+                openDropdown.classList.remove('show');
+            }
+        }
+    }
 }
 
 function createPlotColorScale(ticks, colorFunction, width, height) {
@@ -333,3 +401,4 @@ function createPlotColorScale(ticks, colorFunction, width, height) {
     controlDiv.appendChild(svg.node());
     return controlDiv;
 }
+
