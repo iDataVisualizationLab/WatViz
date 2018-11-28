@@ -240,6 +240,8 @@ function wordCloud(selector,config) {
             .text(function(d){return d.text;})
             .attr('font-size', function(d){return d.fontSize + "px";} )// add text vao g
             .attrs({
+                'font-family': font,
+                'font-size': function(d){return d.fontSize + "px";},
                 topic: function(d){return d.topic;},
                 visibility: function(d){ return d.placed ? (placed? "visible": "hidden"): (placed? "hidden": "visible");}
             })
@@ -262,6 +264,8 @@ function wordCloud(selector,config) {
             .transition().duration(600).styleTween('font-size', function(d){return d.fontSize + "px";} )// add text vao g
             .text(function(d){return d.text;})
             .attrs({
+                'font-family': font,
+                'font-size': function(d){return d.fontSize + "px";},
                 topic: function(d){return d.topic;},
                 visibility: function(d){ return d.placed ? (placed? "visible": "hidden"): (placed? "hidden": "visible");}
             })
