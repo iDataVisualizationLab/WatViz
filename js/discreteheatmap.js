@@ -96,6 +96,7 @@ function discreteHeatMapPlotter(dp, theDivId, plotOptions) {
                     if (d) {
                         let strokeWidth = borderScale(d.values.length);
                         let locationMarker;
+
                         rowGroup.append("g").attr("transform", `translate(${step * cellWidth}, 0)`)
                             .selectAll("rect")
                             .data([d]).enter()

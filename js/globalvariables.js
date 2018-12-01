@@ -13,11 +13,12 @@ let dp, //store data processor
     COL_MONTH_INDEX = 'monthIndex',
     COL_YEAR_INDEX = 'yearIndex',
     COL_SATURATED_THICKNESS = 'SaturatedThickness',
+    // COL_SATURATED_THICKNESS = 'lev_va_ft',
     COL_WATER_ELEVATION = 'WaterElevation',
     COL_COUNTY = "County",
     COL_AVERAGE_OVER_TIME_STEP = 'averageOverTimeStep',
     COL_AVERAGE_DIFFERENCE_OVER_TIME_STEP = "averageDifferenceOverTimeStep",
-
+    COL_AVERAGE_DIFFERENCE_FROM_PREV_STEP = "averageDifferenceFromPrevStep",
     COL_WELL_ALPHABETICAL_GROUP = 'wellAlphabeticalGroup',
     COL_WELL_NUM_SAMPLES_GROUP = 'wellNumberOfSamplesGroup',
 

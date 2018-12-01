@@ -19,22 +19,24 @@ function dataProcessor(data) {
             return true;
         }
     });
+
     let wellStatistics = processWellStatistics(data);
 
     let wells = getAllWells(data);
 
-    //Sort the wells by number of samples.
-    wells = wells.sort((a, b) => b.values.length - a.values.length);
     let allWellIds = unpack(wells, "key");
+
     let dateExtent = d3.extent(unpack(data, COL_MEASUREMENT_DATE));
     let minDate = dateExtent[0];
     let maxDate = dateExtent[1];
     //Add the month index to the data
+
     addMonthIndex();
     addYearIndex();
 
     let maxMonthIndex = d3.max(unpack(data, COL_MONTH_INDEX));
     let maxYearIndex = d3.max(unpack(data, COL_YEAR_INDEX));
+
 
     function unpack(rows, key) {
         return rows.map(r => r[key]);
@@ -195,9 +197,16 @@ function dataProcessor(data) {
         return getNestedByWellTimeStepData(COL_YEAR_INDEX);
     }
 
+    /**
+     * This method return array of "$" + "_" + well_id + "_" +  timeStep
+     * This is to find a specific well at a specific time step basing on the key specified.
+     * @param timeStepColumn
+     * @returns {[]} array of wells each item is a well at a time step.  
+     */
     function getNestedByWellTimeStepData(timeStepColumn) {
         let nested = d3.nest().key(w => "$" + w[COL_WELL_ID] + "_" + w[timeStepColumn]).entries(data);
         processAverageValue(nested);
+        //Process the value here.
         return nested;
     }
 
@@ -210,7 +219,14 @@ function dataProcessor(data) {
 
     function addYearIndex() {
         data = data.map(d => {
-            d[COL_YEAR_INDEX] = d[COL_MEASUREMENT_DATE].getFullYear() - minDate.getFullYear();
+            let theDate = d[COL_MEASUREMENT_DATE];
+            let colIndex = theDate.getFullYear() - minDate.getFullYear();
+            //if it is from October or above, count it for next year
+            let month = theDate.getMonth();
+            if(month>=9){
+                colIndex = colIndex+1;
+            }
+            d[COL_YEAR_INDEX] = colIndex;
             return d;
         });
     }
@@ -223,6 +239,14 @@ function dataProcessor(data) {
         return getWellTimeStepData(COL_YEAR_INDEX);
     }
 
+    /**
+     * This function is to return an array of wells in each time step (group by timeStep first then wells)
+     * Index 0 for all wells in timeStep 0, Index 1 for all wells in timeStep 1, so on and so forth
+     * @param timeStepColumn to know we are grouping by year or by month
+     * @returns {any[]} length is the number of timeSteps (months or years), 
+     * in each timeStep it is an array of Wells (all wells with measures at that time step), 
+     * each well is in form of {"key": "wellID", "values": [Array of wells in this time step with this id] }
+     */
     function getWellTimeStepData(timeStepColumn) {
         let maxIndex;
         if (timeStepColumn === COL_MONTH_INDEX) {
@@ -247,6 +271,7 @@ function dataProcessor(data) {
     let wellYearData = getWellYearData(COL_YEAR_INDEX);
     let nestedByWellMonthData = getNestedByWellMonthData();
     let nestedByWellYearData = getNestedByWellYearData();
+
     processMinMax();
 
     function processMinMax(){

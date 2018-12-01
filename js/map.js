@@ -40,9 +40,7 @@ function plotMaps(dp) {
         let layer = event.overlayMouseTarget;
 
         if (plotWellsOption) {
-            let wells1 = wells.sort(wellSortFunctions[wellSortIndex]);
-
-            let marker = layer.select("#wellsGroup").selectAll("g").data(wells1);
+            let marker = layer.select("#wellsGroup").selectAll("g").data(wells);
 
             let transform = event.transform(longAccessor, latAccessor);
             //Update existing
@@ -116,6 +114,7 @@ function plotMaps(dp) {
         wells = addDivPixelFromLatLng(wells, fromLatLngToDivPixel);
 
         let gridSize = 25;
+        
         let recbin = new RecBinner(wells, gridSize);
         let grid = recbin.grid;
 
@@ -195,7 +194,7 @@ function plotCounties(county) {
         let ctPath = {
             type: "GeometryCollection"
         };
-        ctPath.geometries = us.objects.cb_2015_texas_county_20m.geometries.filter(d=>d.properties.NAME.toLowerCase()===county.toLowerCase());
+        ctPath.geometries = us.objects.cb_2015_texas_county_20m.geometries;//.filter(d=>d.properties.NAME.toLowerCase()===county.toLowerCase());
         geoJsonObject = topojson.feature(us, ctPath)
 
         gm.map.data.addGeoJson(geoJsonObject);

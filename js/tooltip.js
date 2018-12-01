@@ -23,6 +23,7 @@ function formatData(d) {
     }
     let position = `Long: ${d[COL_LONG]}<br/>Lat: ${d[COL_LAT]}`;
     let county = `County: ${d.values[0][COL_COUNTY]}`;
+    
     let htmlStr = `<b>Well id: ${wellId}</b><br/>${position}<br/>${county}`;
         htmlStr +=`<br/>Overall deviation: ${dp.wellStatistics[wellId][COL_STANDARD_DEVIATION]}`;
     htmlStr +=`<br/>Overall reduction: ${dp.wellStatistics[wellId][COL_OVERALL_REDUCTION]}`;
