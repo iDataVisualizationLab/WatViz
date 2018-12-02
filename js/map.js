@@ -30,17 +30,16 @@ function plotMaps(dp) {
     function draw(event) {
         plotContours(event);
         plotWells(event);
-
     }
 
     let radiusScale = d3.scaleLinear().domain([1, 19]).range([5, 2]);
     let colorValueScale = d3.scaleLinear().domain([1, 19]).range([1, 0]);
 
     function plotWells(event) {
-        let layer = event.overlayMouseTarget;
 
+        let layer = event.overlayMouseTarget;
         if (plotWellsOption) {
-            let marker = layer.select("#wellsGroup").selectAll("g").data(wells);
+            let marker = layer.select("#wellsGroup").selectAll("circle").data(wells);
 
             let transform = event.transform(longAccessor, latAccessor);
             //Update existing
@@ -49,11 +48,9 @@ function plotMaps(dp) {
 
             marker.exit().remove();
 
-            let enter = marker.enter().append("g")
+            let enter = marker.enter().append("circle")
                 .each(transform)
-                .attr("class", "marker");
-
-            enter.append("circle")
+                .attr("class", "marker")
                 .attr("id", (d, i) => `wellCircle${d.key}`)
                 .attr("stroke", "black")
                 .attr("fill-opacity", .5)
@@ -113,8 +110,9 @@ function plotMaps(dp) {
         let fromLatLngToDivPixel = event.fromLatLngToDivPixel;
         wells = addDivPixelFromLatLng(wells, fromLatLngToDivPixel);
 
+
         let gridSize = 25;
-        
+
         let recbin = new RecBinner(wells, gridSize);
         let grid = recbin.grid;
 
@@ -163,17 +161,17 @@ function plotMaps(dp) {
     let plotControls = createPlotControls();
     plotControls.index = 3;
     gm.map.controls[google.maps.ControlPosition.TOP_LEFT].push(plotControls);
-
-
     createColorScale();
+    let timeLabel = createTimeLabel();
+    timeLabel.index = 3;
+    gm.map.controls[google.maps.ControlPosition.TOP_CENTER].push(timeLabel);
 }
 
 function colorType(type) {
     return function (d) {
         if (analyzeValueIndex === 0) {
             return color.waterLevel(d.value);
-        }
-        if (analyzeValueIndex === 1) {
+        }else {
             if (type == "negative") {
                 return d3.interpolateReds(negativeValueDiffScale(d.value));
             }
@@ -184,13 +182,13 @@ function colorType(type) {
     }
 }
 
-function plotCounties(county) {
+function plotCounties() {
     //Clear the previous county
-    gm.map.data.forEach(function(feature) {
+    gm.map.data.forEach(function (feature) {
         // If you want, check here for some constraints.
         gm.map.data.remove(feature);
     });
-    if(plotCountyOption){
+    if (plotCountyOption) {
         let ctPath = {
             type: "GeometryCollection"
         };
@@ -201,7 +199,7 @@ function plotCounties(county) {
 
         // Set the stroke width, and fill color for each polygon
         gm.map.data.setStyle({
-            fillColor: 'green',
+            fillOpacity: 0,
             strokeWeight: 1
         });
     }
@@ -275,7 +273,7 @@ function plotWellsOptionChange() {
 
 function plotCountyOptionChange() {
     plotCountyOption = document.getElementById("changePlotCounty").checked;
-    gm.updateMap();
+    plotCounties();
 }
 
 function plotContoursOptionChange() {
@@ -283,6 +281,31 @@ function plotContoursOptionChange() {
     gm.updateMap();
 }
 
+function createTimeLabel(){
+    let controlDiv = document.createElement('div');
+    controlDiv.style.marginLeft = '-10px';
+    // Set CSS for the control border.
+    var controlUI = document.createElement('div');
+    controlUI.style.borderBottomRightRadius = '3px';
+    controlUI.style.borderTopRightRadius = '3px';
+    controlUI.style.boxShadow = 'rgba(0, 0, 0, 0.3) 0px 1px 4px -1px;';
+    controlUI.style.height = '40px';
+    controlUI.style.cursor = 'pointer';
+    controlUI.style.marginTop = '10px';
+    controlUI.style.cssFloat = 'left';
+    controlUI.style.position = 'relative';
+    controlUI.style.textAlign = 'center';
+    controlUI.title = 'Click to control plot options';
+    controlDiv.appendChild(controlUI);
+
+    // Set CSS for the control interior.
+    var controlText = document.createElement('div');
+    // controlText.innerHTML = '';
+    controlText.innerHTML = '<div id="timeLabel"></div>';
+
+    controlUI.appendChild(controlText);
+    return controlDiv;
+}
 function createPlotControls() {
     let controlDiv = document.createElement('div');
     controlDiv.style.marginLeft = '-10px';
@@ -312,7 +335,7 @@ function createPlotControls() {
         '    <div><label for="changePlotWells">Plot wells</label>\n' +
         '    <input type="checkbox" id="changePlotWells" onchange="plotWellsOptionChange()"/></div>\n' +
         '    <div><label for="changePlotCounty">Highlight county</label>\n' +
-        '    <input type="checkbox" id="changePlotCounty" onchange="plotCountyOptionChange()" checked="checked"/></div>\n' +
+        '    <input type="checkbox" id="changePlotCounty" onchange="plotCountyOptionChange()"/></div>\n' +
         '  </div>\n' +
         '</div>';
 
@@ -381,7 +404,7 @@ function createPlotColorScale(ticks, colorFunction, width, height) {
             if (analyzeValueIndex === 0) {
                 return color.waterLevel(d.value);
             }
-            if (analyzeValueIndex === 1) {
+            else {
                 if (d.value < 0) {
                     return d3.interpolateReds(negativeValueDiffScale(-d.value));
                 }
@@ -400,4 +423,6 @@ function createPlotColorScale(ticks, colorFunction, width, height) {
     controlDiv.appendChild(svg.node());
     return controlDiv;
 }
-
+function setTimeLabel(str){
+    document.getElementById("timeLabel").innerText = str;
+}

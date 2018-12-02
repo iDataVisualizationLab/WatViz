@@ -2,6 +2,7 @@ let dp, //store data processor
     topRows = 100,
     mapWidth = 800,
     mapHeight = 1200,
+    sliderTimeInterval = 1000,
     timeLabelHeight = 50,
     groupLabelWidth = 80,
     minCellBorder = 0.4,
@@ -19,6 +20,10 @@ let dp, //store data processor
     COL_AVERAGE_OVER_TIME_STEP = 'averageOverTimeStep',
     COL_AVERAGE_DIFFERENCE_OVER_TIME_STEP = "averageDifferenceOverTimeStep",
     COL_AVERAGE_DIFFERENCE_FROM_PREV_STEP = "averageDifferenceFromPrevStep",
+    COL_MIN_AVERAGE_DIFFERENCE_FROM_PREV_MONTH = "minAverageDifferenceFromPrevMonth",
+    COL_MIN_AVERAGE_DIFFERENCE_FROM_PREV_YEAR = "minAverageDifferenceFromPrevYear",
+    COL_MIN_AVERAGE_DIFFERENCE_FROM_PREV_MONTH_GROUP = "minAverageDifferenceFromPrevMonthGroup",
+    COL_MIN_AVERAGE_DIFFERENCE_FROM_PREV_YEAR_GROUP = "minAverageDifferenceFromPrevYearGroup",
     COL_WELL_ALPHABETICAL_GROUP = 'wellAlphabeticalGroup',
     COL_WELL_NUM_SAMPLES_GROUP = 'wellNumberOfSamplesGroup',
 
@@ -51,38 +56,37 @@ let dp, //store data processor
     timeStepOptions = ["Month", "Year"],
     timeStepTypeIndex = 1,
 
-    analyzeValues = [COL_AVERAGE_OVER_TIME_STEP, COL_AVERAGE_DIFFERENCE_OVER_TIME_STEP],
-    analyzeValueOptions = ["Absolute value", "Difference"],
+    analyzeValues = [COL_AVERAGE_OVER_TIME_STEP, COL_AVERAGE_DIFFERENCE_OVER_TIME_STEP, COL_AVERAGE_DIFFERENCE_FROM_PREV_STEP],
+    analyzeValueOptions = ["Absolute value", "Difference from average", "Difference from previous step"],
     analyzeValueIndex = 1,
     averageValueRanges = new Array(2),
     averageDifferenceValueRanges = new Array(2),
-    colorRanges = [averageValueRanges, averageDifferenceValueRanges],
-    numberOfThresholds = [14, 8],
+    differenceFromPrevStepValueRanges = new Array(2),
+    colorRanges = [averageValueRanges, averageDifferenceValueRanges, differenceFromPrevStepValueRanges],
+    numberOfThresholds = [14, 8, 8],
     averageValueThresholds = [10e-6, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1500],
-    groupByGroups = [groupByCounty, groupByWellAlphabetical, groupByWellNumberOfSamples, groupBySuddenIncrement, groupBySuddenDecrement, groupByStandardDeviation, groupByOverallReduction, groupByOverallAverage],
-    groupOptions = ["County", "Well alphabetical", "Well number of samples", "Sudden increment", "Sudden decrement", "Standard deviation", "Overall reduction", "Overall average"],
+    groupByGroups = [groupByCounty, groupByWellAlphabetical, groupByWellNumberOfSamples, groupBySuddenIncrement, groupBySuddenDecrement, groupByStandardDeviation, groupByOverallReduction, groupByMinDifferenceFromPrevStep, groupByOverallAverage],
+    groupOptions = ["County", "Well alphabetical", "Well number of samples", "Sudden increment", "Sudden decrement", "Standard deviation", "Overall reduction", "Min Diff from Prev Step", "Overall average"],
     groupSortOptions = [["Alphabetical", "Number of wells", "Overall reduction", "Thickness (ascending)", "Thickness (descending)"], ["Ascending", "Descending"], ["Ascending", "Descending"],["Ascending", "Descending"], ["Ascending", "Descending"], ["Ascending", "Descending"], ["Ascending", "Descending"], ["Ascending", "Descending"]],
     countySortFunctions = [sortCountiesAlphabetically, sortCountiesByNumberOfWells, sortCountiesByOverallReduction, sortCountiesBySaturatedThickness(true), sortCountiesBySaturatedThickness(false)],
     statisticSortFunctions = [ascendingOrder, descendingOrder],
-    groupSortFunctions = [countySortFunctions, statisticSortFunctions, statisticSortFunctions, statisticSortFunctions, statisticSortFunctions, statisticSortFunctions, statisticSortFunctions, statisticSortFunctions],
-    wellSortOptions = ["Alphabetical", "Number of samples", "Sudden increment", "Sudden decrement", "Standard deviation", "Overall reduction", "Thickness (ascending)", "Thickness (descending)"],
-    wellSortFunctions = [sortWellsAlphabetically, sortWellsByNumberOfSamples, sortWellsBySuddenIncrement, sortWellsBySuddenDecrement, sortWellsByStandardDeviation, sortWellsByOverallReduction, sortWellsByAverageThickness(true), sortWellsByAverageThickness(false)],
+    groupSortFunctions = [countySortFunctions, statisticSortFunctions, statisticSortFunctions, statisticSortFunctions, statisticSortFunctions, statisticSortFunctions, statisticSortFunctions, statisticSortFunctions, statisticSortFunctions],
+    wellSortOptions = ["Alphabetical", "Number of samples", "Sudden increment", "Sudden decrement", "Standard deviation", "Overall reduction", "Difference", "Thickness (ascending)", "Thickness (descending)"],
+    wellSortFunctions = [sortWellsAlphabetically, sortWellsByNumberOfSamples, sortWellsBySuddenIncrement, sortWellsBySuddenDecrement, sortWellsByStandardDeviation, sortWellsByOverallReduction, sortWellsByOverallDifference, sortWellsByAverageThickness(true), sortWellsByAverageThickness(false)],
     groupByIndex = 5,
     groupSortIndex = 0,
     wellSortIndex = 5,
     rowPositionTransitionDuration = 500,
-    contourOpacity = 0.5,
-    contourStrokeWidth = 0.1,
+    contourOpacity = 0.6,
+    contourStrokeWidth = 0.2,
     wells,
     heatmapPlotter,
     playSlider,
     plotWellsOption = false,
     plotContoursOption = true,
-    plotCountyOption = true,
+    plotCountyOption = false,
     isGroupedByCounty = false,
     us;
-
-
 function ascendingOrder(a, b) {
     return a.key - b.key;
 }
@@ -121,6 +125,15 @@ function groupByOverallReduction(well) {
 
 function groupByOverallAverage(well) {
     return dp.wellStatistics[well[COL_WELL_ID]][COL_OVERALL_AVERAGE_GROUP];
+}
+
+function groupByMinDifferenceFromPrevStep(well) {
+    if(timeStepTypeIndex==0){
+        return dp.wellStatistics[well[COL_WELL_ID]][COL_MIN_AVERAGE_DIFFERENCE_FROM_PREV_MONTH_GROUP];
+    }else{
+        return dp.wellStatistics[well[COL_WELL_ID]][COL_MIN_AVERAGE_DIFFERENCE_FROM_PREV_YEAR_GROUP];
+    }
+
 }
 
 function sortCountiesAlphabetically(a, b) {
@@ -171,6 +184,19 @@ function sortWellsByStandardDeviation(a, b) {
 
 function sortWellsByOverallReduction(a, b) {
     return dp.wellStatistics[b.key][COL_OVERALL_REDUCTION] - dp.wellStatistics[a.key][COL_OVERALL_REDUCTION];
+}
+
+function sortWellsByOverallDifference(a, b) {
+    let aDiff = (timeStepTypeIndex==0)?dp.wellStatistics[a.key][COL_MIN_AVERAGE_DIFFERENCE_FROM_PREV_MONTH]:dp.wellStatistics[a.key][COL_MIN_AVERAGE_DIFFERENCE_FROM_PREV_YEAR];
+    let bDiff = (timeStepTypeIndex==0)?dp.wellStatistics[b.key][COL_MIN_AVERAGE_DIFFERENCE_FROM_PREV_MONTH]:dp.wellStatistics[b.key][COL_MIN_AVERAGE_DIFFERENCE_FROM_PREV_YEAR];
+    if(typeof aDiff==="undefined"){
+        return 1;
+    }
+    if(typeof bDiff=="undefined"){
+        return -1;
+    }
+    return aDiff - bDiff;
+
 }
 
 function sortWellsByAverageThickness(ascending) {

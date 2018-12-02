@@ -26,11 +26,12 @@ function formatData(d) {
     
     let htmlStr = `<b>Well id: ${wellId}</b><br/>${position}<br/>${county}`;
         htmlStr +=`<br/>Overall deviation: ${dp.wellStatistics[wellId][COL_STANDARD_DEVIATION]}`;
-    htmlStr +=`<br/>Overall reduction: ${dp.wellStatistics[wellId][COL_OVERALL_REDUCTION]}`;
+        htmlStr +=`<br/>Overall reduction: ${dp.wellStatistics[wellId][COL_OVERALL_REDUCTION]}`;
         htmlStr +=`<br/>Sudden increment: ${dp.wellStatistics[wellId][COL_SUDDEN_INCREMENT]}`;
         htmlStr +=`<br/>Sudden decrement: ${dp.wellStatistics[wellId][COL_SUDDEN_DECREMENT]}`;
+        htmlStr +=`<br/>Min difference from prev year: ${dp.wellStatistics[wellId][COL_MIN_AVERAGE_DIFFERENCE_FROM_PREV_YEAR]}`;
     let table = "<table>";
-    let values = d.values;
+    let values = dp.getAllSamplesFromWellId(wellId);
     values.forEach(value=>{
         table += "<tr>";
         let date = utils.dateFormat(value[COL_MEASUREMENT_DATE]);

@@ -172,6 +172,7 @@ function createPlaySlider(startDate, endDate, divId, divWidth, updatePlot, inter
         handle.attr("transform", `translate(${position}, 0)`);
         label.attr("x", position)
             .text(formatTimeStep(h));
+        setTimeLabel(formatTimeStep(h));
         updatePlot(h);
     }
 

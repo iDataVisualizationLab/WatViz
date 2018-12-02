@@ -11,3 +11,7 @@
 .marker{
     position: absolute;
 }
+#timeLabel{
+    font-size: xx-large;
+    color: blue;
+}

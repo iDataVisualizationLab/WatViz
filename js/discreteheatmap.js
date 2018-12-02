@@ -8,11 +8,28 @@ function discreteHeatMapPlotter(dp, theDivId, plotOptions) {
     //Process the group position.
     let cellWidth = cellWidths[timeStepTypeIndex];
     let cellHeight = cellHeights[timeStepTypeIndex];
-
     //process row positions
     let rowPositions;
     let groups;
-
+    processRowPositions();
+    let steps = dp.steps[timeStepTypeIndex];
+    let allWellIds = dp.allWellIds;
+    let nested = dp.nestedByWellTimeStepData[timeStepTypeIndex];
+    //Calculate the border scale by the number of samples
+    let borderScale = d3.scaleLinear().domain(d3.extent(nested.map(n => n.values.length))).range([minCellBorder, maxCellBorder]);
+    //Convert to object for better access
+    if (!nestedByWellTimeStepObjects[timeStepTypeIndex]) {
+        nestedByWellTimeStepObjects[timeStepTypeIndex] = {};
+        //Store this by key for quicker access
+        nested.forEach(r => {
+            nestedByWellTimeStepObjects[timeStepTypeIndex][r.key] = r;
+        });
+    }
+    let nestedByWellTimeStepObject = nestedByWellTimeStepObjects[timeStepTypeIndex];
+    let width = steps * cellWidth;
+    let rows = {};
+    let svg = d3.select("#" + theDivId).append("svg").attr("width", width + groupLabelWidth).attr("height", allWellIds.length * cellHeight).attr("overflow", "scroll");
+    //<editor-fold desc="utils">
     function processRowPositions() {
         rowPositions = {};
         groups = d3.nest().key(d => groupByGroups[groupByIndex](d)).key(d => d[COL_WELL_ID]).entries(dp.data);
@@ -21,6 +38,7 @@ function discreteHeatMapPlotter(dp, theDivId, plotOptions) {
         //Sort the subgroup
         groups.forEach(g => {
             g.values = g.values.sort(wellSortFunctions[wellSortIndex]);
+
         });
         //Process group position
         for (let i = 0; i < groups.length; i++) {
@@ -40,33 +58,9 @@ function discreteHeatMapPlotter(dp, theDivId, plotOptions) {
         groups.forEach(g => {
             g.values.forEach(well => {
                 rowPositions[well.key] = well.y;
-            })
+            });
         });
     }
-
-    processRowPositions();
-
-
-    let steps = dp.steps[timeStepTypeIndex];
-    let allWellIds = dp.allWellIds;
-
-    let nested = dp.nestedByWellTimeStepData[timeStepTypeIndex];
-    //Calculate the border scale by the number of samples
-    let borderScale = d3.scaleLinear().domain(d3.extent(nested.map(n => n.values.length))).range([minCellBorder, maxCellBorder]);
-
-    //Convert to object for better access
-    if (!nestedByWellTimeStepObjects[timeStepTypeIndex]) {
-        nestedByWellTimeStepObjects[timeStepTypeIndex] = {};
-        //Store this by key for quicker access
-        nested.forEach(r => {
-            nestedByWellTimeStepObjects[timeStepTypeIndex][r.key] = r;
-        });
-    }
-    let nestedByWellTimeStepObject = nestedByWellTimeStepObjects[timeStepTypeIndex];
-
-    let width = steps * cellWidth;
-    let rows = {};
-    let svg = d3.select("#" + theDivId).append("svg").attr("width", width + groupLabelWidth).attr("height", allWellIds.length * cellHeight).attr("overflow", "scroll");
 
     function plot() {
         generateTimeLabels(timeStepTypeIndex);
@@ -103,7 +97,6 @@ function discreteHeatMapPlotter(dp, theDivId, plotOptions) {
                             .append("rect")
                             .attr("class", `timeStep${step} cell`)
                             .attr("stroke-width", strokeWidth)
-                            .attr("stroke", cellStrokeNormalColor)
                             .attr("width", (cellWidth - strokeWidth / 2))
                             .attr("height", (cellHeight - strokeWidth / 2))
                             .attr("fill", d => {
@@ -113,7 +106,16 @@ function discreteHeatMapPlotter(dp, theDivId, plotOptions) {
                                 if (analyzeValueIndex === 1) {
                                     d.value = d[COL_AVERAGE_DIFFERENCE_OVER_TIME_STEP];
                                 }
+                                if (analyzeValueIndex === 2) {
+                                    d.value = d[COL_AVERAGE_DIFFERENCE_FROM_PREV_STEP];
+                                }
                                 return colorType(d);
+                            })
+                            .attr("stroke", d => {
+                                if (typeof d.value == "undefined") {
+                                    return "white";
+                                }
+                                return cellStrokeNormalColor;
                             })
                             .on("mouseover", d => {
                                 showTip(d, formatData);
@@ -126,8 +128,6 @@ function discreteHeatMapPlotter(dp, theDivId, plotOptions) {
                                 });
                                 //Slide the play slider to corresponding location.
                                 playSlider.setTime(d.values[0][COL_MEASUREMENT_DATE]);
-                                //Plot county
-                                plotCounties(d.values[0][COL_COUNTY]);
                             })
                             .on("mouseout", () => {
                                 hidetip();
@@ -143,7 +143,10 @@ function discreteHeatMapPlotter(dp, theDivId, plotOptions) {
             if (analyzeValueIndex === 0) {
                 return color.waterLevel(d.value);
             }
-            if (analyzeValueIndex === 1) {
+            else {
+                if (typeof d.value === "undefined") {
+                    return "white";
+                }
                 if (d.value < 0) {
                     return d3.interpolateReds(positiveValueDiffScale(-d.value));
                 }
@@ -210,10 +213,11 @@ function discreteHeatMapPlotter(dp, theDivId, plotOptions) {
 
         lgs.exit().remove();
     }
-
-    //Exposing necessary components
+    //</editor-fold>
+    //<editor-fold desc="Exposing necessary components">
     this.plot = plot;
     this.updatePositions = updatePositions;
+    //</editor-fold>
     return this;
 }
 
@@ -223,7 +227,7 @@ function changeTimeAggregation() {
     timeStepTypeIndex = document.getElementById("aggregationSelect").selectedIndex;
     wells = dp.getWellByTimeSteps[timeStepTypeIndex](0);
     plotMaps(dp);
-    playSlider = createPlaySlider(dp.minDate, dp.maxDate, "playButtonDiv", mapWidth, updatePlot, 500);
+    playSlider = createPlaySlider(dp.minDate, dp.maxDate, "playButtonDiv", mapWidth, updatePlot, sliderTimeInterval);
     //Plot the discrete heatmap
     heatmapPlotter = discreteHeatMapPlotter(dp, "heatmap", {});
     heatmapPlotter.plot();
@@ -232,13 +236,18 @@ function changeTimeAggregation() {
 
 function changeAnalyzedValue() {
     analyzeValueIndex = document.getElementById("analyzedValueSelect").selectedIndex;
+    if (analyzeValueIndex === 2) {//Difference
+        wellSortIndex = 6;
+        document.getElementById("wellOrderSelect").selectedIndex = wellSortIndex;
+        changeGroupOrder();
+    }
     //Update cell colors based on the selection.
     positiveValueDiffScale = d3.scaleLinear().domain([0, colorRanges[analyzeValueIndex][timeStepTypeIndex][1]]).range([0.05, 1]);
     negativeValueDiffScale = d3.scaleLinear().domain([0, -colorRanges[analyzeValueIndex][timeStepTypeIndex][0]]).range([0.05, 1]);
     let cells = selectAllCells();
-    cells.attr("fill", d => {
-        return colorType(d);
-    });
+    cells.attr("fill", colorType);
+    cells.attr("stroke", strokeColor);
+
     //Update contour colors based on the selection.
     gm.updateMap();
 
@@ -246,13 +255,29 @@ function changeAnalyzedValue() {
         if (analyzeValueIndex === 0) {
             return color.waterLevel(d[COL_AVERAGE_OVER_TIME_STEP]);
         }
-        if (analyzeValueIndex === 1) {
-            if (d.value < 0) {
-                return d3.interpolateReds(positiveValueDiffScale(-d.value));
-            }
-            if (d.value >= 0) {
-                return d3.interpolateBlues(negativeValueDiffScale(d.value));
-            }
+        if (analyzeValueIndex == 1) {
+            d.value = d[COL_AVERAGE_DIFFERENCE_OVER_TIME_STEP];
+        }
+        if (analyzeValueIndex == 2) {
+            d.value = d[COL_AVERAGE_DIFFERENCE_FROM_PREV_STEP];
+        }
+
+        if (typeof d.value === "undefined") {
+            return "white";
+        }
+        if (d.value < 0) {
+            return d3.interpolateReds(positiveValueDiffScale(-d.value));
+        }
+        if (d.value >= 0) {
+            return d3.interpolateBlues(negativeValueDiffScale(d.value));
+        }
+    }
+
+    function strokeColor(d) {
+        if (analyzeValueIndex == 2 && typeof d[COL_AVERAGE_DIFFERENCE_FROM_PREV_STEP] === "undefined") {
+            return "white";
+        } else {
+            return "black";
         }
     }
 
@@ -262,7 +287,9 @@ function changeAnalyzedValue() {
 function changeGroupOrder() {
     wellSortIndex = document.getElementById("wellOrderSelect").selectedIndex;
     setGroupIndexByWellOrderIndex(wellSortIndex);
-    groupSortIndex = document.getElementById("groupOrderSelect").selectedIndex;
+    if (isGroupedByCounty) {
+        groupSortIndex = document.getElementById("groupOrderSelect").selectedIndex;
+    }
     //Need to change the group sort order options
     setOptions(groupSortOptions[groupByIndex], "groupOrderSelect", groupSortIndex);
     heatmapPlotter.updatePositions();
@@ -273,10 +300,10 @@ function changeGroupOrder() {
 function changeGroup() {
     isGroupedByCounty = document.getElementById("groupByCounty").checked;
 
-    if(!isGroupedByCounty){
-        document.getElementById("groupOrderSpan").style.display="none";
-    }else{
-        document.getElementById("groupOrderSpan").style.display="block";
+    if (!isGroupedByCounty) {
+        document.getElementById("groupOrderSpan").style.display = "none";
+    } else {
+        document.getElementById("groupOrderSpan").style.display = "block";
     }
 
 
@@ -285,24 +312,21 @@ function changeGroup() {
     changeGroupOrder();
 }
 
-function setGroupIndexByWellOrderIndex(wellOrderIndex){
-    if(!isGroupedByCounty){
-        if(wellOrderIndex <=5){//For all other options
+function setGroupIndexByWellOrderIndex(wellOrderIndex) {
+    if (!isGroupedByCounty) {
+        if (wellOrderIndex <= 6) {//For all other options
             groupByIndex = wellOrderIndex + 1;
             groupSortIndex = 0;//Order ascending by defauult
-        }else if(wellOrderIndex==6){//average ascending
+        } else if (wellOrderIndex == 7) {//average ascending
             groupByIndex = wellOrderIndex + 1;
             groupSortIndex = 1;
-        }else if(wellOrderIndex==7){//average descending
+        } else if (wellOrderIndex == 8) {//average descending
             groupByIndex = wellOrderIndex;
             groupSortIndex = 0;
         }
         document.getElementById("groupSelect").selectedIndex = groupByIndex;
         document.getElementById("groupOrderSelect").selectedIndex = groupSortIndex;
-    }else{
-
     }
-
 }
 
 function changeWellOrder() {
