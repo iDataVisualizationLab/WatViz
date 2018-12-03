@@ -20,7 +20,7 @@ function dataProcessor(data) {
         }
     });
     //</editor-fold>
-    let wellStatistics = processWellStatistics(data);
+    //let wellStatistics = processWellStatistics(data);
     let wells = getAllWells(data);
     let allWellIds = unpack(wells, "key");
     let dateExtent = d3.extent(unpack(data, COL_MEASUREMENT_DATE));
@@ -36,7 +36,18 @@ function dataProcessor(data) {
     let nestedByWellYearData = getNestedByWellYearData();
 
     processDifferenceFromPrevStep();
+    // processMinDifferenceFromPrevStepStatistics();
+    processMinMax();
 
+    //Used to save wellStatistics
+    // let blob = new Blob([JSON.stringify(wellStatistics)], {type: "text/plain;charset=utf-8"});
+    // saveAs(blob, "wellStatistics.json");
+
+    let wellMonthData = getWellMonthData(COL_MONTH_INDEX);
+    let wellYearData = getWellYearData(COL_YEAR_INDEX);
+
+    //<editor-fold desc='Utils'>
+    //Util
     function processMinDifferenceFromPrevStepStatistics() {
         //Add the min difference information to the statistics
         let allWellsMinValues = []
@@ -74,20 +85,11 @@ function dataProcessor(data) {
             wellStatistics[well.key][COL_MIN_AVERAGE_DIFFERENCE_FROM_PREV_YEAR_GROUP] = (i < topRows) ? 1 : 2;
         });
     }
-
-    processMinDifferenceFromPrevStepStatistics();
-    processMinMax();
-
-    let wellMonthData = getWellMonthData(COL_MONTH_INDEX);
-    let wellYearData = getWellYearData(COL_YEAR_INDEX);
-
-    //<editor-fold desc='Utils'>
-    //Util
     function getAllSamplesFromWellId(wellId){
         return data.filter(w=>w[COL_WELL_ID]===wellId);
     }
     function processDifferenceFromPrevStep() {
-//Convert nestedByWellYearData into object
+    //Convert nestedByWellYearData into object
         let nestedByWellYearDataObject = {};
         nestedByWellYearData.forEach(row => {
             nestedByWellYearDataObject[row.key] = row;
@@ -390,7 +392,7 @@ function dataProcessor(data) {
     function dateToYearIndex(date) {
         return utils.yeardiff(minDate, date);
     }
-
+    //</editor-fold>
     //Exposing methods and data.
     this.getWellByTimeSteps = [getWellByMonthIndex, getWellByYearIndex];
     this.minDate = minDate;
@@ -403,5 +405,4 @@ function dataProcessor(data) {
     this.wellStatistics = wellStatistics;
     this.dateToTimeIndexFunctions = [dateToMonthIndex, dateToYearIndex];
     this.getAllSamplesFromWellId = getAllSamplesFromWellId;
-    //</editor-fold>
 };

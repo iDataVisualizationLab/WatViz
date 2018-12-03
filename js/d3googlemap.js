@@ -59,8 +59,6 @@ class GoogleMap {
             let overlayMouseTarget = d3.select(this.getPanes().overlayMouseTarget).append(self.layerType).style("overflow", "visible");
             overlayMouseTarget.append("g").attr("id", "wellsGroup");
 
-            //Draw each marker as a separate SVG element
-            //We could use a single SVG, but what size would it have?
             self.overlay.draw = function () {
                 let projection = this.getProjection();
                 self.dispatch.call("draw", null, {"overlayLayer": overlayLayer,"overlayMouseTarget": overlayMouseTarget, "transform": transform, "fromLatLngToDivPixel": fromLatLngToDivPixel});

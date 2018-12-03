@@ -1,7 +1,7 @@
 let gm;
 let positiveValueDiffScale;
 let negativeValueDiffScale;
-
+let heatmap;
 function createColorScale() {
     let thresholds = processThresholds1(colorRanges[analyzeValueIndex][timeStepTypeIndex]);
     let colorScaleControl = createPlotColorScale(thresholds, colorType("negative"), 70, 400);
@@ -38,6 +38,8 @@ function plotMaps(dp) {
     function plotWells(event) {
 
         let layer = event.overlayMouseTarget;
+        wells = wells.sort(wellSortFunctions[wellSortIndex]);
+
         if (plotWellsOption) {
             let marker = layer.select("#wellsGroup").selectAll("circle").data(wells);
 
@@ -48,7 +50,7 @@ function plotMaps(dp) {
 
             marker.exit().remove();
 
-            let enter = marker.enter().append("circle")
+            marker.enter().append("circle")
                 .each(transform)
                 .attr("class", "marker")
                 .attr("id", (d, i) => `wellCircle${d.key}`)
@@ -95,8 +97,7 @@ function plotMaps(dp) {
         });
         return wells;
     }
-
-    function plotContours(event) {
+    function plotContours(event){
         positiveValueDiffScale = d3.scaleLinear().domain([0, colorRanges[analyzeValueIndex][timeStepTypeIndex][1]]).range([0.05, 1]);
         negativeValueDiffScale = d3.scaleLinear().domain([0, -colorRanges[analyzeValueIndex][timeStepTypeIndex][0]]).range([0.05, 1]);
 
@@ -110,10 +111,7 @@ function plotMaps(dp) {
         let fromLatLngToDivPixel = event.fromLatLngToDivPixel;
         wells = addDivPixelFromLatLng(wells, fromLatLngToDivPixel);
 
-
-        let gridSize = 25;
-
-        let recbin = new RecBinner(wells, gridSize);
+        let recbin = new RecBinner(wells, gridSize[analyzeValueIndex]);
         let grid = recbin.grid;
 
 
@@ -154,6 +152,7 @@ function plotMaps(dp) {
         } else {
             g.style("visibility", "hidden");
         }
+
     }
 
     //Plot some extra controls
@@ -251,7 +250,7 @@ function processThresholds(range) {
     for (let i = 0; i < numberOfThresholds[analyzeValueIndex]; i++) {
         thresholds0.push(i * step0);//Push it up from zero or above (to avoid zero threshold which is for null value (otherwise null values will be zero and will cover the data)
     }
-    thresholds0[0] = thresholds0[0] + 10e-6;
+    thresholds0[0] = thresholds0[0] + 10e-10;
     return thresholds0;
 }
 
@@ -306,11 +305,12 @@ function createTimeLabel(){
     controlUI.appendChild(controlText);
     return controlDiv;
 }
+
 function createPlotControls() {
     let controlDiv = document.createElement('div');
     controlDiv.style.marginLeft = '-10px';
     // Set CSS for the control border.
-    var controlUI = document.createElement('div');
+    let controlUI = document.createElement('div');
     controlUI.style.backgroundColor = '#fff';
     controlUI.style.borderBottomRightRadius = '3px';
     controlUI.style.borderTopRightRadius = '3px';
@@ -325,7 +325,7 @@ function createPlotControls() {
     controlDiv.appendChild(controlUI);
 
     // Set CSS for the control interior.
-    var controlText = document.createElement('div');
+    let controlText = document.createElement('div');
     // controlText.innerHTML = '';
     controlText.innerHTML = '<div class="dropdown" >\n' +
         '  <div onclick="togglePlotOptions()" class="dropbtn">Plot options</div>\n' +
@@ -423,6 +423,7 @@ function createPlotColorScale(ticks, colorFunction, width, height) {
     controlDiv.appendChild(svg.node());
     return controlDiv;
 }
+
 function setTimeLabel(str){
     document.getElementById("timeLabel").innerText = str;
 }

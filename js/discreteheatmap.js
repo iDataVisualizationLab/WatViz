@@ -127,7 +127,18 @@ function discreteHeatMapPlotter(dp, theDivId, plotOptions) {
                                     zIndex: 1000
                                 });
                                 //Slide the play slider to corresponding location.
-                                playSlider.setTime(d.values[0][COL_MEASUREMENT_DATE]);
+                                let theDate = d.values[0][COL_MEASUREMENT_DATE];
+                                if(timeStepTypeIndex==1){//analyzed by year => fall semester need to add one to the year (move to next year)
+                                    //Cannot take the first one, since the first one may be the year from previous fall (means previous year)
+                                    let month = theDate.getMonth();
+                                    let year = theDate.getFullYear();
+                                    if(month>=9){//october or upper add one to the year
+                                        year = year+1;
+                                    }
+                                    theDate = new Date(year, 5, 15);
+                                    //Set at the middle of the month
+                                }
+                                playSlider.setTime(theDate);
                             })
                             .on("mouseout", () => {
                                 hidetip();

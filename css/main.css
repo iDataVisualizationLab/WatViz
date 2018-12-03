@@ -5,8 +5,11 @@
     width: 800px;
     overflow: visible;
 }
-.right{
+.right1{
     position: absolute;
     top: var(--margin-top);
     left: calc(var(--map-width) + 2*var(--margin-left));
+}
+.right2{
+
 }

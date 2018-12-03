@@ -503,7 +503,6 @@ function handledata(data){
             }
         )
     );
-    console.log('cut by sudden: '+ termscollection.length);
     // done -sort
     termscollection.sort((a,b)=>a.time-b.time);
     nested_data = d3.nest()
@@ -544,7 +543,6 @@ function handledata(data){
             'words': words};});
     startDate = TermwDay[0].date;
     endDate = TermwDay[TermwDay.length-1].date;
-    console.log(startDate +" - "+endDate);
 }
 
 
@@ -572,7 +570,5 @@ function blacklist(data,category){
             if (e.term!="")
                 termscollection_org.push(e)});
     });
-    console.log("#org terms: " +numterm);
-    console.log("#terms: " +termscollection_org.length);
     return termscollection_org;
 }

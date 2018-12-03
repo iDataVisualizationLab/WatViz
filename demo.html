@@ -69,18 +69,21 @@
     <div id="playButtonDiv">
     </div>
 </div>
-<div class="right">
+<div class="right1">
     <div id="heatmapheader">
         <svg id="mapHeaderSVG"></svg>
     </div>
     <div id="heatmap"></div>
 </div>
-
+<div class="right2">
+    <div id="preci"></div>
+</div>
 <!--section for the buttons-->
 
 <a id="btnControlPanel" class="tab tab_right" style="opacity: 0.0;"
    onclick="openFloatingBox('btnControlPanel', 'controlPanelContainer')"><img src="images/tabicon.gif" alt="">Control
     panel<span class="screen_reader"> Will open a new window</span></a>
+
 
 <!--Libraries-->
 <script src="lib/spin.min.js"></script>
@@ -91,10 +94,12 @@
 <script src="lib/d3-scale-chromatic.v1.min.js"></script>
 <script src="lib/d3-hsv.v0.1.min.js"></script>
 <script src="lib/d3-contour.v1.min.js"></script>
-<script src="//maps.google.com/maps/api/js?key=AIzaSyAA-YOLIVTWEZLS7316nJfEX3C9FedRkLg"></script>
+<!--<script src="//maps.google.com/maps/api/js?key=AIzaSyAA-YOLIVTWEZLS7316nJfEX3C9FedRkLg"></script>-->
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAA-YOLIVTWEZLS7316nJfEX3C9FedRkLg&libraries=visualization">
+</script>
 <script src="lib/d3-selection-multi.v1.min.js"></script>
 <script src="lib/d3.layout.wordstream.js"></script>
-
+<script type="text/javascript" src="lib/FileSaver.min.js"></script>
 
 <!--custom code-->
 <script src="js/spinner.js"></script><!--load spinner first-->

@@ -139,15 +139,16 @@ function createPlaySlider(startDate, endDate, divId, divWidth, updatePlot, inter
 
     function setPosition(position) {
         currentValue = position;
-        if (currentValue >= targetValue) {
-            //Due to the division precision of JS (for the step) + convertion back to date => sometimes the last year is not called => so in that case we just update to the last one for sure.
-            update(endDate);
+        update(x.invert(currentValue));
+        if (currentValue > targetValue) {
+            // //Due to the division precision of JS (for the step) + convertion back to date => sometimes the last year is not called => so in that case we just update to the last one for sure.
+            // update(endDate);
             moving = false;
             currentValue = 0;
             clearInterval(timer);
             playButton.text(play);
         }
-        update(x.invert(currentValue));
+
     }
 
     function setTime(time){

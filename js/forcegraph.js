@@ -145,13 +145,12 @@ function computeNodes() {
     var numNode2 = Math.min(numNode*2, nested_data.length);
     nested_data = nested_data.slice(0,numNode2);
     nested_data = nested_data.filter(d=>d.values.length>mainconfig.minfreq);
-    console.log("nested_data.length = "+nested_data.length);
     
     var collection = [];
     nested_data.forEach(d=> d.values.forEach(t=>collection.push({title: t.key, term:{key: d.key, frequency: d.values.length}})));
     nodes2 = [];
     nested_data.forEach(d=> { nodes2.push({key: d.key, frequency: d.values.length,group: d.values[0].value.category})});
-    console.log("nodes2.length = "+nodes2.length);
+    //console.log("nodes2.length = "+nodes2.length);
     nested_data = d3.nest()
         .key(function (d) {
             return d.title;
@@ -176,7 +175,7 @@ function computeNodes() {
     links2.sort((a,b)=>b.count-a.count);
     links2 = links2.filter(d=> d.count>mainconfig.minlink);
     nodes2 = nodes2.filter(d=>links2.find(e=>d.key == e.source || d.key == e.target));
-    console.log("link2.length = "+links2.length);
-    console.log("nodes2.length = "+nodes2.length);
+    //console.log("link2.length = "+links2.length);
+    //console.log("nodes2.length = "+nodes2.length);
     
 }
