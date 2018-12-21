@@ -23,6 +23,8 @@ function dataProcessor(data) {
     //let wellStatistics = processWellStatistics(data);
     let wells = getAllWells(data);
     let allWellIds = unpack(wells, "key");
+    let allCounties = unpack(data, "County");
+    allCounties = allCounties.map(d=>d.toLowerCase());//Convert counties to lowercase
     let dateExtent = d3.extent(unpack(data, COL_MEASUREMENT_DATE));
     let minDate = dateExtent[0];
     let maxDate = dateExtent[1];
@@ -400,6 +402,7 @@ function dataProcessor(data) {
     this.steps = [maxMonthIndex + 1, maxYearIndex + 1];
     this.nestedByWellTimeStepData = [nestedByWellMonthData, nestedByWellYearData];
     this.allWellIds = allWellIds;
+    this.allCounties = allCounties;
     this.monthIndexToYear = monthIndexToYear;
     this.data = data;
     this.wellStatistics = wellStatistics;

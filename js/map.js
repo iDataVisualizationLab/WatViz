@@ -1,7 +1,7 @@
 let gm;
 let positiveValueDiffScale;
 let negativeValueDiffScale;
-let heatmap;
+let heatheatmapmap;
 function createColorScale() {
     let thresholds = processThresholds1(colorRanges[analyzeValueIndex][timeStepTypeIndex]);
     let colorScaleControl = createPlotColorScale(thresholds, colorType("negative"), 70, 400);
@@ -191,7 +191,8 @@ function plotCounties() {
         let ctPath = {
             type: "GeometryCollection"
         };
-        ctPath.geometries = us.objects.cb_2015_texas_county_20m.geometries;//.filter(d=>d.properties.NAME.toLowerCase()===county.toLowerCase());
+        // ctPath.geometries = us.objects.cb_2015_texas_county_20m.geometries;//.filter(d=>d.properties.NAME.toLowerCase()===county.toLowerCase());
+        ctPath.geometries = us.objects.cb_2015_texas_county_20m.geometries.filter(d=>dp.allCounties.indexOf(d.properties.NAME.toLowerCase())>=0);
         geoJsonObject = topojson.feature(us, ctPath)
 
         gm.map.data.addGeoJson(geoJsonObject);
